@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const parentController = require('../controllers/parent');
-const Parent = require('../models/parent');
+const ownerController = require('../controllers/owner');
+const Owner = require('../models/owner');
 const getDb = require('../util/database').getDB; 
 const multer = require('multer');
 const upload = multer();
@@ -10,17 +10,15 @@ var ImageKit = require("imagekit");
 var fs = require('fs');
 
 
-router.post('/userdata',parentController.userData);
-
-router.post('/parent-login',parentController.parentLogin);
+router.post('/owner-login',ownerController.ownerLogin);
 
 
-router.post('/parent-signup',parentController.parentRegister);
+router.post('/owner-register',ownerController.ownerRegister);
 
-router.post('/parent-forgotPwd',parentController.parentForgotPwd);
+router.post('/parent-forgotPwd',ownerController.parentForgotPwd);
 
 
-router.post('/parent-edit-token',parentController.editDeviceToken);
+router.post('/parent-edit-token',ownerController.editDeviceToken);
 
 router.post('/update-parent-image',upload.single('parentImage'),(req,res,next)=>{
 

@@ -1,38 +1,63 @@
 
-const Parent = require('../models/parent');
+const Owner = require('../models/owner');
 
 const getDb = require('../util/database').getDB; 
 
 
 
 //POST
-exports.parentRegister = (req,res,next)=>{
+exports.ownerRegister = (req,res,next)=>{
   
+    let onwerID;
     //parsing data from incoming request
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;    
-    const email = req.body.email;
-    const phone = req.body.phone
+    const ownerName = req.body.ownerName;
+    const email = req.body.email;    
     const password = req.body.password;
-    const token = req.body.token;
 
-    Parent.findUserByPhone(phone)
+
+    Owner.findOwnerByEmail(email)
                 .then(userDoc=>{
-                    if(userDoc){
-                        
-                        return res.json({status:false, message:'User Already Exists'});
+                    if(userDoc){                        
+                        return res.json({status:false, message:'Onwer Already Exists'});
                     }
                    
-                    const parent = new Parent(firstName,lastName,email,phone,password,token,null);
-                    //saving in database
-                   
-                    return parent.save()
-                    .then(resultData=>{
+                    const db = getDb();     
+                    db.collection('ownerCounter').find().toArray().then(data=>{
+        
+                        newVal = data[data.length-1].count;
+                       
+                        newVal = newVal + 1;
+                        console.log(newVal);
+                       
+                        onwerID = newVal;
                         
-                        res.json({status:true,message:"User Registered",parent:resultData["ops"][0]});
+                        db.collection('ownerCounter').insertOne({count:newVal})
+                                .then(result=>{
+                                              
+
+
+                            const owner = new Owner(onwerID,ownerName,email,password);
+                            //saving in database
                         
-                    })
-                    .catch(err=>console.log(err));
+                            return owner.save()
+                            .then(resultData=>{
+                                
+                                res.json({status:true,message:"Owner Registered",owner:resultData["ops"][0]});
+                                
+                            })
+                            .catch(err=>console.log(err));
+                
+                                    
+                                  
+                                })
+                                .then(resultData=>{
+                                   
+                                })
+                                .catch(err=>{
+                                    res.json({status:false,error:err})
+                                })             
+                     })   
+
 
                 })
                 .then(resultInfo=>{
@@ -41,26 +66,31 @@ exports.parentRegister = (req,res,next)=>{
                 })
                 .catch(err=>console.log(err));      
 
+
+
+
+
+
 }
 
 
 //LOGIN
-exports.parentLogin=(req,res,next)=>{
-    const phone = req.body.phone;
+exports.ownerLogin=(req,res,next)=>{
+    const email = req.body.email;
     const password = req.body.password;
-    Parent.findUserByPhone(phone)
+    Owner.findOwnerByEmail(email)
                 .then(user=>{
                     if(!user)
                     {
-                        return res.json({ message:'User Does not exist',status:false});
+                        return res.json({ message:'Owner does not exist',status:false});
                     }
 
                     if(user.password == password)
                     {                        
-                        res.json({ message:'Login Successful',status:true, user:user});
+                        res.json({ message:'Login Successful',status:true, owner:user});
                     }else{
                        
-                        res.json({ message:'Login UnSuccessful....Password is incorrect',status:false});
+                        res.json({ message:'Login Unsuccessful....Password is incorrect',status:false});
                     }
                 })
 

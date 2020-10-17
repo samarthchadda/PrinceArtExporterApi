@@ -5,25 +5,7 @@ const getDb = require('../util/database').getDB;
 
 const multer = require('multer');
 
-// let path;
-// const storage = multer.diskStorage({
-//     destination: function(req, file, cb) {
-//         cb(null, __dirname+'/uploadNews/');
-//     },
-//     filename: function(req, file, cb) {
-//         // cb(null,  file.originalname);
-//         path=file.originalname;
-//     }
-// });
 
-// const fileFilter = (req,file,cb)=>{
-//     if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
-//         cb(null,true);
-//     }else{
-//      cb(null,false);
-//     }
-   
-// }
 
 const upload = multer();
 
@@ -69,9 +51,7 @@ router.get('/all-news/:id',(req,res,next)=>{
 });
 
 
-// https://prajhaapp.herokuapp.com/api/post-news
-
-router.post('/post-news' ,upload.single('newsImage'),(req,res,next)=>{
+router.post('/post-news' ,upload.array('newsImage',10),(req,res,next)=>{
 
     let code;
     const content = req.body.content;
@@ -82,61 +62,24 @@ router.post('/post-news' ,upload.single('newsImage'),(req,res,next)=>{
         urlEndpoint : "https://ik.imagekit.io/4afsv20kjs"
     });
     
-    var base64Img = req.file.buffer;
-
-
-    // adding auto-generated id
-    let newVal;
-    const db = getDb();     
-    db.collection('newsCounter').find().toArray().then(data=>{
-        
-        newVal = data[data.length-1].count;
+    req.files.forEach(f => {
+        var base64Img = f.buffer;
+    // console.log(req.files);
+    
+    imagekit.upload({
+        file : base64Img, //required
+        fileName : "newsImg.jpg"   //required
        
-        newVal = newVal + 1;
-        console.log(newVal);
-       
-        code = newVal;
-        
-        db.collection('newsCounter').insertOne({count:newVal})
-                .then(result=>{
+    }, function(error, result) {
+        if(error) {console.log(error);}
+        else {
+            console.log(result.url);
+           
+        }
+    });        
+    });
+    
 
-                    imagekit.upload({
-                        file : base64Img, //required
-                        fileName : "newsImg.jpg"   //required
-                       
-                    }, function(error, result) {
-                        if(error) {console.log(error);}
-                        else {
-                            console.log(result.url);
-                
-                             const db = getDb();
-                
-                            const news = new News(code,content,result.url);
-                            //saving in database
-                        
-                            news.save()
-                            .then(resultData=>{
-                                
-                                res.json({Status:true,message:"News Posted",data:resultData["ops"][0]});
-                                
-                            })
-                            .catch(err=>{
-                                res.json({Status:false,message:"News Not Posted"});
-                                
-                            });                
-                        }
-                    });                
-                                   
-                })
-                .then(resultData=>{
-                   
-                })
-                .catch(err=>{
-                    res.json({status:false,error:err})
-                })             
-     })
-
-     // adding auto-generated id 
 
 });
 

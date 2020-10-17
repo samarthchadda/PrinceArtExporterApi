@@ -4,7 +4,7 @@ const mongoConnect = require('./util/database').mongoConnect;
 
 const app = express();
 
-const parentRoutes = require('./routes/parent');
+const ownerRoutes = require('./routes/owner');
 const trainingRoutes = require('./routes/training');
 const courseRoutes = require('./routes/courses');
 const facultyRoutes = require('./routes/faculty');
@@ -44,7 +44,7 @@ app.use((req,res,next)=>{
 app.get('/',(req,res)=>{
     res.json({message:"deploy api"});
 });
-app.use('/api',parentRoutes);
+app.use('/api',ownerRoutes);
 app.use('/api',trainingRoutes);
 app.use('/api',courseRoutes);
 app.use('/api',facultyRoutes);
