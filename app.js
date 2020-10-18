@@ -5,9 +5,9 @@ const mongoConnect = require('./util/database').mongoConnect;
 const app = express();
 
 const ownerRoutes = require('./routes/owner');
+const saloonRoutes = require('./routes/saloon');
 const trainingRoutes = require('./routes/training');
 const courseRoutes = require('./routes/courses');
-const facultyRoutes = require('./routes/faculty');
 const newsRoutes = require('./routes/news');
 const subAdminRoutes = require('./routes/sub-admin');
 const appointmentRoutes = require('./routes/appointment');
@@ -45,9 +45,9 @@ app.get('/',(req,res)=>{
     res.json({message:"deploy api"});
 });
 app.use('/api',ownerRoutes);
+app.use('/api',saloonRoutes);
 app.use('/api',trainingRoutes);
 app.use('/api',courseRoutes);
-app.use('/api',facultyRoutes);
 app.use('/api',newsRoutes);
 app.use('/api',subAdminRoutes);
 app.use('/api',appointmentRoutes);

@@ -34,8 +34,6 @@ exports.ownerRegister = (req,res,next)=>{
                         db.collection('ownerCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-
-
                             const owner = new Owner(onwerID,ownerName,email,password);
                             //saving in database
                         
@@ -45,9 +43,7 @@ exports.ownerRegister = (req,res,next)=>{
                                 res.json({status:true,message:"Owner Registered",owner:resultData["ops"][0]});
                                 
                             })
-                            .catch(err=>console.log(err));
-                
-                                    
+                            .catch(err=>console.log(err));                                                    
                                   
                                 })
                                 .then(resultData=>{
@@ -58,26 +54,21 @@ exports.ownerRegister = (req,res,next)=>{
                                 })             
                      })   
 
-
                 })
-                .then(resultInfo=>{
-                   
+                .then(resultInfo=>{                   
                   
                 })
                 .catch(err=>console.log(err));      
 
-
-
-
-
-
 }
+
 
 
 //LOGIN
 exports.ownerLogin=(req,res,next)=>{
     const email = req.body.email;
     const password = req.body.password;
+    
     Owner.findOwnerByEmail(email)
                 .then(user=>{
                     if(!user)
