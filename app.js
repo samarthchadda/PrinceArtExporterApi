@@ -6,8 +6,8 @@ const app = express();
 
 const ownerRoutes = require('./routes/owner');
 const saloonRoutes = require('./routes/saloon');
+const servicesRoutes = require('./routes/services');
 const trainingRoutes = require('./routes/training');
-const courseRoutes = require('./routes/courses');
 const newsRoutes = require('./routes/news');
 const subAdminRoutes = require('./routes/sub-admin');
 const appointmentRoutes = require('./routes/appointment');
@@ -46,8 +46,8 @@ app.get('/',(req,res)=>{
 });
 app.use('/api',ownerRoutes);
 app.use('/api',saloonRoutes);
+app.use('/api',servicesRoutes);
 app.use('/api',trainingRoutes);
-app.use('/api',courseRoutes);
 app.use('/api',newsRoutes);
 app.use('/api',subAdminRoutes);
 app.use('/api',appointmentRoutes);
