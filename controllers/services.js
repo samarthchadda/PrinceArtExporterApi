@@ -99,7 +99,6 @@ exports.getSingleService=(req,res,next)=>{
 exports.getSaloonServices=(req,res,next)=>{
 
     const saloonId = req.params.saloonId;
-    // console.log(phone);
 
     Service.findServicesBySaloonID(JSON.parse(saloonId))
                     .then(services=>{
@@ -166,9 +165,7 @@ exports.delService=(req,res,next)=>{
                                         res.json({message:'Service Deleted',status:true});
                                     })
                                     .catch(err=>console.log(err));
-
                     })
-
 }
 
 

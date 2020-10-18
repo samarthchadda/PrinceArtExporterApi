@@ -7,12 +7,12 @@ const app = express();
 const ownerRoutes = require('./routes/owner');
 const saloonRoutes = require('./routes/saloon');
 const servicesRoutes = require('./routes/services');
+const employeeRoutes = require('./routes/employee');
 const trainingRoutes = require('./routes/training');
 const newsRoutes = require('./routes/news');
 const subAdminRoutes = require('./routes/sub-admin');
 const appointmentRoutes = require('./routes/appointment');
 const adminRoutes = require('./routes/admin');
-const revenueRoutes = require('./routes/Revenue');
 
 
 
@@ -47,12 +47,12 @@ app.get('/',(req,res)=>{
 app.use('/api',ownerRoutes);
 app.use('/api',saloonRoutes);
 app.use('/api',servicesRoutes);
+app.use('/api',employeeRoutes);
 app.use('/api',trainingRoutes);
 app.use('/api',newsRoutes);
 app.use('/api',subAdminRoutes);
 app.use('/api',appointmentRoutes);
 app.use('/api',adminRoutes);
-app.use('/api',revenueRoutes);
 
 
 
