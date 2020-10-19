@@ -8,6 +8,9 @@ router.get('/all-availabilities',availController.getAllAvailData);
 
 router.get('/all-availabilities/:empId',availController.getSingleAvailData);
 
+router.post('/date-availability',availController.getSingleAvailDataByDate);
+
+
 router.post('/post-availability',availController.availRegister);
 
 router.post('/edit-avail-status',availController.editAvailStatus);

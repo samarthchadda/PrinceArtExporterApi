@@ -34,6 +34,34 @@ exports.getSingleAvailData=(req,res,next)=>{
 }
 
 
+exports.getSingleAvailDataByDate=(req,res,next)=>{
+  
+    const empId = +req.body.empId;
+
+    let startDate = req.body.startDate;    
+    let endDate = req.body.endDate;
+    startDate = new Date(startDate).getTime();
+    console.log(startDate);
+
+    endDate = new Date(endDate).getTime();
+    console.log(endDate);
+   
+    Availability.findAvailByEmpIdAndDate(empId,startDate,endDate)
+    .then(availDoc=>{
+       
+        if(availDoc){
+           
+            // console.log(new Date(availDoc.startDate))
+             res.json({status:true, data:availDoc});
+        }
+        else{
+            res.json({status:false,message:"No such availability exist"});
+        }          
+
+    })    
+}
+
+
 
 //POST
 exports.availRegister = (req,res,next)=>{
