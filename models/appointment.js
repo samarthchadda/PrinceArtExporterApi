@@ -7,21 +7,20 @@ class Appointment
 {
    
    
-    constructor(id,fac_phone,par_phone,appDate,appTimeSlot,meetingId,fac_name,fac_cat,status,device_ID)
-    {     
-     
-        this.appointmentID = id;
-        this.faculty_phone = fac_phone;
-        this.parent_phone =  par_phone;
-        this.appointmentDate = appDate;
-        this.timeSlot = appTimeSlot;
-        this.MeetingId = meetingId;
-        this.FacultyName=fac_name;
-        this.FacultyCategory = fac_cat;
-        this.Status = status;
-        this.DeviceID = device_ID;
-        this.PostedDate = new Date();      
-       
+    constructor(id,saloonId,empId,serviceId,clientName,clientPhone,empName,time,date,day,cost)
+    {          
+        this.appointmentId = id;
+        this.saloonId = saloonId;
+        this.empId = empId;
+        this.serviceId = serviceId;
+        this.clientName = clientName;
+        this.clientPhone = clientPhone;
+        this.empName = empName;
+        this.bookingTime = time;
+        this.bookingDate = date;
+        this.bookingDay = day;
+        this.totalCost = cost;              
+        this.appointDate = new Date();             
         
     }
 
@@ -29,8 +28,7 @@ class Appointment
     save()
     {
       
-        const db = getDb();                  
-        // console.log(this);
+        const db = getDb();      
         return db.collection('appointments').insertOne(this);
                               
     }
@@ -46,11 +44,11 @@ class Appointment
                             .catch(err=>console.log(err));
     }
 
-    static findAppointByID(appointID)
+    static findAppointByID(appointId)
     {
         const db = getDb();
                             
-        return db.collection('appointments').findOne({ appointmentID:appointID })
+        return db.collection('appointments').findOne({ appointmentId:appointId })
                                             .then(appointDetail=>{
                                                                                                 
                                                 return appointDetail;  
@@ -59,56 +57,18 @@ class Appointment
 
     }
 
-    static findAppointByParent(phone)
+
+  
+    static findAppointByEmpIdAndDate(eid,bDate)
     {
         const db = getDb();
                             
-        return db.collection('appointments').find({ parent_phone:phone,appointmentDate:{$gte:Date.now()} }).toArray()
+        return db.collection('appointments').find({ empId:eid,bookingDate:bDate }).toArray()
                                             .then(appointDetail=>{
                                                                                                 
                                                 return appointDetail;  
                                             })
                                             .catch(err=>console.log(err));
-
-    }
-
-    static findAppointByFaculty(phone)
-    {
-        const db = getDb();
-                            
-        return db.collection('appointments').find({ faculty_phone:phone,appointmentDate:{$gte:Date.now()} }).toArray()
-                                            .then(appointDetail=>{
-                                                                                                
-                                                return appointDetail;  
-                                            })
-                                            .catch(err=>console.log(err));
-
-    }
-
-    static findAppointByFacultyDate(phone,dt)
-    {
-        const db = getDb();
-                            
-        return db.collection('appointments').find({ faculty_phone:phone,appointmentDate:dt }).toArray()
-                                            .then(appointDetail=>{
-                                                                                                
-                                                return appointDetail;  
-                                            })
-                                            .catch(err=>console.log(err));
-
-    }
-
-    static findAppointByParentDate(phone,dt)
-    {
-        const db = getDb();
-                            
-        return db.collection('appointments').find({ parent_phone:phone,appointmentDate:dt }).toArray()
-                                            .then(appointDetail=>{
-                                                                                                
-                                                return appointDetail;  
-                                            })
-                                            .catch(err=>console.log(err));
-
     }
 
 
