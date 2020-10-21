@@ -5,14 +5,15 @@ const ObjectId = mongodb.ObjectId;
 
 class Saloon
 {
-    constructor(sid,oid,name,phone,address,photos)
+    constructor(sid,oid,name,phone,address,photos,isVerified)
     {
         this.saloonId = sid;   
         this.ownerId = oid;            
         this.saloonName = name; 
         this.phone = phone;
         this.address = address;
-        this.saloonPhotos = photos;    
+        this.saloonPhotos = photos;
+        this.isVerified = isVerified;
         
     }
 

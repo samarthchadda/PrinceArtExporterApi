@@ -15,6 +15,8 @@ router.get('/all-saloons/:id',saloonController.saloonsByOwner);
 
 router.get('/single-saloon/:id',saloonController.getSingleSaloon);
 
+router.post('/saloon-verify',saloonController.phoneVerify);
+
 
 const getDb = require('../util/database').getDB; 
 const upload = multer();

@@ -29,6 +29,7 @@ exports.saloonRegister = (req,res,next)=>{
     const phone = +req.body.phone;    
     const address = req.body.address;
     const photos = null;
+    const isVerified = "false";
 
 
     Saloon.findSaloonByPhone(phone)
@@ -50,7 +51,7 @@ exports.saloonRegister = (req,res,next)=>{
                         db.collection('saloonCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const saloon = new Saloon(saloonID,ownerId,saloonName,phone,address,photos);
+                            const saloon = new Saloon(saloonID,ownerId,saloonName,phone,address,photos,isVerified);
                             //saving in database
                         
                             return saloon.save()
@@ -138,6 +139,35 @@ exports.facultyLogin=(req,res,next)=>{
 
 }
 
+
+
+
+
+exports.phoneVerify=(req,res,next)=>{
+    //parsing data from incoming request
+    const saloonId = +req.body.saloonId;
+    const isVerified = req.body.isVerified;
+   
+    Saloon.findSaloonBySaloonID(saloonId)
+            .then(saloon=>{
+                if(!saloon)
+                {
+                    return res.json({ message:'Saloon does not exist',status:false});
+                }
+                        
+                 saloon.isVerified = isVerified;
+                 
+                 const db = getDb();
+                 db.collection('saloons').updateOne({saloonId:saloonId},{$set:saloon})
+                             .then(resultData=>{
+                                 
+                                 res.json({message:'Details Updated',status:true});
+                             })
+                             .catch(err=>console.log(err));
+
+             })
+
+}
 
 
 
