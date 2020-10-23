@@ -85,6 +85,18 @@ class Appointment
     }
 
 
+    static saloonWeekRevenue(sid, sDate,eDate)
+    {
+        const db = getDb();
+                            
+        return db.collection('appointments').find({ saloonId:sid,bookingDate:{$gte:sDate,$lte:eDate} }).toArray()
+                                            .then(appointDetail=>{
+                                                                                                
+                                                return appointDetail;  
+                                            })
+                                            .catch(err=>console.log(err));
+    }
+
 }
 
 

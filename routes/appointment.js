@@ -14,5 +14,11 @@ router.post('/saloon-appointment',appointController.getAppointBySaloonAndBdate);
 router.post('/check-appointment',appointController.getAppointByEmpIdDate);
 
 
+router.post('/appoint-revenue-day',appointController.getDayRevenuePerSaloon);
+
+router.post('/appoint-revenue-week',appointController.getWeekRevenuePerSaloon);
+
+
+
 module.exports = router;
 
