@@ -9,6 +9,8 @@ router.get('/all-appointments/:id',appointController.getSingleAppointment);
 
 router.post('/post-appointment',appointController.postAppointment);
 
+router.post('/saloon-appointment',appointController.getAppointBySaloonAndBdate);
+
 router.post('/check-appointment',appointController.getAppointByEmpIdDate);
 
 

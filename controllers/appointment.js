@@ -18,6 +18,7 @@ exports.postAppointment = (req,res,next)=>{
     console.log(bookingDate);
     const bookingDay = req.body.bookingDay;
     const totalCost = +req.body.totalCost;
+    const note = req.body.note;
 
         let newVal;
         const db = getDb();     
@@ -33,7 +34,7 @@ exports.postAppointment = (req,res,next)=>{
                     .then(result=>{
 
                         
-                        const appointment = new Appointment(appointId,saloonId,empId,serviceId,clientName,clientPhone,empName,bookingTime,bookingDate,bookingDay,totalCost);
+                        const appointment = new Appointment(appointId,saloonId,empId,serviceId,clientName,clientPhone,empName,bookingTime,bookingDate,bookingDay,totalCost,note);
                        
                         //saving in database                    
                         appointment.save()
@@ -110,6 +111,30 @@ exports.getAppointByEmpIdDate=(req,res,next)=>{
                     console.log(timeSlot);
 
                     res.json({ message:'Appointment Exists',data:timeSlot});
+                })
+
+}
+
+
+
+exports.getAppointBySaloonAndBdate=(req,res,next)=>{
+    
+    const saloonId = +req.body.saloonId;
+    
+    let bookingDate = req.body.bookingDate;
+    bookingDate = new Date(bookingDate).getTime();
+    console.log(bookingDate);
+  
+   
+    Appointment.findAppointBySaloonIdAndDate(saloonId,bookingDate)
+                .then(appoint=>{
+                    if(appoint.length==0)
+                    {
+                        return res.json({ message:'Appointment not exist',data:appoint});
+                    }               
+
+                    res.json({ message:'Appointment Exists',data:appoint});
+
                 })
 
 }

@@ -7,7 +7,7 @@ class Appointment
 {
    
    
-    constructor(id,saloonId,empId,serviceId,clientName,clientPhone,empName,time,date,day,cost)
+    constructor(id,saloonId,empId,serviceId,clientName,clientPhone,empName,time,date,day,cost,note)
     {          
         this.appointmentId = id;
         this.saloonId = saloonId;
@@ -19,7 +19,8 @@ class Appointment
         this.bookingTime = time;
         this.bookingDate = date;
         this.bookingDay = day;
-        this.totalCost = cost;              
+        this.totalCost = cost;         
+        this.note = note;     
         this.appointDate = new Date();             
         
     }
@@ -64,6 +65,18 @@ class Appointment
         const db = getDb();
                             
         return db.collection('appointments').find({ empId:eid,bookingDate:bDate }).toArray()
+                                            .then(appointDetail=>{
+                                                                                                
+                                                return appointDetail;  
+                                            })
+                                            .catch(err=>console.log(err));
+    }
+
+    static findAppointBySaloonIdAndDate(sid, bDate)
+    {
+        const db = getDb();
+                            
+        return db.collection('appointments').find({ saloonId:sid,bookingDate:bDate }).toArray()
                                             .then(appointDetail=>{
                                                                                                 
                                                 return appointDetail;  
