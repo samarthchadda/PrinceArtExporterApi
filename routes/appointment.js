@@ -19,6 +19,13 @@ router.post('/appoint-revenue-day',appointController.getDayRevenuePerSaloon);
 router.post('/appoint-revenue-week',appointController.getWeekRevenuePerSaloon);
 
 
+router.post('/emp-appoint-revenue-day',appointController.getDayRevenuePerEmp);
+
+router.post('/emp-appoint-revenue-week',appointController.getWeekRevenuePerEmp);
+
+
+
+
 
 module.exports = router;
 

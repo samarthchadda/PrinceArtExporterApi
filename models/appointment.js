@@ -97,6 +97,18 @@ class Appointment
                                             .catch(err=>console.log(err));
     }
 
+    static empWeekRevenue(eid, sDate,eDate)
+    {
+        const db = getDb();
+                            
+        return db.collection('appointments').find({ empId:eid,bookingDate:{$gte:sDate,$lte:eDate} }).toArray()
+                                            .then(appointDetail=>{
+                                                                                                
+                                                return appointDetail;  
+                                            })
+                                            .catch(err=>console.log(err));
+    }
+
 }
 
 

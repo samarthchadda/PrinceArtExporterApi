@@ -202,3 +202,69 @@ exports.getWeekRevenuePerSaloon=(req,res,next)=>{
 
                 })
 }
+
+
+
+
+exports.getDayRevenuePerEmp=(req,res,next)=>{
+    
+    const empId = +req.body.empId;
+    
+    let bookingDate = req.body.bookingDate;
+    bookingDate = new Date(bookingDate).getTime();
+    console.log(bookingDate);
+     
+    Appointment.findAppointByEmpIdAndDate(empId,bookingDate)
+                .then(appoints=>{
+                    if(appoints.length==0)
+                    {
+                        return res.json({ message:'Appointment not exist',revenue:appoints});
+                    }               
+
+                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};                 
+
+                    appoints.forEach(app=>{
+                        revenueObj.totalApp = revenueObj.totalApp + 1;
+                        revenueObj.totalAmt = revenueObj.totalAmt + app.totalCost;
+                        revenueObj.totalServices = revenueObj.totalServices + app.serviceId.length;
+                    })
+
+                    res.json({ message:'Appointment Exists',revenue:revenueObj});
+
+                })
+}
+
+
+
+exports.getWeekRevenuePerEmp=(req,res,next)=>{
+    
+    const empId = +req.body.empId;
+    
+    let startDate = req.body.startDate;
+    startDate = new Date(startDate).getTime();
+    console.log(startDate);
+
+    let endDate = req.body.endDate;
+    endDate = new Date(endDate).getTime();
+    console.log(endDate);   
+    
+    Appointment.empWeekRevenue(empId,startDate,endDate)
+                .then(appoints=>{
+                    if(appoints.length==0)
+                    {
+                        return res.json({ message:'Appointment not exist',revenue:appoints});
+                    }               
+
+                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};                 
+
+                    appoints.forEach(app=>{
+                        revenueObj.totalApp = revenueObj.totalApp + 1;
+                        revenueObj.totalAmt = revenueObj.totalAmt + app.totalCost;
+                        revenueObj.totalServices = revenueObj.totalServices + app.serviceId.length;
+                    })
+
+                    res.json({ message:'Appointment Exists',revenue:revenueObj});
+
+                })
+}
+
