@@ -232,6 +232,9 @@ exports.getMonthRevenuePerSaloon=(req,res,next)=>{
                         revenueObj.totalServices = revenueObj.totalServices + app.serviceId.length;
                     })
 
+                    revenueObj.avgRevenue = revenueObj.totalAmt / revenueObj.totalApp;
+                    revenueObj.avgAppointments = revenueObj.totalServices / revenueObj.totalApp;
+                    
                     res.json({ message:'Appointment Exists',revenue:revenueObj});
 
                 })
@@ -328,6 +331,9 @@ exports.getMonthRevenuePerEmp=(req,res,next)=>{
                         revenueObj.totalAmt = revenueObj.totalAmt + app.totalCost;
                         revenueObj.totalServices = revenueObj.totalServices + app.serviceId.length;
                     })
+
+                    revenueObj.avgRevenue = revenueObj.totalAmt / revenueObj.totalApp;
+                    revenueObj.avgAppointments = revenueObj.totalServices / revenueObj.totalApp;
 
                     res.json({ message:'Appointment Exists',revenue:revenueObj});
 
