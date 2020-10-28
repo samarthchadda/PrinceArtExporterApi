@@ -126,7 +126,7 @@ exports.editService=(req,res,next)=>{
              .then(serviceDoc=>{
                  if(!serviceDoc)
                  {
-                     return res.json({ message:'Service Does not exist',status:false});
+                     return res.json({ message:'Service does not exist',status:false});
                  }
                 
                  serviceDoc.serviceName = name;

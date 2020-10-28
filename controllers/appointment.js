@@ -205,6 +205,40 @@ exports.getWeekRevenuePerSaloon=(req,res,next)=>{
 
 
 
+exports.getMonthRevenuePerSaloon=(req,res,next)=>{
+    
+    const saloonId = +req.body.saloonId;
+    
+    let startDate = req.body.startDate;
+    startDate = new Date(startDate).getTime();
+    console.log(startDate);
+
+    let endDate = req.body.endDate;
+    endDate = new Date(endDate).getTime();
+    console.log(endDate);   
+    
+    Appointment.saloonWeekRevenue(saloonId,startDate,endDate)
+                .then(appoints=>{
+                    if(appoints.length==0)
+                    {
+                        return res.json({ message:'Appointment not exist',revenue:appoints});
+                    }               
+
+                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0,avgRevenue:0,avgAppointments:0};                 
+
+                    appoints.forEach(app=>{
+                        revenueObj.totalApp = revenueObj.totalApp + 1;
+                        revenueObj.totalAmt = revenueObj.totalAmt + app.totalCost;
+                        revenueObj.totalServices = revenueObj.totalServices + app.serviceId.length;
+                    })
+
+                    res.json({ message:'Appointment Exists',revenue:revenueObj});
+
+                })
+}
+
+
+
 
 exports.getDayRevenuePerEmp=(req,res,next)=>{
     
@@ -267,4 +301,97 @@ exports.getWeekRevenuePerEmp=(req,res,next)=>{
 
                 })
 }
+
+exports.getMonthRevenuePerEmp=(req,res,next)=>{
+    
+    const empId = +req.body.empId;
+    
+    let startDate = req.body.startDate;
+    startDate = new Date(startDate).getTime();
+    console.log(startDate);
+
+    let endDate = req.body.endDate;
+    endDate = new Date(endDate).getTime();
+    console.log(endDate);   
+    
+    Appointment.empWeekRevenue(empId,startDate,endDate)
+                .then(appoints=>{
+                    if(appoints.length==0)
+                    {
+                        return res.json({ message:'Appointment not exist',revenue:appoints});
+                    }               
+
+                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0,avgRevenue:0,avgAppointments:0};                 
+
+                    appoints.forEach(app=>{
+                        revenueObj.totalApp = revenueObj.totalApp + 1;
+                        revenueObj.totalAmt = revenueObj.totalAmt + app.totalCost;
+                        revenueObj.totalServices = revenueObj.totalServices + app.serviceId.length;
+                    })
+
+                    res.json({ message:'Appointment Exists',revenue:revenueObj});
+
+                })
+}
+
+
+
+exports.editAppointment=(req,res,next)=>{
+    //parsing data from incoming request
+    const appointId = +req.body.appointId;
+    const bookingTime = req.body.bookingTime;
+    const bookingDay = req.body.bookingDay;
+        
+    let bookingDate = req.body.bookingDate;
+    bookingDate = new Date(bookingDate).getTime();
+    console.log(bookingDate);  
+   
+    Appointment.findAppointByID(JSON.parse(appointId))
+             .then(appDoc=>{
+                 if(!appDoc)
+                 {
+                     return res.json({ message:'Appointment does not exist',status:false});
+                 }
+                
+                 appDoc.bookingTime = bookingTime;
+                 appDoc.bookingDay = bookingDay;
+                 appDoc.bookingDate = bookingDate;
+                 
+                 const db = getDb();
+                 db.collection('appointments').updateOne({appointmentId:appointId},{$set:appDoc})
+                             .then(resultData=>{
+                                 
+                                 res.json({message:'Details Updated',status:true});
+                             })
+                             .catch(err=>console.log(err));
+             })
+}
+
+
+exports.delAppointment=(req,res,next)=>{
+
+    const appointId = +req.params.appointId;
+
+    Appointment.findAppointByID(JSON.parse(appointId))
+                    .then(appoint=>{
+                        if(!appoint)
+                        {
+                            return res.json({ message:'Appointment does not exist',status:false});
+                        }
+
+                        const db = getDb();
+                        db.collection('appointments').deleteOne({appointmentId:appointId})
+                                    .then(resultData=>{
+                                        
+                                        res.json({message:'Appointment Deleted',status:true});
+                                    })
+                                    .catch(err=>console.log(err));
+                    })
+}
+
+
+
+
+
+
 
