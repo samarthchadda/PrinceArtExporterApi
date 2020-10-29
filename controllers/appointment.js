@@ -9,6 +9,7 @@ exports.postAppointment = (req,res,next)=>{
     const saloonId = +req.body.saloonId ;
     const empId = +req.body.empId;   
     const serviceId = req.body.serviceId;
+    const serviceName = req.body.serviceName;
     const clientName = req.body.clientName;
     const clientPhone = req.body.clientPhone;
     const empName = req.body.empName;
@@ -34,7 +35,7 @@ exports.postAppointment = (req,res,next)=>{
                     .then(result=>{
 
                         
-                        const appointment = new Appointment(appointId,saloonId,empId,serviceId,clientName,clientPhone,empName,bookingTime,bookingDate,bookingDay,totalCost,note);
+                        const appointment = new Appointment(appointId,saloonId,empId,serviceId,serviceName,clientName,clientPhone,empName,bookingTime,bookingDate,bookingDay,totalCost,note);
                        
                         //saving in database                    
                         appointment.save()

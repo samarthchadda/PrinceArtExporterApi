@@ -44,7 +44,7 @@ exports.getSaloonEmployees=(req,res,next)=>{
                     .then(employees=>{
                         if(employees.length==0)
                         {
-                            return res.json({ message:'Employee does not exist',data:null});
+                            return res.json({ message:'Employee does not exist',data:employees});
                         }
 
                         res.json({message:"All Employees returned",data:employees});

@@ -140,9 +140,6 @@ exports.facultyLogin=(req,res,next)=>{
 }
 
 
-
-
-
 exports.phoneVerify=(req,res,next)=>{
     //parsing data from incoming request
     const saloonId = +req.body.saloonId;
@@ -169,5 +166,34 @@ exports.phoneVerify=(req,res,next)=>{
 
 }
 
+
+
+
+exports.editSaloon=(req,res,next)=>{
+    //parsing data from incoming request
+    const saloonId = +req.body.saloonId;
+    const saloonName = req.body.saloonName;
+    const address = req.body.address;
+   
+    Saloon.findSaloonBySaloonID(JSON.parse(saloonId))
+             .then(saloonDoc=>{
+                 if(!saloonDoc)
+                 {
+                     return res.json({ message:'Saloon does not exist',status:false});
+                 }
+                
+                 saloonDoc.saloonName = saloonName;
+                 saloonDoc.address = address;
+                 
+                 const db = getDb();
+                 db.collection('saloons').updateOne({saloonId:saloonId},{$set:saloonDoc})
+                             .then(resultData=>{
+                                 
+                                 res.json({message:'Details Updated',status:true});
+                             })
+                             .catch(err=>console.log(err));
+             })
+
+}
 
 
