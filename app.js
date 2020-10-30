@@ -9,9 +9,9 @@ const saloonRoutes = require('./routes/saloon');
 const servicesRoutes = require('./routes/services');
 const employeeRoutes = require('./routes/employee');
 const availRoutes = require('./routes/availability');
+const clientRoutes = require('./routes/client');
 const trainingRoutes = require('./routes/training');
 const newsRoutes = require('./routes/news');
-const subAdminRoutes = require('./routes/sub-admin');
 const appointmentRoutes = require('./routes/appointment');
 
 
@@ -49,9 +49,9 @@ app.use('/api',saloonRoutes);
 app.use('/api',servicesRoutes);
 app.use('/api',employeeRoutes);
 app.use('/api',availRoutes);
+app.use('/api',clientRoutes);
 app.use('/api',trainingRoutes);
 app.use('/api',newsRoutes);
-app.use('/api',subAdminRoutes);
 app.use('/api',appointmentRoutes);
 
 
