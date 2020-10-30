@@ -21,6 +21,9 @@ router.post('/saloon-verify',saloonController.phoneVerify);
 
 router.post('/edit-saloon',saloonController.editSaloon);
 
+router.get('/all-saloons-address',saloonController.getSaloonsAddress);
+
+
 
 const getDb = require('../util/database').getDB; 
 const upload = multer();

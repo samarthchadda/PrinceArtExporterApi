@@ -3,6 +3,13 @@ const Saloon = require('../models/saloon');
 
 const getDb = require('../util/database').getDB; 
 
+var NodeGeocoder = require('node-geocoder');
+ 
+var geocoder = NodeGeocoder({
+  provider: 'opencage',
+  apiKey: '3e5c1837f6424d34a41eac19b3816699'
+});
+
 
 
 exports.getSaloons=(req,res,next)=>{
@@ -14,8 +21,30 @@ exports.getSaloons=(req,res,next)=>{
 
                 })
                 .catch(err=>console.log(err));
-
 }
+
+
+exports.getSaloonsAddress=(req,res,next)=>{
+  
+
+    Saloon.fetchAllSaloons()
+                .then(saloons=>{                   
+                           
+                    geocoder.geocode('79 padmavati colony kings road, jaipur')
+                    .then((result)=> {
+                        console.log(result[0]);
+                    })
+                    .catch((err)=> {
+                        console.log(err);
+                    });
+
+                    res.json({message:"All Data returned",allSaloons:saloons})
+
+                })
+                .catch(err=>console.log(err));
+}
+
+
 
 exports.getLimitSaloons=(req,res,next)=>{
   
@@ -209,7 +238,7 @@ exports.editSaloon=(req,res,next)=>{
                              })
                              .catch(err=>console.log(err));
              })
-
 }
+
 
 
