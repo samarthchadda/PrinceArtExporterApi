@@ -104,7 +104,7 @@ exports.getSaloonServices=(req,res,next)=>{
                     .then(services=>{
                         if(services.length==0)
                         {
-                            return res.json({ message:'Service does not exist',data:null});
+                            return res.json({ message:'Service does not exist',data:services});
                         }
 
                         res.json({message:"All Services returned",data:services});
