@@ -17,6 +17,24 @@ exports.getSaloons=(req,res,next)=>{
 
 }
 
+exports.getLimitSaloons=(req,res,next)=>{
+  
+    const limit = +req.params.limit;
+    console.log(limit);
+    const start = +req.params.start;
+    console.log(start);
+    
+
+    Saloon.fetchLimitSaloons(JSON.parse(+limit),JSON.parse(+start))
+                .then(saloons=>{
+                   
+                    res.json({message:limit+" Saloons returned",allSaloons:saloons})
+
+                })
+                .catch(err=>console.log(err));
+
+}
+
 
 
 //POST
@@ -165,8 +183,6 @@ exports.phoneVerify=(req,res,next)=>{
              })
 
 }
-
-
 
 
 exports.editSaloon=(req,res,next)=>{

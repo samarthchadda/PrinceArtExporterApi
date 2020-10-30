@@ -63,6 +63,18 @@ class Saloon
                             .catch(err=>console.log(err));
     }
 
+    static fetchLimitSaloons(limit,start)
+    {
+        
+        const db = getDb();
+        return db.collection('saloons').find({saloonId:{$gte:start}},{limit:limit}).toArray()
+                            .then(saloonData=>{
+                               
+                                return saloonData;
+                            })
+                            .catch(err=>console.log(err));
+    }
+
 
     
     static fetchSaloonsByOwnerID(id)
