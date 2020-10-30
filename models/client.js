@@ -50,6 +50,19 @@ class Client
 
     }
 
+    static findClientByClientId(id)
+    {
+        const db = getDb();
+                            
+        return db.collection('clients').findOne({ clientId:id })
+                                            .then(client=>{                                                
+                                                
+                                                return client;  
+                                            })
+                                            .catch(err=>console.log(err));
+
+    }
+
 
 }
 

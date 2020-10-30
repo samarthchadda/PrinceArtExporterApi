@@ -1,91 +1,124 @@
 
-const Owner = require('../models/owner');
+const Client = require('../models/client');
 
 const getDb = require('../util/database').getDB; 
 
 
-
 //POST
-exports.ownerRegister = (req,res,next)=>{
+// exports.clientRegister = (req,res,next)=>{
   
-    let onwerID;
-    //parsing data from incoming request
-    const ownerName = req.body.ownerName;
-    const email = req.body.email;    
-    const password = req.body.password;
+//     let clientID;
+//     //parsing data from incoming request
+//     const clientName = req.body.clientName;
+//     const phone = +req.body.phone;
+//     const email = req.body.email;    
+//     const password = req.body.password;
+//     const image = null;
 
-
-    Owner.findOwnerByEmail(email)
-                .then(userDoc=>{
-                    if(userDoc){                        
-                        return res.json({status:false, message:'Onwer Already Exists'});
-                    }
+//     Client.findClientByEmail(email)
+//                 .then(userDoc=>{
+//                     if(userDoc){                        
+//                         return res.json({status:false, message:'Client Already Exists'});
+//                     }
                    
-                    const db = getDb();     
-                    db.collection('ownerCounter').find().toArray().then(data=>{
+//                     const db = getDb();     
+//                     db.collection('clientCounter').find().toArray().then(data=>{
         
-                        newVal = data[data.length-1].count;
+//                         newVal = data[data.length-1].count;
                        
-                        newVal = newVal + 1;
-                        console.log(newVal);
+//                         newVal = newVal + 1;
+//                         console.log(newVal);
                        
-                        onwerID = newVal;
+//                         clientID = newVal;
                         
-                        db.collection('ownerCounter').insertOne({count:newVal})
-                                .then(result=>{
+//                         db.collection('clientCounter').insertOne({count:newVal})
+//                                 .then(result=>{
                                               
-                            const owner = new Owner(onwerID,ownerName,email,password);
-                            //saving in database
+//                             const client = new Client(clientID,clientName,phone,email,password,image);
+//                             //saving in database
                         
-                            return owner.save()
-                            .then(resultData=>{
+//                             return client.save()
+//                             .then(resultData=>{
                                 
-                                res.json({status:true,message:"Owner Registered",owner:resultData["ops"][0]});
+//                                 res.json({status:true,message:"Client Registered",client:resultData["ops"][0]});
                                 
-                            })
-                            .catch(err=>console.log(err));                                                    
+//                             })
+//                             .catch(err=>console.log(err));                                                    
                                   
-                                })
-                                .then(resultData=>{
+//                                 })
+//                                 .then(resultData=>{
                                    
-                                })
-                                .catch(err=>{
-                                    res.json({status:false,error:err})
-                                })             
-                     })   
+//                                 })
+//                                 .catch(err=>{
+//                                     res.json({status:false,error:err})
+//                                 })             
+//                      })   
 
-                })
-                .then(resultInfo=>{                   
+//                 })
+//                 .then(resultInfo=>{                   
                   
-                })
-                .catch(err=>console.log(err));      
-
-}
+//                 })
+//                 .catch(err=>console.log(err));      
+// }
 
 
 
 //LOGIN
-exports.ownerLogin=(req,res,next)=>{
+exports.clientLogin=(req,res,next)=>{
     const email = req.body.email;
     const password = req.body.password;
     
-    Owner.findOwnerByEmail(email)
+    Client.findClientByEmail(email)
                 .then(user=>{
                     if(!user)
                     {
-                        return res.json({ message:'Owner does not exist',status:false});
+                        return res.json({ message:'Client does not exist',status:false});
                     }
 
                     if(user.password == password)
                     {                        
-                        res.json({ message:'Login Successful',status:true, owner:user});
+                        res.json({ message:'Login Successful',status:true, client:user});
                     }else{
                        
                         res.json({ message:'Login Unsuccessful....Password is incorrect',status:false});
                     }
                 })
-
 }
+
+
+exports.editClientEmail=(req,res,next)=>{
+    //parsing data from incoming request
+    const clientId = +req.body.clientId;
+    const email = req.body.email;
+   
+    Client.findClientByClientId(JSON.parse(+clientId))
+             .then(clientDoc=>{
+                 if(!clientDoc)
+                 {
+                     return res.json({ message:'Client does not exist',status:false});
+                 }              
+
+                 Client.findClientByEmail(email)
+                 .then(client=>{
+                     if(client)
+                     {
+                         return res.json({ message:'Email already exists',status:false});
+                     }
+                     
+                     clientDoc.email = email;
+                 
+                     const db = getDb();
+                     db.collection('clients').updateOne({clientId:clientId},{$set:clientDoc})
+                                 .then(resultData=>{
+                                     
+                                     res.json({message:'Details Updated',status:true});
+                                 })
+                                 .catch(err=>console.log(err));
+                    })                
+             })
+}
+
+
 
 exports.parentForgotPwd=(req,res,next)=>{
     const phone = req.body.phone;

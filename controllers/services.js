@@ -141,9 +141,7 @@ exports.editService=(req,res,next)=>{
                                  res.json({message:'Details Updated',status:true});
                              })
                              .catch(err=>console.log(err));
-
              })
-
 }
 
 
