@@ -12,7 +12,7 @@ class Saloon
         this.saloonName = name; 
         this.phone = phone;
         this.address = address;
-        this.saloonPhotos = photos;
+        this.saloonPhotos = [];
         this.isVerified = isVerified;
         
     }

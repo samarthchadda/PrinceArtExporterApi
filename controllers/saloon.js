@@ -242,3 +242,31 @@ exports.editSaloon=(req,res,next)=>{
 
 
 
+
+exports.delSaloonPhoto=(req,res,next)=>{
+
+    //parsing data from incoming request
+    const saloonId = +req.body.saloonId;
+    const imageUrl = req.body.imageUrl;
+
+    Saloon.findSaloonBySaloonID(JSON.parse(saloonId))
+             .then(saloonDoc=>{
+                 if(!saloonDoc)
+                 {
+                     return res.json({ message:'Saloon does not exist',status:false});
+                 }
+                
+                 let index = saloonDoc.saloonPhotos.indexOf(imageUrl);
+                 console.log(index);
+                 saloonDoc.saloonPhotos.splice(index,1);
+                 
+                 const db = getDb();
+                 db.collection('saloons').updateOne({saloonId:saloonId},{$set:saloonDoc})
+                             .then(resultData=>{
+                                 
+                                 res.json({message:'Saloon photo deleted',status:true});
+                             })
+                             .catch(err=>console.log(err));
+             })
+}
+

@@ -23,6 +23,8 @@ router.post('/edit-saloon',saloonController.editSaloon);
 
 router.get('/all-saloons-address',saloonController.getSaloonsAddress);
 
+router.post('/del-saloon-photo',saloonController.delSaloonPhoto);
+
 
 
 const getDb = require('../util/database').getDB; 
@@ -33,7 +35,7 @@ var fs = require('fs');
 
 
 
-router.post('/edit-saloon-photos',upload.array('saloonPhotos',10),(req,res,next)=>{
+router.post('/add-saloon-photos',upload.array('saloonPhotos',10),(req,res,next)=>{
 
     const saloonId = +req.body.saloonId;
     
@@ -44,8 +46,7 @@ router.post('/edit-saloon-photos',upload.array('saloonPhotos',10),(req,res,next)
         privateKey : "private_0YX4jtTBzNLifx3C2Egcgb1xNZs=",
         urlEndpoint : "https://ik.imagekit.io/4afsv20kjs"
     });
-    
-          
+              
 
     Saloon.findSaloonBySaloonID(saloonId)
                 .then(saloon=>{
@@ -68,23 +69,30 @@ router.post('/edit-saloon-photos',upload.array('saloonPhotos',10),(req,res,next)
                             // console.log(result.url);
                             saloonImages.push(result.url);
                             console.log(saloonImages);
-                            saloon.saloonPhotos = saloonImages;
+                            saloon.saloonPhotos.push(result.url);
 
                             const db = getDb();
                              db.collection('saloons').updateOne({saloonId:saloonId},{$set:saloon})
                                 .then(resultData=>{
                                     
                                 //  res.json({ message:'Photos Added',status:true, saloon:saloon});
+                                    Saloon.findSaloonBySaloonID(saloonId)
+                                    .then(saloon=>{
+                                        if(!saloon)
+                                        {
+                                            return res.json({ message:'Saloon Does not exist',status:false});
+                                        }
+                
+                                        res.json({ message:'Photos Added',status:true,imageUrl:saloon.saloonPhotos.slice(-1)[0]});
+                                    })
                                 })
-                                .catch(err=>console.log(err));
-                           
+                                .catch(err=>console.log(err));                           
                           }
                        }) 
-                    }) 
-                     res.json({ message:'Photos Added',status:true});
+                    })                  
+                    
                 })
-                .catch(err=>console.log(err));
-               
+                .catch(err=>console.log(err));             
                 
 });
 
