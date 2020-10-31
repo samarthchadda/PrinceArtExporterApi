@@ -152,12 +152,11 @@ exports.getDayRevenuePerSaloon=(req,res,next)=>{
      
     Appointment.findAppointBySaloonIdAndDate(saloonId,bookingDate)
                 .then(appoints=>{
+                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};     
                     if(appoints.length==0)
                     {
-                        return res.json({ message:'Appointment not exist',revenue:appoints});
-                    }               
-
-                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};                 
+                        return res.json({ message:'Appointment not exist',revenue:revenueObj});
+                    }                                          
 
                     appoints.forEach(app=>{
                         revenueObj.totalApp = revenueObj.totalApp + 1;
@@ -186,12 +185,13 @@ exports.getWeekRevenuePerSaloon=(req,res,next)=>{
     
     Appointment.saloonWeekRevenue(saloonId,startDate,endDate)
                 .then(appoints=>{
+                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};   
+
                     if(appoints.length==0)
                     {
-                        return res.json({ message:'Appointment not exist',revenue:appoints});
+                        return res.json({ message:'Appointment not exist',revenue:revenueObj});
                     }               
-
-                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};                 
+                                
 
                     appoints.forEach(app=>{
                         revenueObj.totalApp = revenueObj.totalApp + 1;
@@ -220,12 +220,12 @@ exports.getMonthRevenuePerSaloon=(req,res,next)=>{
     
     Appointment.saloonWeekRevenue(saloonId,startDate,endDate)
                 .then(appoints=>{
+                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0,avgRevenue:0,avgAppointments:0};   
+
                     if(appoints.length==0)
                     {
-                        return res.json({ message:'Appointment not exist',revenue:appoints});
-                    }               
-
-                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0,avgRevenue:0,avgAppointments:0};                 
+                        return res.json({ message:'Appointment not exist',revenue:revenueObj});
+                    }                                               
 
                     appoints.forEach(app=>{
                         revenueObj.totalApp = revenueObj.totalApp + 1;
@@ -237,10 +237,8 @@ exports.getMonthRevenuePerSaloon=(req,res,next)=>{
                     revenueObj.avgAppointments = revenueObj.totalServices / revenueObj.totalApp;
                     
                     res.json({ message:'Appointment Exists',revenue:revenueObj});
-
                 })
 }
-
 
 
 
@@ -254,12 +252,13 @@ exports.getDayRevenuePerEmp=(req,res,next)=>{
      
     Appointment.findAppointByEmpIdAndDate(empId,bookingDate)
                 .then(appoints=>{
+                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};  
+
                     if(appoints.length==0)
                     {
-                        return res.json({ message:'Appointment not exist',revenue:appoints});
+                        return res.json({ message:'Appointment not exist',revenue:revenueObj});
                     }               
-
-                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};                 
+                                   
 
                     appoints.forEach(app=>{
                         revenueObj.totalApp = revenueObj.totalApp + 1;
@@ -288,12 +287,12 @@ exports.getWeekRevenuePerEmp=(req,res,next)=>{
     
     Appointment.empWeekRevenue(empId,startDate,endDate)
                 .then(appoints=>{
+                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};    
+
                     if(appoints.length==0)
                     {
-                        return res.json({ message:'Appointment not exist',revenue:appoints});
-                    }               
-
-                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};                 
+                        return res.json({ message:'Appointment not exist',revenue:revenueObj});
+                    }                                               
 
                     appoints.forEach(app=>{
                         revenueObj.totalApp = revenueObj.totalApp + 1;
@@ -320,13 +319,13 @@ exports.getMonthRevenuePerEmp=(req,res,next)=>{
     
     Appointment.empWeekRevenue(empId,startDate,endDate)
                 .then(appoints=>{
-                    if(appoints.length==0)
-                    {
-                        return res.json({ message:'Appointment not exist',revenue:appoints});
-                    }               
-
                     var revenueObj = {totalApp:0,totalAmt:0,totalServices:0,avgRevenue:0,avgAppointments:0};                 
 
+                    if(appoints.length==0)
+                    {
+                        return res.json({ message:'Appointment not exist',revenue:revenueObj});
+                    }               
+                    
                     appoints.forEach(app=>{
                         revenueObj.totalApp = revenueObj.totalApp + 1;
                         revenueObj.totalAmt = revenueObj.totalAmt + app.totalCost;
