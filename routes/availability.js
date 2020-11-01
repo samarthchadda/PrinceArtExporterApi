@@ -13,6 +13,9 @@ router.post('/date-availability',availController.getSingleAvailDataByDate);
 
 router.post('/post-availability',availController.availRegister);
 
+router.post('/edit-availability',availController.availEdit);
+
+
 router.post('/edit-avail-status',availController.editAvailStatus);
 
 router.post('/edit-avail-timeslot',availController.editAvailTimeslot);

@@ -397,7 +397,6 @@ exports.delAppointment=(req,res,next)=>{
 
 
 
-
 exports.getMonthGraphPerSaloon=(req,res,next)=>{
     
     const saloonId = +req.body.saloonId;
@@ -472,10 +471,8 @@ exports.getMonthGraphPerEmp=(req,res,next)=>{
             var revenueObj = {totalApp:0,totalAmt:0,totalServices:0,avgRevenue:0,avgAppointments:0,srtDate:d.srtDate,endDate:d.endDate};
             console.log(appoints.length);
             if(appoints.length==0)
-            {
-               
-                revenues.push(revenueObj);
-                // return res.json({ message:'Appointment not exist',revenue:revenues});
+            {               
+                revenues.push(revenueObj);               
             } 
             else{              
             appoints.forEach(app=>{
@@ -487,22 +484,106 @@ exports.getMonthGraphPerEmp=(req,res,next)=>{
             revenueObj.avgRevenue = revenueObj.totalAmt / revenueObj.totalApp;
             revenueObj.avgAppointments = revenueObj.totalServices / revenueObj.totalApp;
     
-            revenues.push(revenueObj);
-            // console.log("Revenue :",revenues.length);
-           
+            revenues.push(revenueObj);           
         }
            
         if(dates.length == revenues.length)
-        {
-            
+        {            
             res.json({ message:'All data returned',revenues:revenues});
             revenues = [];
         }
-        
-        })
-        
-    })
-  
+
+        })        
+    })    
+}
+
+
+
+exports.getDayGraphPerSaloon=(req,res,next)=>{
+    
+    const saloonId = +req.body.saloonId;
+    const dates = req.body.dates;
+    // console.log(dates);
+   
+    var revenues = [];
+    dates.forEach(date=>{
+        // console.log(dates.length)
+    let bookingDate = date;
+    bookingDate = new Date(bookingDate).getTime();
+    // console.log(bookingDate);
+     
+    Appointment.findAppointBySaloonIdAndDate(saloonId,bookingDate)
+        .then(appoints=>{         
+            var revenueObj = {totalApp:0,totalAmt:0,totalServices:0,bookingDate:date};
+            console.log(appoints.length);
+            if(appoints.length==0)
+            {               
+                revenues.push(revenueObj);               
+            } 
+            else{              
+            appoints.forEach(app=>{
+                revenueObj.totalApp = revenueObj.totalApp + 1;
+                revenueObj.totalAmt = revenueObj.totalAmt + app.totalCost;
+                revenueObj.totalServices = revenueObj.totalServices + app.serviceId.length;
+            })
+    
+            revenues.push(revenueObj);           
+        }
+           
+        if(dates.length == revenues.length)
+        {            
+            res.json({ message:'All data returned',revenues:revenues});
+            revenues = [];
+        }
+
+        })        
+    }) 
+   
+}
+
+
+
+
+
+exports.getDayGraphPerEmp=(req,res,next)=>{
+    
+    const empId = +req.body.empId;
+    const dates = req.body.dates;
+    // console.log(dates);
+   
+    var revenues = [];
+    dates.forEach(date=>{
+        // console.log(dates.length)
+    let bookingDate = date;
+    bookingDate = new Date(bookingDate).getTime();
+    // console.log(bookingDate);
+     
+    Appointment.findAppointByEmpIdAndDate(empId,bookingDate)
+        .then(appoints=>{         
+            var revenueObj = {totalApp:0,totalAmt:0,totalServices:0,bookingDate:date};
+            console.log(appoints.length);
+            if(appoints.length==0)
+            {               
+                revenues.push(revenueObj);               
+            } 
+            else{              
+            appoints.forEach(app=>{
+                revenueObj.totalApp = revenueObj.totalApp + 1;
+                revenueObj.totalAmt = revenueObj.totalAmt + app.totalCost;
+                revenueObj.totalServices = revenueObj.totalServices + app.serviceId.length;
+            })
+    
+            revenues.push(revenueObj);           
+        }
+           
+        if(dates.length == revenues.length)
+        {            
+            res.json({ message:'All data returned',revenues:revenues});
+            revenues = [];
+        }
+
+        })        
+    }) 
    
 }
 

@@ -107,6 +107,47 @@ exports.availRegister = (req,res,next)=>{
 
 
 
+exports.availEdit = (req,res,next)=>{
+  
+    //parsing data from incoming request
+    const empId = +req.body.empId;
+    const availStatus = req.body.availStatus;    
+    const timeslot = req.body.timeslot;
+    let startDate = req.body.startDate;    
+    let endDate = req.body.endDate;
+
+    startDate = new Date(startDate).getTime();
+    console.log(startDate);
+
+    endDate = new Date(endDate).getTime();
+    console.log(endDate);
+
+
+    Availability.findAvailByEmpIdAndDate(empId,startDate,endDate)
+    .then(availDoc=>{                
+        if(!availDoc)
+        {
+            return res.json({ message:'Availability does not exist',status:false});
+        }
+        
+        availDoc.availStatus = availStatus;
+        availDoc.timeslot = timeslot;
+                
+        const db = getDb();
+        db.collection('availabilities').updateOne({empId:empId,startDate:startDate,endDate:endDate},{$set:availDoc})
+                    .then(resultData=>{
+                        
+                        res.json({message:'Details Updated',status:true});
+                    })
+                    .catch(err=>console.log(err));
+    }) 
+
+}
+
+
+
+
+
 exports.editAvailStatus=(req,res,next)=>{
     //parsing data from incoming request
     const empId = +req.body.empId;
