@@ -20,12 +20,16 @@ router.post('/appoint-revenue-week',appointController.getWeekRevenuePerSaloon);
 
 router.post('/appoint-revenue-month',appointController.getMonthRevenuePerSaloon);
 
+router.post('/appoint-graph-month',appointController.getMonthGraphPerSaloon);
+
 
 router.post('/emp-appoint-revenue-day',appointController.getDayRevenuePerEmp);
 
 router.post('/emp-appoint-revenue-week',appointController.getWeekRevenuePerEmp);
 
 router.post('/emp-appoint-revenue-month',appointController.getMonthRevenuePerEmp);
+
+router.post('/emp-appoint-graph-month',appointController.getMonthGraphPerEmp);
 
 
 router.post('/edit-appointment',appointController.editAppointment);

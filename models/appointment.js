@@ -85,7 +85,7 @@ class Appointment
                                             .catch(err=>console.log(err));
     }
 
-
+   
     static saloonWeekRevenue(sid, sDate,eDate)
     {
         const db = getDb();
@@ -109,6 +109,42 @@ class Appointment
                                             })
                                             .catch(err=>console.log(err));
     }
+
+
+    static saloonGraphRevenue(sid, dates)
+    {
+        const db = getDb();
+        var allRevenues = [];
+        dates.forEach(d=>{
+            // console.log(dates.length)
+            let startDate = d.srtDate;
+            startDate = new Date(startDate).getTime();
+            // console.log(d.srtDate);
+        
+            let endDate = d.endDate;
+            endDate = new Date(endDate).getTime();
+            // console.log(d.endDate);  
+           db.collection('appointments').find({ saloonId:sid,bookingDate:{$gte:startDate,$lte:endDate} }).toArray()
+                                            .then(appointDetail=>{
+                                                allRevenues.push(appointDetail.length);
+                                                // console.log(allRevenues);         
+                                                // return allRevenues;  
+                                               
+                                            })
+                                            .catch(err=>console.log(err));
+                            
+                     
+                                            
+              })
+              setTimeout(()=>{
+                console.log(allRevenues);
+                // return "1";
+            },1000);
+           
+            return allRevenues;
+}
+
+
 
 }
 
