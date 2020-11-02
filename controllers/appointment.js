@@ -400,8 +400,27 @@ exports.delAppointment=(req,res,next)=>{
 exports.getMonthGraphPerSaloon=(req,res,next)=>{
     
     const saloonId = +req.body.saloonId;
-    const dates = req.body.dates;
+    const months = req.body.months;
     // console.log(dates);
+
+    //let months = ["february","april","may","june","july","august"];
+    // let months = [1,9,10,2];
+
+    let dates = [];
+    months.forEach(m=>{
+
+        const firstDay = new Date(m.year, +m.month, 1);
+        // alert(firstDay.getDate());
+        const lastDay = new Date(m.year, +m.month + 1, 0);
+        // alert(lastDay.getDate());
+        m.month = m.month+1;
+        m.month = m.month<10?"0"+m.month:m.month;
+        dates.push({
+                        srtDate: firstDay.getDate()<10?m.year.toString()+"-"+m.month.toString()+"-0"+firstDay.getDate().toString():m.year.toString()+"-"+m.month.toString()+"-"+firstDay.getDate().toString(),
+                        endDate: lastDay.getDate()<10?m.year.toString()+"-"+m.month.toString()+"-0"+lastDay.getDate().toString():m.year.toString()+"-"+m.month.toString()+"-"+lastDay.getDate().toString()
+                    });
+  
+    })
    
     var revenues = [];
     dates.forEach(d=>{
@@ -452,9 +471,30 @@ exports.getMonthGraphPerSaloon=(req,res,next)=>{
 exports.getMonthGraphPerEmp=(req,res,next)=>{
     
     const empId = +req.body.empId;
-    const dates = req.body.dates;
+    const months = req.body.months;
     // console.log(dates);
+
+    //let months = ["february","april","may","june","july","august"];
+    // let months = [1,9,10,2];
+
+    let dates = [];
+    months.forEach(m=>{
+
+        const firstDay = new Date(m.year, +m.month, 1);
+        // alert(firstDay.getDate());
+        const lastDay = new Date(m.year, +m.month + 1, 0);
+        // alert(lastDay.getDate());
+        m.month = m.month+1;
+        m.month = m.month<10?"0"+m.month:m.month;
+        dates.push({
+                        srtDate: firstDay.getDate()<10?m.year.toString()+"-"+m.month.toString()+"-0"+firstDay.getDate().toString():m.year.toString()+"-"+m.month.toString()+"-"+firstDay.getDate().toString(),
+                        endDate: lastDay.getDate()<10?m.year.toString()+"-"+m.month.toString()+"-0"+lastDay.getDate().toString():m.year.toString()+"-"+m.month.toString()+"-"+lastDay.getDate().toString()
+                    });
+  
+    })
    
+    // console.log(dates)
+ 
     var revenues = [];
     dates.forEach(d=>{
         // console.log(dates.length)
@@ -653,26 +693,3 @@ exports.getWeekGraphPerEmp=(req,res,next)=>{
 }
 
 
-// let year = "2020";
-// //let months = ["february","april","may","june","july","august"];
-// let months = [1,9,10,2];
-
-// let dates = [];
-// months.forEach(month=>{
-
-//     const firstDay = new Date(year, month, 1);
-//     alert(firstDay.getDate());
-//     const lastDay = new Date(year, month + 1, 0);
-//     alert(lastDay.getDate());
-//     month = month+1;
-//     month = month<10?"0"+month:month;
-//      dates.push({
-//                     srtDate: firstDay.getDate()<10?year.toString()+"-"+month.toString()+"-0"+firstDay.getDate().toString():year.toString()+"-"+month.toString()+"-"+firstDay.getDate().toString(),
-//                     endDate: lastDay.getDate()<10?year.toString()+"-"+month.toString()+"-0"+lastDay.getDate().toString():year.toString()+"-"+month.toString()+"-"+lastDay.getDate().toString()
-//                 });
-                
-
-// //alert(d1.getDate());
-// })
-// // this will return the last date of the month
-// alert(JSON.stringify(dates))
