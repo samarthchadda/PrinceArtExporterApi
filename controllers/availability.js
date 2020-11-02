@@ -393,7 +393,7 @@ exports.editSaloonAvailStatus=(req,res,next)=>{
 
 
 
-exports.editAvailTimeslot=(req,res,next)=>{
+exports.editEmpAvailTimeslot=(req,res,next)=>{
     //parsing data from incoming request
     const empId = +req.body.empId;
     const day = req.body.day;
@@ -451,6 +451,75 @@ exports.editAvailTimeslot=(req,res,next)=>{
                  
                  const db = getDb();
                  db.collection('availabilities').updateOne({empId:empId,startDate:startDate,endDate:endDate},{$set:availDoc})
+                             .then(resultData=>{
+                                 
+                                 res.json({message:'Details Updated',status:true});
+                             })
+                             .catch(err=>console.log(err));
+
+             })
+
+}
+
+
+exports.editSaloonAvailTimeslot=(req,res,next)=>{
+    //parsing data from incoming request
+    const saloonId = +req.body.saloonId;
+    const day = req.body.day;
+    const newTimeSlot = req.body.newTimeSlot;  
+
+    let startDate = req.body.startDate;    
+    let endDate = req.body.endDate;
+
+    startDate = new Date(startDate).getTime();
+    console.log(startDate);
+
+    endDate = new Date(endDate).getTime();
+    console.log(endDate);
+
+
+    let statusKey;
+    if(day.toLowerCase() == "monday")
+    {
+        statusKey = 0;
+    }
+    if(day.toLowerCase() == "tuesday")
+    {
+        statusKey = 1;
+    }
+    if(day.toLowerCase() == "wednesday")
+    {
+        statusKey = 2;
+    }
+    if(day.toLowerCase() == "thursday")
+    {
+        statusKey = 3;
+    }
+    if(day.toLowerCase() == "friday")
+    {
+        statusKey = 4;
+    }
+    if(day.toLowerCase() == "saturday")
+    {
+        statusKey = 5;
+    }
+    if(day.toLowerCase() == "sunday")
+    {
+        statusKey = 6;
+    }
+    
+   
+    Availability.findAvailBySaloonIdAndDate(saloonId,startDate,endDate)
+             .then(availDoc=>{               
+                 if(!availDoc)
+                 {
+                     return res.json({ message:'Availability Does not exist',status:false});
+                 }
+                 
+                 availDoc.timeslot[statusKey] = newTimeSlot;
+                 
+                 const db = getDb();
+                 db.collection('availabilities').updateOne({saloonId:saloonId,startDate:startDate,endDate:endDate},{$set:availDoc})
                              .then(resultData=>{
                                  
                                  res.json({message:'Details Updated',status:true});

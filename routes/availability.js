@@ -32,7 +32,9 @@ router.post('/edit-emp-avail-status',availController.editEmpAvailStatus);
 router.post('/edit-saloon-avail-status',availController.editSaloonAvailStatus);
 
 
-router.post('/edit-avail-timeslot',availController.editAvailTimeslot);
+router.post('/edit-emp-avail-timeslot',availController.editEmpAvailTimeslot);
+
+router.post('/edit-saloon-avail-timeslot',availController.editSaloonAvailTimeslot);
 
 
 
