@@ -33,6 +33,8 @@ router.post('/emp-appoint-revenue-month',appointController.getMonthRevenuePerEmp
 
 router.post('/emp-appoint-graph-day',appointController.getDayGraphPerEmp);
 
+router.get('/emp-appoint-graph-week',appointController.getWeekGraphPerEmp);
+
 router.post('/emp-appoint-graph-month',appointController.getMonthGraphPerEmp);
 
 

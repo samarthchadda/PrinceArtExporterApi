@@ -11,6 +11,7 @@ class Owner
         this.ownerName = name;
         this.email = email;        
         this.password = pwd;
+        //date
       
     }
 

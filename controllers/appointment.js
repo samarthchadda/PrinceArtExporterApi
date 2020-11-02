@@ -543,8 +543,6 @@ exports.getDayGraphPerSaloon=(req,res,next)=>{
 
 
 
-
-
 exports.getDayGraphPerEmp=(req,res,next)=>{
     
     const empId = +req.body.empId;
@@ -589,4 +587,92 @@ exports.getDayGraphPerEmp=(req,res,next)=>{
 
 
 
+exports.getWeekGraphPerEmp=(req,res,next)=>{
+    let month = 11;
+    let year = 2020;
+    // const weeks = [];
+    // const firstDay = new Date(year, month, 1);
+    // console.log(firstDay.getDate());
+    // const lastDay = new Date(year, month + 1, 0);
+    // console.log(lastDay.getDate());
+    // const daysInMonth = lastDay.getDate();
+    // let dayOfWeek = firstDay.getDay();
+    // // console.log(dayOfWeek);
+    // let start;
+    // let end;
 
+    // for (let i = 1; i < daysInMonth + 1; i++) {
+
+    //     if (dayOfWeek === 0 || i === 1) {
+    //         start = i;
+    //     }
+
+    //     if (dayOfWeek === 6 || i === daysInMonth) {
+
+    //         end = i;
+
+    //         if (start !== end) {
+    //             let acMonth = month+1;
+    //             acMonth = acMonth<10?"0"+acMonth:acMonth; 
+    //             weeks.push({
+    //                 start: start<10?year.toString()+"-"+acMonth.toString()+"-0"+start.toString():year.toString()+"-"+acMonth.toString()+"-"+start.toString(),
+    //                 end: end<10?year.toString()+"-"+acMonth.toString()+"-0"+end.toString():year.toString()+"-"+acMonth.toString()+"-"+end.toString()
+    //             });
+    //         }
+    //     }
+
+    //     dayOfWeek = new Date(year, month, i).getDay();
+    //     console.log(dayOfWeek);
+    // }     
+    const daysName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const weeks=[];      
+    const  lastDate = new Date(year, month + 1, 0); 
+
+    let start=0;
+    let end; 
+
+    for (let i = 1; i < lastDate.getDate()+1; i++) {         
+    if (daysName[Number(new Date(year, month, i).getDay())] =="Sunday" || i == lastDate.getDate()) {
+            end= i;
+            let acMonth = month+1;
+            acMonth = acMonth<10?"0"+acMonth:acMonth; 
+            start = start+1;
+            weeks.push({
+                start: start<10?year.toString()+"-"+acMonth.toString()+"-0"+start.toString():year.toString()+"-"+acMonth.toString()+"-"+start.toString(),
+                end: end<10?year.toString()+"-"+acMonth.toString()+"-0"+end.toString():year.toString()+"-"+acMonth.toString()+"-"+end.toString()
+            });
+            // weeks.push({
+            //     start:start+1,
+            //     end:end
+            // }); 
+            start = i;           
+        }
+    }  
+       console.log(weeks);
+       console.log(new Date('2020-2-01').getTime());
+}
+
+
+// let year = "2020";
+// //let months = ["february","april","may","june","july","august"];
+// let months = [1,9,10,2];
+
+// let dates = [];
+// months.forEach(month=>{
+
+//     const firstDay = new Date(year, month, 1);
+//     alert(firstDay.getDate());
+//     const lastDay = new Date(year, month + 1, 0);
+//     alert(lastDay.getDate());
+//     month = month+1;
+//     month = month<10?"0"+month:month;
+//      dates.push({
+//                     srtDate: firstDay.getDate()<10?year.toString()+"-"+month.toString()+"-0"+firstDay.getDate().toString():year.toString()+"-"+month.toString()+"-"+firstDay.getDate().toString(),
+//                     endDate: lastDay.getDate()<10?year.toString()+"-"+month.toString()+"-0"+lastDay.getDate().toString():year.toString()+"-"+month.toString()+"-"+lastDay.getDate().toString()
+//                 });
+                
+
+// //alert(d1.getDate());
+// })
+// // this will return the last date of the month
+// alert(JSON.stringify(dates))

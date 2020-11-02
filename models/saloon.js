@@ -14,6 +14,7 @@ class Saloon
         this.address = address;
         this.saloonPhotos = [];
         this.isVerified = isVerified;
+        //date
         
     }
 

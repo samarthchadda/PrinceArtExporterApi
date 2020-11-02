@@ -5,9 +5,10 @@ const ObjectId = mongodb.ObjectId;
 
 class Availability
 {
-    constructor(id,status,timeslot,startDate,endDate)
+    constructor(id,sid,status,timeslot,startDate,endDate)
     {
         this.empId = id;
+        this.saloonId = sid;
         this.availStatus = status;
         this.timeslot = timeslot;
         this.startDate = startDate;
@@ -35,6 +36,19 @@ class Availability
                                             .catch(err=>console.log(err));
 
     }
+        
+    static findAvailBySaloonId(id)
+    {
+        const db = getDb();
+                            
+        return db.collection('availabilities').find({ saloonId:id }).toArray()
+                                            .then(avail=>{
+                                                                                                                                               
+                                                return avail;  
+                                            })
+                                            .catch(err=>console.log(err));
+
+    }
 
     static findAvailByEmpIdAndDate(id,sDate,eDate)
     {
@@ -49,11 +63,36 @@ class Availability
 
     }
 
- 
-    static fetchAllAvails()
+    
+    static findAvailBySaloonIdAndDate(id,sDate,eDate)
     {
         const db = getDb();
-        return db.collection('availabilities').find().toArray()
+                            
+        return db.collection('availabilities').findOne({ saloonId:id ,startDate:sDate,endDate:eDate})
+                                            .then(avail=>{
+                                                                                                
+                                                return avail;  
+                                            })
+                                            .catch(err=>console.log(err));
+
+    }
+
+ 
+    static fetchAllEmpAvails()
+    {
+        const db = getDb();
+        return db.collection('availabilities').find({saloonId:null}).toArray()
+                            .then(avails=>{
+                               
+                                return avails;
+                            })
+                            .catch(err=>console.log(err));
+    }
+
+    static fetchAllSaloonAvails()
+    {
+        const db = getDb();
+        return db.collection('availabilities').find({empId:null}).toArray()
                             .then(avails=>{
                                
                                 return avails;

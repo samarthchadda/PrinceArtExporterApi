@@ -6,8 +6,9 @@ const getDb = require('../util/database').getDB;
 var NodeGeocoder = require('node-geocoder');
  
 var geocoder = NodeGeocoder({
-  provider: 'opencage',
-  apiKey: '3e5c1837f6424d34a41eac19b3816699'
+    provider: 'opencage',
+  apiKey: '3e5c1837f6424d34a41eac19b3816699',
+   formatter: null // 
 });
 
 
@@ -28,9 +29,10 @@ exports.getSaloonsAddress=(req,res,next)=>{
   
 
     Saloon.fetchAllSaloons()
-                .then(saloons=>{                   
-                           
-                    geocoder.geocode('79 padmavati colony kings road, jaipur')
+                .then(saloons=>{         
+                            //         street no. and name, city,state pincode,country          
+                           //example -- 277 Bedford Ave, Brooklyn, NY 11211, USA
+                    geocoder.geocode('Inox Pink square,raja park, jaipur')
                     .then((result)=> {
                         console.log(result[0]);
                     })
