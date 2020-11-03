@@ -141,7 +141,16 @@ exports.availEmpRegister = (req,res,next)=>{
             .then(availData=>{
                 if(availData){
                     
-                    return res.json({status:false, message:'Availability already registered for this week'});
+                    availData.availStatus = availStatus;
+                    availData.timeslot = timeslot;
+                    const db = getDb();
+                    return db.collection('availabilities').updateOne({empId:empId,startDate:startDate,endDate:endDate},{$set:availData})
+                                .then(resultData=>{
+                                    
+                                   return res.json({message:'Details Updated',status:true});
+                                })
+                                .catch(err=>console.log(err));
+                    // return res.json({status:false, message:'Availability already registered for this week'});
                 }
                 
                     //saving in database
@@ -180,12 +189,19 @@ exports.availSaloonRegister = (req,res,next)=>{
     endDate = new Date(endDate).getTime();
     console.log(endDate);
 
-
     Availability.findAvailBySaloonIdAndDate(saloonId,startDate,endDate)
             .then(availData=>{
                 if(availData){
-                    
-                    return res.json({status:false, message:'Availability already registered for this week'});
+                    availData.availStatus = availStatus;
+                    availData.timeslot = timeslot;
+                    const db = getDb();
+                    return db.collection('availabilities').updateOne({saloonId:saloonId,startDate:startDate,endDate:endDate},{$set:availData})
+                                .then(resultData=>{
+                                    
+                                   return res.json({message:'Details Updated',status:true});
+                                })
+                                .catch(err=>console.log(err));
+                    // return res.json({status:false, message:'Availability already registered for this week'});
                 }
                 
                     //saving in database
@@ -221,7 +237,6 @@ exports.availEmpEdit = (req,res,next)=>{
 
     endDate = new Date(endDate).getTime();
     console.log(endDate);
-
 
     Availability.findAvailByEmpIdAndDate(empId,startDate,endDate)
     .then(availDoc=>{                
