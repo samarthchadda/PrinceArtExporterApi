@@ -59,6 +59,30 @@ class Appointment
 
     }
 
+    static findAppointsBySaloonId(sid)
+    {
+        const db = getDb();
+                            
+        return db.collection('appointments').find({ saloonId:sid}).toArray()
+                                            .then(appointDetail=>{
+                                                                                                
+                                                return appointDetail;  
+                                            })
+                                            .catch(err=>console.log(err));
+
+    }
+
+    static findAppointsByEmpId(eid)
+    {
+        const db = getDb();
+                            
+        return db.collection('appointments').find({ empId:eid }).toArray()
+                                            .then(appointDetail=>{
+                                                                                                
+                                                return appointDetail;  
+                                            })
+                                            .catch(err=>console.log(err));
+    }
 
   
     static findAppointByEmpIdAndDate(eid,bDate)
@@ -72,6 +96,7 @@ class Appointment
                                             })
                                             .catch(err=>console.log(err));
     }
+
 
     static findAppointBySaloonIdAndDate(sid, bDate)
     {

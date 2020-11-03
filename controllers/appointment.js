@@ -149,24 +149,44 @@ exports.getDayRevenuePerSaloon=(req,res,next)=>{
     let bookingDate = req.body.bookingDate;
     bookingDate = new Date(bookingDate).getTime();
     console.log(bookingDate);
-     
+
     Appointment.findAppointBySaloonIdAndDate(saloonId,bookingDate)
                 .then(appoints=>{
-                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};     
+                    Appointment.findAppointsBySaloonId(saloonId)
+                    .then(apps=>{
+                        if(apps.length==0)
+                        {
+                            return res.json({ message:'Appointment not exist',revenue:revenueObj});
+                        } 
+                        var revenueObj1 = {totalApp:0,totalAmt:0,totalServices:0};  
+                        apps.forEach(app=>{
+                            revenueObj1.totalApp = revenueObj1.totalApp + 1;
+                            revenueObj1.totalAmt = revenueObj1.totalAmt + app.totalCost;
+                            revenueObj1.totalServices = revenueObj1.totalServices + app.serviceId.length;
+                        })
+                        revenueObj1.avgRevenue = revenueObj1.totalAmt / revenueObj1.totalApp;
+                        revenueObj1.avgAppointments = revenueObj1.totalServices / revenueObj1.totalApp;
+                        console.log(revenueObj1);
+
+                        appoints.forEach(app=>{
+                            revenueObj.totalApp = revenueObj.totalApp + 1;
+                            revenueObj.totalAmt = revenueObj.totalAmt + app.totalCost;
+                            revenueObj.totalServices = revenueObj.totalServices + app.serviceId.length;
+                        })
+    
+                                                       
+                       return res.json({ message:'Appointment Exists',avgRevenue:revenueObj1.avgRevenue,avgAppointments:revenueObj1.avgAppointments,revenue:revenueObj});
+                       
+                    })  
+                    var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};  
+
                     if(appoints.length==0)
                     {
-                        return res.json({ message:'Appointment not exist',revenue:revenueObj});
-                    }                                          
-
-                    appoints.forEach(app=>{
-                        revenueObj.totalApp = revenueObj.totalApp + 1;
-                        revenueObj.totalAmt = revenueObj.totalAmt + app.totalCost;
-                        revenueObj.totalServices = revenueObj.totalServices + app.serviceId.length;
-                    })
-
-                    res.json({ message:'Appointment Exists',revenue:revenueObj});
-
+                        // return res.json({ message:'Appointment not exist',revenue:revenueObj});
+                    }               
+                                                      
                 })
+
 }
 
 
@@ -252,22 +272,39 @@ exports.getDayRevenuePerEmp=(req,res,next)=>{
      
     Appointment.findAppointByEmpIdAndDate(empId,bookingDate)
                 .then(appoints=>{
+                    Appointment.findAppointsByEmpId(empId)
+                    .then(apps=>{
+                        if(apps.length==0)
+                        {
+                            return res.json({ message:'Appointment not exist',revenue:revenueObj});
+                        } 
+                        var revenueObj1 = {totalApp:0,totalAmt:0,totalServices:0};  
+                        apps.forEach(app=>{
+                            revenueObj1.totalApp = revenueObj1.totalApp + 1;
+                            revenueObj1.totalAmt = revenueObj1.totalAmt + app.totalCost;
+                            revenueObj1.totalServices = revenueObj1.totalServices + app.serviceId.length;
+                        })
+                        revenueObj1.avgRevenue = revenueObj1.totalAmt / revenueObj1.totalApp;
+                        revenueObj1.avgAppointments = revenueObj1.totalServices / revenueObj1.totalApp;
+                        // console.log(revenueObj1);
+
+                        appoints.forEach(app=>{
+                            revenueObj.totalApp = revenueObj.totalApp + 1;
+                            revenueObj.totalAmt = revenueObj.totalAmt + app.totalCost;
+                            revenueObj.totalServices = revenueObj.totalServices + app.serviceId.length;
+                        })
+    
+                                                       
+                       return res.json({ message:'Appointment Exists',avgRevenue:revenueObj1.avgRevenue,avgAppointments:revenueObj1.avgAppointments,revenue:revenueObj});
+                       
+                    })  
                     var revenueObj = {totalApp:0,totalAmt:0,totalServices:0};  
 
                     if(appoints.length==0)
                     {
-                        return res.json({ message:'Appointment not exist',revenue:revenueObj});
+                        // return res.json({ message:'Appointment not exist',revenue:revenueObj});
                     }               
-                                   
-
-                    appoints.forEach(app=>{
-                        revenueObj.totalApp = revenueObj.totalApp + 1;
-                        revenueObj.totalAmt = revenueObj.totalAmt + app.totalCost;
-                        revenueObj.totalServices = revenueObj.totalServices + app.serviceId.length;
-                    })
-
-                    res.json({ message:'Appointment Exists',revenue:revenueObj});
-
+                                                      
                 })
 }
 
