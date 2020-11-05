@@ -578,6 +578,9 @@ exports.getMonthGraphPerEmp=(req,res,next)=>{
            
         if(dates.length == revenues.length)
         {            
+            revenues.sort((a, b) => {
+                return b.month - a.month;
+            });
             res.json({ message:'All data returned',revenues:revenues});
             revenues = [];
         }
