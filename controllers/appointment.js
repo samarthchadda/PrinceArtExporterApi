@@ -454,13 +454,15 @@ exports.getMonthGraphPerSaloon=(req,res,next)=>{
         m.month = m.month<10?"0"+m.month:m.month;
         dates.push({
                         srtDate: firstDay.getDate()<10?m.year.toString()+"-"+m.month.toString()+"-0"+firstDay.getDate().toString():m.year.toString()+"-"+m.month.toString()+"-"+firstDay.getDate().toString(),
-                        endDate: lastDay.getDate()<10?m.year.toString()+"-"+m.month.toString()+"-0"+lastDay.getDate().toString():m.year.toString()+"-"+m.month.toString()+"-"+lastDay.getDate().toString()
+                        endDate: lastDay.getDate()<10?m.year.toString()+"-"+m.month.toString()+"-0"+lastDay.getDate().toString():m.year.toString()+"-"+m.month.toString()+"-"+lastDay.getDate().toString(),
+                        month:m.month
                     });
   
     })
    
     var revenues = [];
     dates.forEach(d=>{
+        let newMonth = -1;
         // console.log(dates.length)
         let startDate = d.srtDate;
         startDate = new Date(startDate).getTime();
@@ -472,11 +474,13 @@ exports.getMonthGraphPerSaloon=(req,res,next)=>{
 
         Appointment.saloonWeekRevenue(saloonId,startDate,endDate)
         .then(appoints=>{         
-            var revenueObj = {totalApp:0,totalAmt:0,totalServices:0,avgRevenue:0,avgAppointments:0,srtDate:d.srtDate,endDate:d.endDate};
+            var revenueObj = {totalApp:0,totalAmt:0,totalServices:0,avgRevenue:0,avgAppointments:0,month:+d.month,srtDate:d.srtDate,endDate:d.endDate};
             console.log(appoints.length);
             if(appoints.length==0)
             {               
+               
                 revenues.push(revenueObj);
+                
                 // return res.json({ message:'Appointment not exist',revenue:revenues});
             } 
             else{              
@@ -489,13 +493,21 @@ exports.getMonthGraphPerSaloon=(req,res,next)=>{
             revenueObj.avgRevenue = revenueObj.totalAmt / revenueObj.totalApp;
             revenueObj.avgAppointments = revenueObj.totalServices / revenueObj.totalApp;
     
+          
             revenues.push(revenueObj);
+            
             // console.log("Revenue :",revenues.length);           
         }
            
         if(dates.length == revenues.length)
-        {            
+        {     
+          
+             revenues.sort((a, b) => {
+                return b.month - a.month;
+            });
             res.json({ message:'All data returned',revenues:revenues});
+            console.log("month");  
+            newMonth = d.month;                   
             revenues = [];
         }
         
