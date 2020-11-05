@@ -78,8 +78,8 @@ exports.saloonRegister = (req,res,next)=>{
     const phone = +req.body.phone;    
     const address = req.body.address;
     const photos = null;
-    const isVerified = "false";
-
+    const isVerified = false;
+    console.log(isVerified, typeof(isVerified));
 
     Saloon.findSaloonByPhone(phone)
                 .then(saloonDoc=>{
