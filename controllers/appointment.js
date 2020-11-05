@@ -537,7 +537,8 @@ exports.getMonthGraphPerEmp=(req,res,next)=>{
         m.month = m.month<10?"0"+m.month:m.month;
         dates.push({
                         srtDate: firstDay.getDate()<10?m.year.toString()+"-"+m.month.toString()+"-0"+firstDay.getDate().toString():m.year.toString()+"-"+m.month.toString()+"-"+firstDay.getDate().toString(),
-                        endDate: lastDay.getDate()<10?m.year.toString()+"-"+m.month.toString()+"-0"+lastDay.getDate().toString():m.year.toString()+"-"+m.month.toString()+"-"+lastDay.getDate().toString()
+                        endDate: lastDay.getDate()<10?m.year.toString()+"-"+m.month.toString()+"-0"+lastDay.getDate().toString():m.year.toString()+"-"+m.month.toString()+"-"+lastDay.getDate().toString(),
+                        month:m.month
                     });
   
     })
@@ -557,7 +558,7 @@ exports.getMonthGraphPerEmp=(req,res,next)=>{
 
         Appointment.empWeekRevenue(empId,startDate,endDate)
         .then(appoints=>{         
-            var revenueObj = {totalApp:0,totalAmt:0,totalServices:0,avgRevenue:0,avgAppointments:0,srtDate:d.srtDate,endDate:d.endDate};
+            var revenueObj = {totalApp:0,totalAmt:0,totalServices:0,avgRevenue:0,avgAppointments:0,month:+d.month,srtDate:d.srtDate,endDate:d.endDate};
             console.log(appoints.length);
             if(appoints.length==0)
             {               
