@@ -138,7 +138,7 @@ exports.saloonsByOwner=(req,res,next)=>{
                     .then(saloons=>{
                         if(saloons.length==0)
                         {
-                            return res.json({ message:'Saloon does not exist',data:null});
+                            return res.json({ message:'Saloon does not exist',data:saloons});
                         }
 
                         res.json({message:"All Saloons returned",data:saloons});
