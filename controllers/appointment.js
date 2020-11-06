@@ -541,7 +541,7 @@ exports.getMonthGraphPerEmp=(req,res,next)=>{
                         month:m.month
                     });
   
-    })
+    })  
    
     // console.log(dates)
  
@@ -746,3 +746,55 @@ exports.getWeekGraphPerEmp=(req,res,next)=>{
 }
 
 
+
+exports.currentAppoints = (req,res,next)=>{
+
+    const phone = +req.params.phone;
+
+    //current Date
+    var currDate = new Date();
+    var dd = String(currDate.getDate()).padStart(2, '0');
+    var mm = String(currDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = currDate.getFullYear();
+
+    currDate =yyyy + '-' +mm + '-' + dd ;
+    // console.log(currDate);
+    currDate = new Date(currDate).getTime();
+    // console.log(currDate);
+     
+    Appointment.findAppointByClientPhoneAndCDate(phone,currDate)
+                .then(appoint=>{
+                    if(appoint.length==0)
+                    {
+                        return res.json({ message:'Appointment not exist',data:appoint});
+                    }               
+                    res.json({ message:'Appointment Exists',data:appoint});
+                })
+}
+
+
+
+exports.previousAppoints = (req,res,next)=>{
+
+    const phone = +req.params.phone;
+
+    //current Date
+    var currDate = new Date();
+    var dd = String(currDate.getDate()).padStart(2, '0');
+    var mm = String(currDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = currDate.getFullYear();
+
+    currDate =yyyy + '-' +mm + '-' + dd ;
+    // console.log(currDate);
+    currDate = new Date(currDate).getTime();
+    // console.log(currDate);
+     
+    Appointment.findAppointByClientPhoneAndPDate(phone,currDate)
+                .then(appoint=>{
+                    if(appoint.length==0)
+                    {
+                        return res.json({ message:'Appointment not exist',data:appoint});
+                    }               
+                    res.json({ message:'Appointment Exists',data:appoint});
+                })
+}

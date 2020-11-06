@@ -110,6 +110,31 @@ class Appointment
                                             .catch(err=>console.log(err));
     }
 
+
+    static findAppointByClientPhoneAndCDate(phone, cDate)
+    {
+        const db = getDb();
+                            
+        return db.collection('appointments').find({ clientPhone:phone,bookingDate:cDate }).toArray()
+                                            .then(appointDetail=>{
+                                                                                                
+                                                return appointDetail;  
+                                            })
+                                            .catch(err=>console.log(err));
+    }
+
+    static findAppointByClientPhoneAndPDate(phone, cDate)
+    {
+        const db = getDb();
+                            
+        return db.collection('appointments').find({ clientPhone:phone,bookingDate:{$lt:cDate} }).toArray()
+                                            .then(appointDetail=>{
+                                                                                                
+                                                return appointDetail;  
+                                            })
+                                            .catch(err=>console.log(err));
+    }
+
    
     static saloonWeekRevenue(sid, sDate,eDate)
     {

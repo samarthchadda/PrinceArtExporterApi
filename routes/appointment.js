@@ -42,6 +42,9 @@ router.post('/edit-appointment',appointController.editAppointment);
 
 router.get('/del-appointment/:appointId',appointController.delAppointment);
 
+router.get('/current-appoint/:phone',appointController.currentAppoints);
+
+router.get('/previous-appoint/:phone',appointController.previousAppoints);
 
 
 module.exports = router;
