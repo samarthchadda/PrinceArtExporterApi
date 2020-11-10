@@ -148,6 +148,7 @@ exports.saloonRegister = (req,res,next)=>{
     const ownerId = +req.body.ownerId;
     const saloonName = req.body.saloonName;
     const phone = +req.body.phone;    
+  
     const address = req.body.address;
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
@@ -155,11 +156,21 @@ exports.saloonRegister = (req,res,next)=>{
     const photos = null;
     const isVerified = false;
     console.log(isVerified, typeof(isVerified));
-
+    
+    console.log(phone);
+    if(!phone)
+    {
+        return res.json({status:false, message:'Enter Valid Phone Number'});
+    }
+    else{
     Saloon.findSaloonByPhone(phone)
                 .then(saloonDoc=>{
                     if(saloonDoc){                        
                         return res.json({status:false, message:'Saloon Already Exists'});
+                    }
+                    if(phone==null)
+                    {
+                        return res.json({status:false, message:'Enter Valid Phone Number'});
                     }
                    
                     const db = getDb();     
@@ -200,6 +211,7 @@ exports.saloonRegister = (req,res,next)=>{
                   
                 })
                 .catch(err=>console.log(err));      
+            }
 
 }
 
