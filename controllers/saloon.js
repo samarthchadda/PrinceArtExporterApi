@@ -149,6 +149,9 @@ exports.saloonRegister = (req,res,next)=>{
     const saloonName = req.body.saloonName;
     const phone = +req.body.phone;    
     const address = req.body.address;
+    const latitude = req.body.latitude;
+    const longitude = req.body.longitude;
+    
     const photos = null;
     const isVerified = false;
     console.log(isVerified, typeof(isVerified));
@@ -172,7 +175,7 @@ exports.saloonRegister = (req,res,next)=>{
                         db.collection('saloonCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const saloon = new Saloon(saloonID,ownerId,saloonName,phone,address,photos,isVerified);
+                            const saloon = new Saloon(saloonID,ownerId,saloonName,phone,address,photos,isVerified,latitude,longitude);
                             //saving in database
                         
                             return saloon.save()
