@@ -13,6 +13,7 @@ exports.ownerRegister = (req,res,next)=>{
     const ownerName = req.body.ownerName;
     const email = req.body.email;    
     const password = req.body.password;
+    const ownerImg = null;
 
 
     Owner.findOwnerByEmail(email)
@@ -34,7 +35,7 @@ exports.ownerRegister = (req,res,next)=>{
                         db.collection('ownerCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const owner = new Owner(onwerID,ownerName,email,password);
+                            const owner = new Owner(onwerID,ownerName,email,password,ownerImg);
                             //saving in database
                         
                             return owner.save()
@@ -59,7 +60,6 @@ exports.ownerRegister = (req,res,next)=>{
                   
                 })
                 .catch(err=>console.log(err));      
-
 }
 
 

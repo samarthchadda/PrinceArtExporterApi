@@ -23,6 +23,8 @@ router.post('/edit-saloon',saloonController.editSaloon);
 
 router.get('/all-saloons-address',saloonController.getSaloonsAddress);
 
+router.get('/all-saloons-address/:id',saloonController.getSingleSaloonAddress);
+
 router.post('/del-saloon-photo',saloonController.delSaloonPhoto);
 
 

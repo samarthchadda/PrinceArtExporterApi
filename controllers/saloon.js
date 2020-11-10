@@ -1,15 +1,28 @@
 
 const Saloon = require('../models/saloon');
 
+const Service = require('../models/services');
+
+const Availability = require('../models/availability');
+
 const getDb = require('../util/database').getDB; 
 
 var NodeGeocoder = require('node-geocoder');
  
 var geocoder = NodeGeocoder({
     provider: 'opencage',
+    // provider: 'google',
+    
   apiKey: '3e5c1837f6424d34a41eac19b3816699',
+// apiKey:"AIzaSyBYt9wgUL1_UysYwqcFNjlcCGOb71Leeog",
    formatter: null // 
 });
+
+// (async () => {
+//    const res = await geocoder.geocode('29 champs elysée paris');
+    
+//     console.log(res);
+//   })();
 
 
 
@@ -27,23 +40,82 @@ exports.getSaloons=(req,res,next)=>{
 
 exports.getSaloonsAddress=(req,res,next)=>{
   
+    let addSaloon;
+    let address = [];
 
     Saloon.fetchAllSaloons()
                 .then(saloons=>{         
-                            //         street no. and name, city,state pincode,country          
-                           //example -- 277 Bedford Ave, Brooklyn, NY 11211, USA
-                    geocoder.geocode('Inox Pink square,raja park, jaipur')
-                    .then((result)=> {
-                        console.log(result[0]);
-                    })
-                    .catch((err)=> {
-                        console.log(err);
-                    });
-
-                    res.json({message:"All Data returned",allSaloons:saloons})
-
+                
+                    saloons.forEach(s=>{
+                                        //         street no. and name, city,state pincode,country          
+                            //example -- 277 Bedford Ave, Brooklyn, NY 11211, USA
+                        geocoder.geocode('Inox Pink square,raja park, jaipur')
+                        .then((result)=> {
+                            // console.log(result[0]);
+                            addSaloon = {...s,lat:result[0].latitude,long:result[0].longitude}
+                            // console.log(addSaloon);
+                            address.push(addSaloon);
+                                                   
+                           if(saloons.length == address.length)
+                           {
+                               res.json({message:"All Data returned",allSaloons:address})       
+                           }                               
+                        })
+                        .catch((err)=> {
+                            console.log(err);
+                         });                    
+                    })                                 
+                
                 })
                 .catch(err=>console.log(err));
+}
+
+
+exports.getSingleSaloonAddress=(req,res,next)=>{
+
+    const saloonId = req.params.id;
+    // console.log(phone);
+    let address;
+
+    Saloon.findSaloonBySaloonID(JSON.parse(saloonId))
+                    .then(saloon=>{
+                        if(!saloon)
+                        {
+                            return res.json({ message:'Saloon does not exist',data:null});
+                        }
+
+                        Service.findServicesBySaloonID(JSON.parse(saloonId))
+                        .then(services=>{
+                            if(services.length==0)
+                            {
+                                return res.json({ message:'Service does not exist',data:services});
+                            }
+
+                            Availability.findAvailBySaloonId(JSON.parse(saloonId))
+                            .then(availDoc=>{
+                               
+                                if(availDoc){
+                                   
+                                    geocoder.geocode('Siliguri ,SubhasPally,West Bengal')
+                                    .then((result)=> {
+                                        // console.log(result)
+                                        address = {...saloon,lat:result[0].latitude,long:result[0].longitude,services:services,availability:availDoc};
+        
+                                        res.json({message:"Saloon exists",data:address});                                            
+                                    })
+                                .catch((err)=> {
+                                    console.log(err);
+                                 });    
+        
+                                }
+                                else{
+                                    res.json({status:false,message:"No such availability exist"});
+                                }          
+                        
+                            })    
+                        })
+                                              
+                    })
 }
 
 

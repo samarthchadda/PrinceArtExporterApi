@@ -5,13 +5,14 @@ const ObjectId = mongodb.ObjectId;
 
 class Owner
 {
-    constructor(id,name,email,pwd)
+    constructor(id,name,email,pwd,img)
     {
         this.ownerId = id;
         this.ownerName = name;
         this.email = email;        
         this.password = pwd;
-        //date
+        this.ownerImg = img;
+        //image -- initially null at create ,   now API for edit image
       
     }
 
@@ -30,6 +31,19 @@ class Owner
         return db.collection('owners').findOne({ email:email })
                                             .then(owner=>{
                                                 
+                                                
+                                                return owner;  
+                                            })
+                                            .catch(err=>console.log(err));
+
+    }
+
+    static findOwnerById(id)
+    {
+        const db = getDb();
+                            
+        return db.collection('owners').findOne({ ownerId:id })
+                                            .then(owner=>{                                                
                                                 
                                                 return owner;  
                                             })
