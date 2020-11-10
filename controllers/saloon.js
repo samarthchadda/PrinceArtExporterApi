@@ -135,7 +135,6 @@ exports.getLimitSaloons=(req,res,next)=>{
 
                 })
                 .catch(err=>console.log(err));
-
 }
 
 
@@ -152,6 +151,7 @@ exports.saloonRegister = (req,res,next)=>{
     const address = req.body.address;
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
+    const regDate = new Date().getTime();
     
     const photos = null;
     const isVerified = false;
@@ -186,7 +186,7 @@ exports.saloonRegister = (req,res,next)=>{
                         db.collection('saloonCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const saloon = new Saloon(saloonID,ownerId,saloonName,phone,address,photos,isVerified,latitude,longitude);
+                            const saloon = new Saloon(saloonID,ownerId,saloonName,phone,address,photos,isVerified,latitude,longitude,date);
                             //saving in database
                         
                             return saloon.save()
