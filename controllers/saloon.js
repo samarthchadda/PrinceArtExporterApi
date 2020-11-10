@@ -186,7 +186,7 @@ exports.saloonRegister = (req,res,next)=>{
                         db.collection('saloonCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const saloon = new Saloon(saloonID,ownerId,saloonName,phone,address,photos,isVerified,latitude,longitude,date);
+                            const saloon = new Saloon(saloonID,ownerId,saloonName,phone,address,photos,isVerified,latitude,longitude,regDate);
                             //saving in database
                         
                             return saloon.save()
