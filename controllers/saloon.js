@@ -24,7 +24,10 @@ var geocoder = NodeGeocoder({
 //     console.log(res);
 //   })();
 
-
+// var distance = require('google-distance');
+// distance.apiKey = 'AIzaSyA-4AeTIBBRTGw291lqA-oDBYcfXvaVg0I';
+// distance.provider = "opencage"
+var GeoPoint = require('geopoint');
 
 exports.getSaloons=(req,res,next)=>{
   
@@ -249,6 +252,37 @@ exports.getSingleSaloon=(req,res,next)=>{
                         res.json({message:"Saloon exists",data:saloon});
                     })
 
+}
+
+
+exports.getDiffSaloon=(req,res,next)=>{
+
+    const saloonId = req.params.id;
+    // console.log(phone);
+
+    Saloon.findSaloonBySaloonID(JSON.parse(saloonId))
+                    .then(saloon=>{
+                        if(!saloon)
+                        {
+                            return res.json({ message:'Saloon does not exist',data:null});
+                        }
+                        // distance.get(
+                        //     {
+                        //       index: 1,
+                        //       origin: '37.772886,-122.423771',
+                        //       destination: '37.871601,-122.269104'
+                        //     },
+                        //     function(err, data) {
+                        //       if (err) return console.log(err);
+                        //       console.log(data);
+                        //     });
+                        var point1 = new GeoPoint(37.772886,-122.423771);
+                        var point2 = new GeoPoint(37.871601,-122.269104);
+                        var distance = point1.distanceTo(point2, true)//output in kilometers
+                        console.log(distance);
+                            
+                        res.json({message:"Saloon exists",data:saloon,distance:distance});
+                    })
 }
 
 

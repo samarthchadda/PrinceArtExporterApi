@@ -147,7 +147,7 @@ router.post('/edit-employee',upload.single('empPhoto'),(req,res,next)=>{
            db.collection('employees').updateOne({empId:empId},{$set:empDoc})
                        .then(resultData=>{
                            
-                           res.json({message:'Details Updated',status:true});
+                           res.json({message:'Details Updated',status:true,employee:empDoc});
                        })
                       .catch(err=>console.log(err));
   
