@@ -107,15 +107,13 @@ router.post('/edit-employee',upload.single('empPhoto'),(req,res,next)=>{
     const empType = req.body.empType;
     const empServices = req.body.empServices;
 
-
     var imagekit = new ImageKit({
         publicKey : "public_WlmDyQDHleOQopDhwUECOh0zPKU=",
         privateKey : "private_0YX4jtTBzNLifx3C2Egcgb1xNZs=",
         urlEndpoint : "https://ik.imagekit.io/4afsv20kjs"
     });
     
-    var base64Img = req.file.buffer;
- 
+    var base64Img = req.file.buffer; 
 
     const db = getDb();
     Employee.findEmployeeByEmpID(+empId)

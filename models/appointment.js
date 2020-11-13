@@ -97,6 +97,18 @@ class Appointment
                                             .catch(err=>console.log(err));
     }
 
+    static findAppointByEmpIdAndDateTime(eid,bDate,srtTime,endTime)
+    {
+        const db = getDb();
+                            
+        return db.collection('appointments').find({ empId:eid,bookingDate:bDate,'bookingTime.srtTime':srtTime,'bookingTime.endTime':endTime}).toArray()
+                                            .then(appointDetail=>{
+                                                                                                
+                                                return appointDetail;  
+                                            })
+                                            .catch(err=>console.log(err));
+    }
+
 
     static findAppointBySaloonIdAndDate(sid, bDate)
     {

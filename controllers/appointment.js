@@ -2,8 +2,7 @@ const Appointment = require('../models/appointment');
 const getDb = require('../util/database').getDB; 
 
 
-exports.postAppointment = (req,res,next)=>{
-  
+exports.postAppointment = (req,res,next)=>{  
 
     let appointId;
     const saloonId = +req.body.saloonId ;
@@ -14,12 +13,20 @@ exports.postAppointment = (req,res,next)=>{
     const clientPhone = req.body.clientPhone;
     const empName = req.body.empName;
     const bookingTime = req.body.bookingTime;
+    // console.log("Start Time : ", bookingTime.srtTime,"End Time : ",bookingTime.endTime);
+    // console.log(bookingTime.srtTime == bookingTime.endTime)
     let bookingDate = req.body.bookingDate;
     bookingDate = new Date(bookingDate).getTime();
     console.log(bookingDate);
     const bookingDay = req.body.bookingDay;
     const totalCost = +req.body.totalCost;
     const note = req.body.note;
+
+    Appointment.findAppointByEmpIdAndDateTime(empId,bookingDate,bookingTime.srtTime,bookingTime.endTime)
+    .then(appointDoc=>{
+        if(appointDoc.length!=0){                        
+            return res.json({status:false, message:'Appointment Already Exists'});
+        }
 
         let newVal;
         const db = getDb();     
@@ -33,12 +40,11 @@ exports.postAppointment = (req,res,next)=>{
             
             db.collection('appCounter').insertOne({count:newVal})
                     .then(result=>{
-
                         
                         const appointment = new Appointment(appointId,saloonId,empId,serviceId,serviceName,clientName,clientPhone,empName,bookingTime,bookingDate,bookingDay,totalCost,note);
                        
                         //saving in database                    
-                        appointment.save()
+                        return appointment.save()
                         .then(resultData=>{
                             
                             return res.json({status:true,message:"Appointment Created ",data:resultData["ops"][0]});
@@ -51,10 +57,13 @@ exports.postAppointment = (req,res,next)=>{
                     })
                     .catch(err=>{
                         res.json({status:false,message:"Appointment Creation Failed ",error:err})
-                    })                 
-            
-        })   
-    
+                    })                             
+        })    
+    })
+    .then(resultInfo=>{                   
+      
+    })
+    .catch(err=>console.log(err));       
 }
 
 
@@ -67,7 +76,6 @@ exports.getAllAppointments=(req,res,next)=>{
 
                 })
                 .catch(err=>console.log(err));
-
 }
 
 
@@ -113,7 +121,6 @@ exports.getAppointByEmpIdDate=(req,res,next)=>{
 
                     res.json({ message:'Appointment Exists',data:timeSlot});
                 })
-
 }
 
 
@@ -186,7 +193,6 @@ exports.getDayRevenuePerSaloon=(req,res,next)=>{
                     }               
                                                       
                 })
-
 }
 
 
