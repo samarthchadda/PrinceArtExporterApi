@@ -169,7 +169,7 @@ exports.saloonRegister = (req,res,next)=>{
     Saloon.findSaloonByPhone(phone)
                 .then(saloonDoc=>{
                     if(saloonDoc){                        
-                        return res.json({status:false, message:'Saloon Already Exists'});
+                        return res.json({status:false, message:'Saloon Already Exists',saloon:saloonDoc});
                     }
                     if(phone==null)
                     {
