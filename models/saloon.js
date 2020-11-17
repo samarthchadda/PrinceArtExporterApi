@@ -54,6 +54,19 @@ class Saloon
 
     }
 
+    static findSaloonBySaloonNameAddressPhone(phone,name,address)
+    {
+        const db = getDb();
+                            
+        return db.collection('saloons').findOne({ phone:phone,saloonName:name,address:address })
+                                            .then(saloon=>{
+                                                                                                
+                                                return saloon;  
+                                            })
+                                            .catch(err=>console.log(err));
+
+    }
+
     static fetchAllSaloons()
     {
         const db = getDb();
@@ -77,7 +90,6 @@ class Saloon
                             .catch(err=>console.log(err));
     }
 
-
     
     static fetchSaloonsByOwnerID(id)
     {
@@ -88,14 +100,9 @@ class Saloon
                                 return saloonData;
                             })
                             .catch(err=>console.log(err));
-    }
-
-
-  
-
+    } 
 
 }
-
 
 module.exports = Saloon;
 

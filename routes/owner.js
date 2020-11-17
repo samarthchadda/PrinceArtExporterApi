@@ -12,10 +12,7 @@ var fs = require('fs');
 
 router.post('/owner-login',ownerController.ownerLogin);
 
-
 router.post('/owner-register',ownerController.ownerRegister);
-
-
 
 router.post('/edit-owner-photo',upload.single('ownerPhoto'),(req,res,next)=>{
     

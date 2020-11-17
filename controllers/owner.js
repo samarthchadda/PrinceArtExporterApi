@@ -16,11 +16,10 @@ exports.ownerRegister = (req,res,next)=>{
     const ownerImg = null;
     const regDate = new Date().getTime();
 
-
     Owner.findOwnerByEmail(email)
                 .then(userDoc=>{
                     if(userDoc){                        
-                        return res.json({status:false, message:'Onwer Already Exists'});
+                        return res.json({status:false, message:'Onwer Already Exists',owner:userDoc});
                     }
                    
                     const db = getDb();     
