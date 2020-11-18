@@ -130,6 +130,7 @@ exports.ownerLogin=(req,res,next)=>{
 
 }
 
+
 exports.ownerResetPwd=(req,res,next)=>{
     const email = req.body.email;
     const password = req.body.password;
