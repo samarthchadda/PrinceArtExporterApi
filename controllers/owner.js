@@ -3,6 +3,49 @@ const Owner = require('../models/owner');
 
 const getDb = require('../util/database').getDB; 
 
+// var nodemailer = require('nodemailer');
+
+// var transporter = nodemailer.createTransport({
+//     host: 'smtp.gmail.com',
+//     port: 465,
+//     secure: true, // use SSL
+//     auth: {
+//         user: 'samarthchadda@zohomail.com',
+//         pass: 'q6v2Li0L8CAn'
+//     }
+// });
+
+// var mailOptions = {
+//     from: '"Our Code World " <samarthchadda@gmail.com>', // sender address (who sends)
+//     to: 'samarthchadda@gmail.com', // list of receivers (who receives)
+//     subject: 'Hello', // Subject line
+//     text: 'Hello world ', // plaintext body
+//     html: '<b>Hello world </b><br> This is the first email sent with Nodemailer in Node.js' // html body
+// };
+
+// // send mail with defined transport object
+// transporter.sendMail(mailOptions, function(error, info){
+//     if(error){
+//         return console.log(error);
+//     }
+
+//     console.log('Message sent: ' + info.response);
+ // });
+
+
+// client Id = 1000.S1B7TJAEGYE7WP33H9WHUR9Y5K8U3W
+// client secret = 485c422708fe85a5a85dcf75cc5f25a6d43c2c113a
+
+
+const nodemailer = require('nodemailer');
+const sendgridTransport = require('nodemailer-sendgrid-transport');
+
+const transporter = nodemailer.createTransport(sendgridTransport({
+    auth:{
+        api_key:'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'
+        
+    }
+}))
 
 
 //POST
@@ -87,31 +130,29 @@ exports.ownerLogin=(req,res,next)=>{
 
 }
 
-exports.parentForgotPwd=(req,res,next)=>{
-    const phone = req.body.phone;
-    const newPassword = req.body.newPassword;
-    Parent.findUserByPhone(phone)
+exports.ownerResetPwd=(req,res,next)=>{
+    const email = req.body.email;
+    const password = req.body.password;
+
+    Owner.findOwnerByEmail(email)
                 .then(user=>{
                     if(!user)
                     {
-                        return res.json({ message:'User Does not exist',status:false});
+                        return res.json({ message:'User does not exist',status:false});
                     }
 
-                    user.password = newPassword;
-                    // console.log(user);
+                    user.password = password;
                    
                     const db = getDb();
-                    db.collection('parents').updateOne({phone:phone},{$set:user})
+                    db.collection('owners').updateOne({email:email},{$set:user})
                                 .then(resultData=>{
                                     
-                                    res.json({ message:'Password Changed',status:true});
+                                    res.json({ message:'Password successfully changed',status:true});
                                 })
                                 .catch(err=>console.log(err));
-
-
                 })
-
 }
+
 
 exports.userData=(req,res,next)=>{
     const phone = req.body.phone;
@@ -157,10 +198,38 @@ exports.editDeviceToken=(req,res,next)=>{
                                 })
                                 .catch(err=>console.log(err));
 
-
-
-                })
-
-  
+                }) 
 
 }
+
+
+
+exports.sendToken = (req,res,next)=>{
+
+    const email = req.body.email;
+
+    var token = "";
+
+    var length = 6,
+        // charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        charset = "0123456789",        
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    token = retVal;
+
+    transporter.sendMail({
+        to:email,
+        from:'samarthchadda@gmail.com',
+        subject:'Fibi App - OTP',
+        html:`
+        <p> You requested a password reset</p>
+        <br>
+        6 Digit OTP Token : ${token}`
+    })
+    
+    res.json({ message:'Token sent',status:true,email:req.body.email,token:+token});       
+
+}
+

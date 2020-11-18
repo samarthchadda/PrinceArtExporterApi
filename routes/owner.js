@@ -14,6 +14,11 @@ router.post('/owner-login',ownerController.ownerLogin);
 
 router.post('/owner-register',ownerController.ownerRegister);
 
+router.post('/reset-owner-pwd',ownerController.ownerResetPwd);
+
+router.post('/send-token',ownerController.sendToken);
+
+
 router.post('/edit-owner-photo',upload.single('ownerPhoto'),(req,res,next)=>{
     
     const ownerId = +req.body.ownerId;
