@@ -60,12 +60,19 @@ exports.ownerRegister = (req,res,next)=>{
     const ownerImg = null;
     const regDate = new Date().getTime();
 
-    Owner.findOwnerByEmailPhone(email,phone)
+    Owner.findOwnerByEmail(email)
                 .then(userDoc=>{
                     if(userDoc){                        
-                        return res.json({status:false, message:'Onwer Already Exists',owner:userDoc});
+                        return res.json({status:false, message:'Onwer Already Exists(Enter unique email and phone)',owner:userDoc});
                     }
                    
+                    
+                    Owner.findOwnerByPhone(phone)
+                    .then(userDoc=>{
+                        if(userDoc){                        
+                            return res.json({status:false, message:'Onwer Already Exists(Enter unique email and phone)',owner:userDoc});
+                        }
+
                     const db = getDb();     
                     db.collection('ownerCounter').find().toArray().then(data=>{
         
@@ -98,7 +105,8 @@ exports.ownerRegister = (req,res,next)=>{
                                     res.json({status:false,error:err})
                                 })             
                      })   
-
+                     
+                    })
                 })
                 .then(resultInfo=>{                   
                   

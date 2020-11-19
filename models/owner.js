@@ -39,11 +39,11 @@ class Owner
 
     }
 
-    static findOwnerByEmailPhone(email,phone)
+    static findOwnerByPhone(phone)
     {
         const db = getDb();
                             
-        return db.collection('owners').findOne({ email:email,phone:phone })
+        return db.collection('owners').findOne({phone:phone })
                                             .then(owner=>{                                               
                                                 
                                                 return owner;  
