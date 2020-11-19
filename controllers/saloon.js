@@ -150,7 +150,7 @@ exports.saloonRegister = (req,res,next)=>{
     const ownerId = +req.body.ownerId;
     const saloonName = req.body.saloonName;
     const phone = +req.body.phone;    
-  
+    const landline = req.body.landline;
     const address = req.body.address;
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
@@ -189,7 +189,7 @@ exports.saloonRegister = (req,res,next)=>{
                         db.collection('saloonCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const saloon = new Saloon(saloonID,ownerId,saloonName,phone,address,photos,isVerified,latitude,longitude,regDate);
+                            const saloon = new Saloon(saloonID,ownerId,saloonName,phone,landline,address,photos,isVerified,latitude,longitude,regDate);
                             //saving in database
                         
                             return saloon.save()
