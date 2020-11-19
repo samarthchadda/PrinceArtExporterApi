@@ -160,7 +160,7 @@ exports.saloonRegister = (req,res,next)=>{
     const isVerified = false;
     console.log(isVerified, typeof(isVerified));
     
-    console.log(phone);
+    // console.log(phone);
     if(!phone)
     {
         return res.json({status:false, message:'Enter Valid Phone Number'});
