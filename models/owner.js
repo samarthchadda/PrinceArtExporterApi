@@ -5,11 +5,12 @@ const ObjectId = mongodb.ObjectId;
 
 class Owner
 {
-    constructor(id,name,email,pwd,img,date)
+    constructor(id,name,email,phone,pwd,img,date)
     {
         this.ownerId = id;
         this.ownerName = name;
         this.email = email;        
+        this.phone = phone;
         this.password = pwd;
         this.ownerImg = img;
         this.registrationDate = date;
@@ -30,13 +31,24 @@ class Owner
         const db = getDb();
                             
         return db.collection('owners').findOne({ email:email })
-                                            .then(owner=>{
-                                                
+                                            .then(owner=>{                                                
                                                 
                                                 return owner;  
                                             })
                                             .catch(err=>console.log(err));
 
+    }
+
+    static findOwnerByEmailPhone(email,phone)
+    {
+        const db = getDb();
+                            
+        return db.collection('owners').findOne({ email:email,phone:phone })
+                                            .then(owner=>{                                               
+                                                
+                                                return owner;  
+                                            })
+                                            .catch(err=>console.log(err));
     }
 
     static findOwnerById(id)

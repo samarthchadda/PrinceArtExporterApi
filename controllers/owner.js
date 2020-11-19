@@ -55,11 +55,12 @@ exports.ownerRegister = (req,res,next)=>{
     //parsing data from incoming request
     const ownerName = req.body.ownerName;
     const email = req.body.email;    
+    const phone = +req.body.phone;
     const password = req.body.password;
     const ownerImg = null;
     const regDate = new Date().getTime();
 
-    Owner.findOwnerByEmail(email)
+    Owner.findOwnerByEmailPhone(email,phone)
                 .then(userDoc=>{
                     if(userDoc){                        
                         return res.json({status:false, message:'Onwer Already Exists',owner:userDoc});
@@ -78,7 +79,7 @@ exports.ownerRegister = (req,res,next)=>{
                         db.collection('ownerCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const owner = new Owner(onwerID,ownerName,email,password,ownerImg,regDate);
+                            const owner = new Owner(onwerID,ownerName,email,phone,password,ownerImg,regDate);
                             //saving in database
                         
                             return owner.save()
