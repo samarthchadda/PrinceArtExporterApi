@@ -140,6 +140,22 @@ exports.ownerLogin=(req,res,next)=>{
 }
 
 
+
+exports.ownerCheckPhone=(req,res,next)=>{
+    const phone = +req.body.phone;
+
+    Owner.findOwnerByPhone(phone)
+                .then(user=>{
+                    if(!user)
+                    {
+                        return res.json({ message:'User does not exist',status:false});
+                    }                                       
+                    res.json({ message:'User Exists',status:true, user:user});
+                   
+                })
+}
+
+
 exports.ownerResetPwd=(req,res,next)=>{
     const email = req.body.email;
     const password = req.body.password;
