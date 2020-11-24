@@ -20,6 +20,9 @@ router.post('/reset-owner-pwd',ownerController.ownerResetPwd);
 
 router.post('/send-token',ownerController.sendToken);
 
+router.post('/edit-owner',ownerController.editOwner);
+
+
 
 router.post('/edit-owner-photo',upload.single('ownerPhoto'),(req,res,next)=>{
     

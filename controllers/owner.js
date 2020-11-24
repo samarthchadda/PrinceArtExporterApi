@@ -259,3 +259,33 @@ exports.sendToken = (req,res,next)=>{
 
 }
 
+
+
+exports.editOwner=(req,res,next)=>{
+    //parsing data from incoming request
+    const ownerId = +req.body.ownerId;
+    const ownerName = req.body.ownerName;
+    const email = req.body.email;
+    const phone = +req.body.phone;    
+
+    Owner.findOwnerById(+ownerId)
+             .then(ownerDoc=>{
+                 if(!ownerDoc)
+                 {
+                     return res.json({ message:'Owner does not exist',status:false});
+                 }
+                
+                 ownerDoc.ownerName = ownerName;
+                 ownerDoc.email = email;
+                 ownerDoc.phone = phone;
+                 
+                 const db = getDb();
+                 db.collection('owners').updateOne({ownerId:ownerId},{$set:ownerDoc})
+                             .then(resultData=>{
+                                 
+                                 res.json({message:'Details Updated',status:true,owner:ownerDoc});
+                             })
+                             .catch(err=>console.log(err));
+             })
+}
+
