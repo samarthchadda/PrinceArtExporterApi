@@ -27,8 +27,10 @@ router.post('/post-employee',upload.single('empPhoto'),(req,res,next)=>{
     const saloonId = +req.body.saloonId;
     const empNm = req.body.empNm;
     const empType = req.body.empType;
-    const empServices = req.body.empServices;
-
+    let services = [];
+    let empServices = req.body.empServices;
+    services = empServices.split(',');
+    console.log(services);
 
     var imagekit = new ImageKit({
         publicKey : "public_WlmDyQDHleOQopDhwUECOh0zPKU=",
@@ -71,7 +73,7 @@ router.post('/post-employee',upload.single('empPhoto'),(req,res,next)=>{
                 
                              const db = getDb();
                 
-                            const employee = new Employee(empID,saloonId,empNm,empType,result.url,empServices);
+                            const employee = new Employee(empID,saloonId,empNm,empType,result.url,services);
                             //saving in database
                         
                             employee.save()
@@ -105,7 +107,10 @@ router.post('/edit-employee',upload.single('empPhoto'),(req,res,next)=>{
     const empId = +req.body.empId;
     const empNm = req.body.empNm;
     const empType = req.body.empType;
-    const empServices = req.body.empServices;
+    let services = [];
+    let empServices = req.body.empServices;
+    services = empServices.split(',');
+    console.log(services);
 
     var imagekit = new ImageKit({
         publicKey : "public_WlmDyQDHleOQopDhwUECOh0zPKU=",
@@ -137,7 +142,7 @@ router.post('/edit-employee',upload.single('empPhoto'),(req,res,next)=>{
             
           empDoc.empName = empNm;   
           empDoc.empType = empType;   
-          empDoc.empServices = empServices;              
+          empDoc.empServices = services;              
           empDoc.empImg = result.url;            
            
            

@@ -3,16 +3,21 @@ const Saloon = require('../models/saloon');
 const getDb = require('../util/database').getDB; 
 
 
-
 exports.postServiceData = (req,res,next)=>{
+
+    // const services = req.body.services;
+
+    // services.forEach(service=>{
+
+    // })
       
     let serviceId;
     //parsing data from incoming request
-    const saloonId = +req.body.saloonId;   
-    const serviceNm = req.body.serviceNm 
-    const description = req.body.description;
-    const cost = +req.body.cost;    
-    const time = req.body.time;    
+    let saloonId = +req.body.saloonId;   
+    let serviceNm = req.body.serviceNm; 
+    let description = req.body.description;
+    let cost = +req.body.cost;    
+    let time = req.body.time;    
 
     let newVal;
     const db = getDb();     
@@ -57,6 +62,8 @@ exports.postServiceData = (req,res,next)=>{
                     res.json({status:false,error:err})
                 })             
      })   
+
+     
    
 }
 
