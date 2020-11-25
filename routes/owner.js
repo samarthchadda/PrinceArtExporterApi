@@ -22,6 +22,7 @@ router.post('/send-token',ownerController.sendToken);
 
 router.post('/edit-owner',ownerController.editOwner);
 
+router.get('/del-owner/:ownerId',ownerController.delOwner);
 
 
 router.post('/edit-owner-photo',upload.single('ownerPhoto'),(req,res,next)=>{

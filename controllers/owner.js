@@ -289,3 +289,24 @@ exports.editOwner=(req,res,next)=>{
              })
 }
 
+
+exports.delOwner=(req,res,next)=>{
+
+    const ownerId = +req.params.ownerId;
+
+    Owner.findOwnerById(JSON.parse(ownerId))
+                    .then(owner=>{
+                        if(!owner)
+                        {
+                            return res.json({ message:'Owner does not exist',status:false});
+                        }
+
+                        const db = getDb();
+                        db.collection('owners').deleteOne({ownerId:ownerId})
+                                    .then(resultData=>{
+                                        
+                                        res.json({message:'Owner Deleted',status:true});
+                                    })
+                                    .catch(err=>console.log(err));
+                    })
+}

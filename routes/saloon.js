@@ -30,6 +30,7 @@ router.get('/all-saloons-address/:id',saloonController.getSingleSaloonAddress);
 
 router.post('/del-saloon-photo',saloonController.delSaloonPhoto);
 
+router.get('/del-saloon/:saloonId',saloonController.delSaloon);
 
 
 const getDb = require('../util/database').getDB; 

@@ -393,3 +393,24 @@ exports.delSaloonPhoto=(req,res,next)=>{
              })
 }
 
+
+exports.delSaloon=(req,res,next)=>{
+
+    const saloonId = +req.params.saloonId;
+
+    Saloon.findSaloonBySaloonID(JSON.parse(saloonId))
+                    .then(saloon=>{
+                        if(!saloon)
+                        {
+                            return res.json({ message:'Saloon does not exist',status:false});
+                        }
+
+                        const db = getDb();
+                        db.collection('saloons').deleteOne({saloonId:saloonId})
+                                    .then(resultData=>{
+                                        
+                                        res.json({message:'Saloon Deleted',status:true});
+                                    })
+                                    .catch(err=>console.log(err));
+                    })
+}
