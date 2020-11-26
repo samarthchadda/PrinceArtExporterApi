@@ -16,6 +16,8 @@ router.post('/owner-register',ownerController.ownerRegister);
 
 router.post('/check-owner',ownerController.ownerCheckPhone);
 
+router.post('/check-owner-email',ownerController.ownerCheckEmail);
+
 router.post('/reset-owner-pwd',ownerController.ownerResetPwd);
 
 router.post('/send-token',ownerController.sendToken);
