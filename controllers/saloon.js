@@ -157,7 +157,7 @@ exports.saloonRegister = (req,res,next)=>{
     const regDate = new Date().getTime();
     
     const photos = null;
-    const isVerified = false;
+    const isVerified = 0;
     console.log(isVerified, typeof(isVerified));
     
     // console.log(phone);
@@ -313,7 +313,7 @@ exports.facultyLogin=(req,res,next)=>{
 exports.phoneVerify=(req,res,next)=>{
     //parsing data from incoming request
     const saloonId = +req.body.saloonId;
-    const isVerified = req.body.isVerified;
+    const isVerified = +req.body.isVerified;
    
     Saloon.findSaloonBySaloonID(saloonId)
             .then(saloon=>{
