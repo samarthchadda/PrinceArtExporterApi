@@ -126,7 +126,7 @@ exports.ownerLogin=(req,res,next)=>{
                 .then(user=>{
                     if(!user)
                     {
-                        return res.json({ message:'Owner does not exist',status:false});
+                        return res.json({ message:'User does not exist',status:false});
                     }
 
                     if(user.password == password)
@@ -134,7 +134,7 @@ exports.ownerLogin=(req,res,next)=>{
                         res.json({ message:'Login Successful',status:true, owner:user});
                     }else{
                        
-                        res.json({ message:'Login Unsuccessful....Password is incorrect',status:false});
+                        res.json({ message:'Enter valid credentials',status:false});
                     }
                 })
 
