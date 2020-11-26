@@ -5,7 +5,7 @@ const ObjectId = mongodb.ObjectId;
 
 class Owner
 {
-    constructor(id,name,email,phone,pwd,img,date)
+    constructor(id,name,email,phone,pwd,img,isVerified,date)
     {
         this.ownerId = id;
         this.ownerName = name;
@@ -13,6 +13,7 @@ class Owner
         this.phone = phone;
         this.password = pwd;
         this.ownerImg = img;
+        this.isVerified = isVerified;
         this.registrationDate = date;
         //image -- initially null at create ,   now API for edit image
       

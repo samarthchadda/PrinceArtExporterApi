@@ -58,6 +58,7 @@ exports.ownerRegister = (req,res,next)=>{
     const phone = +req.body.phone;
     const password = req.body.password;
     const ownerImg = null;
+    const isVerified = false;
     const regDate = new Date().getTime();
 
     Owner.findOwnerByEmail(email)
@@ -86,7 +87,7 @@ exports.ownerRegister = (req,res,next)=>{
                         db.collection('ownerCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const owner = new Owner(onwerID,ownerName,email,phone,password,ownerImg,regDate);
+                            const owner = new Owner(onwerID,ownerName,email,phone,password,ownerImg,isVerified,regDate);
                             //saving in database
                         
                             return owner.save()
@@ -309,4 +310,34 @@ exports.delOwner=(req,res,next)=>{
                                     })
                                     .catch(err=>console.log(err));
                     })
+}
+
+
+
+
+
+exports.ownerVerify=(req,res,next)=>{
+    //parsing data from incoming request
+    const ownerId = +req.body.ownerId;
+    const isVerified = req.body.isVerified;
+   
+    Owner.findOwnerById(ownerId)
+            .then(owner=>{
+                if(!owner)
+                {
+                    return res.json({ message:'Owner does not exist',status:false});
+                }
+                        
+                owner.isVerified = isVerified;
+                 
+                 const db = getDb();
+                 db.collection('owners').updateOne({ownerId:ownerId},{$set:owner})
+                             .then(resultData=>{
+                                 
+                                 res.json({message:'Details Updated',status:true});
+                             })
+                             .catch(err=>console.log(err));
+
+             })
+
 }

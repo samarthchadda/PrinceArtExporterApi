@@ -24,6 +24,8 @@ router.post('/edit-owner',ownerController.editOwner);
 
 router.get('/del-owner/:ownerId',ownerController.delOwner);
 
+router.post('/owner-verify',ownerController.ownerVerify);
+
 
 router.post('/edit-owner-photo',upload.single('ownerPhoto'),(req,res,next)=>{
     
