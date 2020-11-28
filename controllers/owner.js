@@ -116,7 +116,6 @@ exports.ownerRegister = (req,res,next)=>{
 }
 
 
-
 //LOGIN
 exports.ownerLogin=(req,res,next)=>{
     const email = req.body.email;
@@ -126,7 +125,7 @@ exports.ownerLogin=(req,res,next)=>{
                 .then(user=>{
                     if(!user)
                     {
-                        return res.json({ message:'User does not exist',status:false});
+                        return res.json({ message:'Enter valid email Id',status:false});
                     }
 
                     if(user.password == password)
