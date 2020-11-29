@@ -342,6 +342,9 @@ exports.editSaloon=(req,res,next)=>{
     const saloonId = +req.body.saloonId;
     const saloonName = req.body.saloonName;
     const address = req.body.address;
+    const phone = +req.body.phone;
+    const landline = req.body.landline;
+    
    
     Saloon.findSaloonBySaloonID(JSON.parse(saloonId))
              .then(saloonDoc=>{
@@ -352,6 +355,9 @@ exports.editSaloon=(req,res,next)=>{
                 
                  saloonDoc.saloonName = saloonName;
                  saloonDoc.address = address;
+                 saloonDoc.phone = phone;
+                 saloonDoc.landline = landline;
+                 
                  
                  const db = getDb();
                  db.collection('saloons').updateOne({saloonId:saloonId},{$set:saloonDoc})
