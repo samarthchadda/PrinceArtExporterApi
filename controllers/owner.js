@@ -290,10 +290,20 @@ exports.editOwner=(req,res,next)=>{
                      return res.json({ message:'Owner does not exist',status:false});
                  }
                 
-                 ownerDoc.ownerName = ownerName;
-                 ownerDoc.email = email;
-                 ownerDoc.phone = phone;
-                 
+                 if(email!=null)
+                 {                   
+                    ownerDoc.email = email;
+                   
+                 }
+                 else if(ownerName!=null)
+                 {
+                    ownerDoc.ownerName = ownerName;
+                 }
+                 else if(phone!=null)
+                 {
+                    ownerDoc.phone = phone;
+                 }
+
                  const db = getDb();
                  db.collection('owners').updateOne({ownerId:ownerId},{$set:ownerDoc})
                              .then(resultData=>{
