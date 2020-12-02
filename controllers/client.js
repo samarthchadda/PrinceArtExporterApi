@@ -168,7 +168,7 @@ exports.clientResetPwd=(req,res,next)=>{
                     user.password = password;
                    
                     const db = getDb();
-                    db.collection('owners').updateOne({email:email},{$set:user})
+                    db.collection('clients').updateOne({email:email},{$set:user})
                                 .then(resultData=>{
                                     
                                     res.json({ message:'Password successfully changed',status:true,user:user});
