@@ -16,6 +16,9 @@ router.post('/client-login',clientController.clientLogin);
 
 router.post('/edit-client-email',clientController.editClientEmail);
 
+router.post('/edit-client-phone',clientController.editClientPhone);
+
+
 router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
 
     let clientID;

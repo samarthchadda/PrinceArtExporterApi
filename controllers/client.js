@@ -98,12 +98,12 @@ exports.editClientEmail=(req,res,next)=>{
                      return res.json({ message:'Client does not exist',status:false});
                  }              
 
-                 Client.findClientByEmail(email)
-                 .then(client=>{
-                     if(client)
-                     {
-                         return res.json({ message:'Email already exists',status:false});
-                     }
+                //  Client.findClientByEmail(email)
+                //  .then(client=>{
+                //      if(client)
+                //      {
+                //          return res.json({ message:'Email already exists',status:false});
+                //      }
                      
                      clientDoc.email = email;
                  
@@ -111,10 +111,44 @@ exports.editClientEmail=(req,res,next)=>{
                      db.collection('clients').updateOne({clientId:clientId},{$set:clientDoc})
                                  .then(resultData=>{
                                      
-                                     res.json({message:'Details Updated',status:true});
+                                     res.json({message:'Details Updated',status:true,client:clientDoc});
                                  })
                                  .catch(err=>console.log(err));
-                    })                
+                    // })                
+             })
+}
+
+
+
+exports.editClientPhone=(req,res,next)=>{
+    //parsing data from incoming request
+    const clientId = +req.body.clientId;
+    const phone = +req.body.phone;
+   
+    Client.findClientByClientId(JSON.parse(+clientId))
+             .then(clientDoc=>{
+                 if(!clientDoc)
+                 {
+                     return res.json({ message:'Client does not exist',status:false});
+                 }              
+
+                //  Client.findClientByEmail(email)
+                //  .then(client=>{
+                //      if(client)
+                //      {
+                //          return res.json({ message:'Email already exists',status:false});
+                //      }
+                     
+                     clientDoc.phone = phone;
+                 
+                     const db = getDb();
+                     db.collection('clients').updateOne({clientId:clientId},{$set:clientDoc})
+                                 .then(resultData=>{
+                                     
+                                     res.json({message:'Details Updated',status:true,client:clientDoc});
+                                 })
+                                 .catch(err=>console.log(err));
+                    // })                
              })
 }
 
