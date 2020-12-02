@@ -155,7 +155,7 @@ exports.editClientPhone=(req,res,next)=>{
 exports.editClientName=(req,res,next)=>{
     //parsing data from incoming request
     const clientId = +req.body.clientId;
-    const clientName = +req.body.clientName;
+    const clientName = req.body.clientName;
    
     Client.findClientByClientId(JSON.parse(+clientId))
              .then(clientDoc=>{
