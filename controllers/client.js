@@ -154,28 +154,25 @@ exports.editClientPhone=(req,res,next)=>{
 
 
 
-exports.parentForgotPwd=(req,res,next)=>{
-    const phone = req.body.phone;
-    const newPassword = req.body.newPassword;
-    Parent.findUserByPhone(phone)
+exports.clientResetPwd=(req,res,next)=>{
+    const email = req.body.email;
+    const password = req.body.password;
+
+    Client.findClientByEmail(email)
                 .then(user=>{
                     if(!user)
                     {
-                        return res.json({ message:'User Does not exist',status:false});
+                        return res.json({ message:'User does not exist',status:false});
                     }
 
-                    user.password = newPassword;
-                    // console.log(user);
+                    user.password = password;
                    
                     const db = getDb();
-                    db.collection('parents').updateOne({phone:phone},{$set:user})
+                    db.collection('owners').updateOne({email:email},{$set:user})
                                 .then(resultData=>{
                                     
-                                    res.json({ message:'Password Changed',status:true});
+                                    res.json({ message:'Password successfully changed',status:true,user:user});
                                 })
                                 .catch(err=>console.log(err));
-
-
                 })
-
 }

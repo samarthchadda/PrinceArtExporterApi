@@ -18,6 +18,8 @@ router.post('/edit-client-email',clientController.editClientEmail);
 
 router.post('/edit-client-phone',clientController.editClientPhone);
 
+router.post('/edit-client-password',clientController.clientResetPwd);
+
 
 router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
 
