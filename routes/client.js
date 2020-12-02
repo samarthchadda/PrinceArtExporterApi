@@ -136,7 +136,7 @@ router.post('/edit-client-image',upload.single('clientImg'),(req,res,next)=>{
            db.collection('clients').updateOne({clientId:clientId},{$set:clientDoc})
                        .then(resultData=>{
                            
-                           res.json({message:'Details Updated',status:true});
+                           res.json({message:'Details Updated',status:true,client:clientDoc});
                        })
                       .catch(err=>console.log(err));  
                 }
