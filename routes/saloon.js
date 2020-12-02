@@ -17,7 +17,7 @@ router.get('/all-saloons/:id',saloonController.saloonsByOwner);
 
 router.get('/single-saloon/:id',saloonController.getSingleSaloon);
 
-router.get('/diff-saloon/:id',saloonController.getDiffSaloon);
+router.post('/all-near-saloons',saloonController.getDiffSaloon);
 
 
 router.post('/saloon-verify',saloonController.phoneVerify);

@@ -257,32 +257,67 @@ exports.getSingleSaloon=(req,res,next)=>{
 
 exports.getDiffSaloon=(req,res,next)=>{
 
-    const saloonId = req.params.id;
-    // console.log(phone);
+    const latitude = +req.body.latitude;
+    const longitude = +req.body.longitude;
+    const range = +req.body.range;
+    
+    var point1 = new GeoPoint(latitude,longitude);
 
-    Saloon.findSaloonBySaloonID(JSON.parse(saloonId))
-                    .then(saloon=>{
-                        if(!saloon)
-                        {
-                            return res.json({ message:'Saloon does not exist',data:null});
-                        }
-                        // distance.get(
-                        //     {
-                        //       index: 1,
-                        //       origin: '37.772886,-122.423771',
-                        //       destination: '37.871601,-122.269104'
-                        //     },
-                        //     function(err, data) {
-                        //       if (err) return console.log(err);
-                        //       console.log(data);
-                        //     });
-                        var point1 = new GeoPoint(37.772886,-122.423771);
-                        var point2 = new GeoPoint(37.871601,-122.269104);
-                        var distance = point1.distanceTo(point2, true)//output in kilometers
-                        console.log(distance);
+    let newSaloons = [];
+    let checkData = [];
+
+    Saloon.fetchAllSaloons()
+    .then(saloons=>{
+        
+        saloons.forEach(saloon=>{
+            var point2 = new GeoPoint(saloon.latitude,saloon.longitude);
+            var distance = point1.distanceTo(point2, true)//output in kilometers
+            // console.log(distance);
+
+            var newSaloon = {...saloon,distance:distance};
+            checkData.push(newSaloon);
+            if(distance<=range)
+            {
+             newSaloons.push(newSaloon);
+            }
+           
+            // console.log(newSaloons);
+        })
+      
+       if(saloons.length == checkData.length)
+       {
+            newSaloons.sort((a, b) => {
+                return a.distance - b.distance;
+            });
+            res.json({message:"All Data returned",allSaloons:newSaloons})
+       }     
+        
+    })
+    .catch(err=>console.log(err));
+
+    // Saloon.findSaloonBySaloonID(JSON.parse(saloonId))
+    //                 .then(saloon=>{
+    //                     if(!saloon)
+    //                     {
+    //                         return res.json({ message:'Saloon does not exist',data:null});
+    //                     }
+    //                     // distance.get(
+    //                     //     {
+    //                     //       index: 1,
+    //                     //       origin: '37.772886,-122.423771',
+    //                     //       destination: '37.871601,-122.269104'
+    //                     //     },
+    //                     //     function(err, data) {
+    //                     //       if (err) return console.log(err);
+    //                     //       console.log(data);
+    //                     //     });
+    //                     // var point1 = new GeoPoint(37.772886,-122.423771);
+    //                     // var point2 = new GeoPoint(37.871601,-122.269104);
+    //                     // var distance = point1.distanceTo(point2, true)//output in kilometers
+    //                     // console.log(distance);
                             
-                        res.json({message:"Saloon exists",data:saloon,distance:distance});
-                    })
+    //                     res.json({message:"Saloon exists",data:saloon,distance:distance});
+    //                 })
 }
 
 
