@@ -16,6 +16,8 @@ router.post('/client-login',clientController.clientLogin);
 
 router.post('/edit-client-email',clientController.editClientEmail);
 
+router.post('/edit-client-name',clientController.editClientName);
+
 router.post('/edit-client-phone',clientController.editClientPhone);
 
 router.post('/edit-client-password',clientController.clientResetPwd);
