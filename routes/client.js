@@ -50,35 +50,43 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
                Client.findClientByEmail(email)
                 .then(client=>{
                     if(client){                        
-                        return res.json({status:false, message:'Client already exists'});
+                        return res.json({status:false, message:'Client already exists(Enter unique email)'});
                     }
 
-                    imagekit.upload({
-                        file : base64Img, //required
-                        fileName : "clientImg.jpg"   //required
-                       
-                    }, function(error, result) {
-                        if(error) {console.log(error);}
-                        else {
-                            console.log(result.url);
-                
-                            const db = getDb();
-                
-                            const client = new Client(clientID,clientName,phone,email,password,result.url);
-
-                            //saving in database                        
-                            client.save()
-                            .then(resultData=>{
-                                
-                                res.json({status:true,message:"Client Added",data:resultData["ops"][0]});
-                                
-                            })
-                            .catch(err=>{
-                                res.json({status:false,message:"Client not added"});
-                                
-                            });                
+                    Client.findClientByPhone(phone)
+                    .then(client=>{
+                        if(client){                        
+                            return res.json({status:false, message:'Client already exists(Enter unique phone)'});
                         }
+                        
+                        imagekit.upload({
+                            file : base64Img, //required
+                            fileName : "clientImg.jpg"   //required
+                        
+                        }, function(error, result) {
+                            if(error) {console.log(error);}
+                            else {
+                                console.log(result.url);
+                    
+                                const db = getDb();
+                    
+                                const client = new Client(clientID,clientName,phone,email,password,result.url);
+
+                                //saving in database                        
+                                client.save()
+                                .then(resultData=>{
+                                    
+                                    res.json({status:true,message:"Client Added",data:resultData["ops"][0]});
+                                    
+                                })
+                                .catch(err=>{
+                                    res.json({status:false,message:"Client not added"});
+                                    
+                                });                
+                            }
+                        })
                     })
+
                 }).catch(err=>console.log(err));                
                                    
                 })
