@@ -14,6 +14,8 @@ router.post('/owner-login',ownerController.ownerLogin);
 
 router.post('/owner-register',ownerController.ownerRegister);
 
+router.get('/all-owners',ownerController.getOwners);
+
 router.post('/check-owner',ownerController.ownerCheckPhone);
 
 router.post('/check-owner-email',ownerController.ownerCheckEmail);

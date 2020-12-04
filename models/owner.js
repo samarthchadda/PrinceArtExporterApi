@@ -65,6 +65,17 @@ class Owner
 
     }
 
+    static fetchAllOwners()
+    {
+        const db = getDb();
+        return db.collection('owners').find().toArray()
+                            .then(ownerData=>{
+                               
+                                return ownerData;
+                            })
+                            .catch(err=>console.log(err));
+    }
+
 
 }
 

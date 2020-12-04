@@ -48,6 +48,17 @@ const transporter = nodemailer.createTransport(sendgridTransport({
 }))
 
 
+exports.getOwners=(req,res,next)=>{
+  
+    Owner.fetchAllOwners()
+                .then(owners=>{
+                   
+                    res.json({message:"All Data returned",allOwners:owners})
+
+                })
+                .catch(err=>console.log(err));
+}
+
 //POST
 exports.ownerRegister = (req,res,next)=>{
   
