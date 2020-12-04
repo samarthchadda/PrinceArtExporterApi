@@ -22,6 +22,10 @@ router.post('/edit-client-phone',clientController.editClientPhone);
 
 router.post('/edit-client-password',clientController.clientResetPwd);
 
+router.post('/check-client-email',clientController.clientCheckEmail);
+
+router.post('/check-client-phone',clientController.clientCheckPhone);
+
 
 router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
 

@@ -86,6 +86,38 @@ exports.clientLogin=(req,res,next)=>{
 }
 
 
+
+exports.clientCheckEmail=(req,res,next)=>{
+    const email = req.body.email;
+
+    Client.findClientByEmail(email)
+                .then(user=>{
+                    if(!user)
+                    {
+                        return res.json({ message:'User does not exist',status:false});
+                    }                                       
+                    res.json({ message:'User Exists',status:true, user:user});
+                   
+                })
+}
+
+
+exports.clientCheckPhone=(req,res,next)=>{
+    const phone = +req.body.phone;
+
+    Client.findClientByPhone(phone)
+                .then(user=>{
+                    if(!user)
+                    {
+                        return res.json({ message:'User does not exist',status:false});
+                    }                                       
+                    res.json({ message:'User Exists',status:true, user:user});
+                   
+                })
+}
+
+
+
 exports.editClientEmail=(req,res,next)=>{
     //parsing data from incoming request
     const clientId = +req.body.clientId;
