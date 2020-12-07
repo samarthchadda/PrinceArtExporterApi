@@ -182,7 +182,7 @@ exports.ownerCheckEmail=(req,res,next)=>{
 }
 
 exports.ownerById=(req,res,next)=>{
-    const ownerId = +req.body.ownerId;
+    const ownerId = +req.params.ownerId;
 
     Owner.findOwnerById(ownerId)
                 .then(user=>{
