@@ -126,8 +126,8 @@ class Appointment
     static findAppointByClientPhoneAndCDate(phone, cDate)
     {
         const db = getDb();
-                            
-        return db.collection('appointments').find({ clientPhone:phone,bookingDate:cDate }).toArray()
+                                                                                                  //ascending order of booking date and booking time
+        return db.collection('appointments').find({ clientPhone:phone,bookingDate:{$gte:cDate}  }).sort({bookingDate:1,bookingTime:1}).toArray()
                                             .then(appointDetail=>{
                                                                                                 
                                                 return appointDetail;  
@@ -138,8 +138,8 @@ class Appointment
     static findAppointByClientPhoneAndPDate(phone, cDate)
     {
         const db = getDb();
-                            
-        return db.collection('appointments').find({ clientPhone:phone,bookingDate:{$lt:cDate} }).toArray()
+                                                                                              //descending order of booking date and booking time
+        return db.collection('appointments').find({ clientPhone:phone,bookingDate:{$lt:cDate} }).sort({bookingDate:-1,bookingTime:-1}).toArray()
                                             .then(appointDetail=>{
                                                                                                 
                                                 return appointDetail;  

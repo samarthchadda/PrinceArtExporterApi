@@ -773,7 +773,23 @@ exports.currentAppoints = (req,res,next)=>{
                     if(appoint.length==0)
                     {
                         return res.json({ message:'Appointment not exist',data:appoint});
-                    }               
+                    }           
+                    appoint.forEach(app=>{       
+                        var a = new Date(app.bookingDate);
+                        // var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                        var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];                    
+                        var year = a.getFullYear();
+                        var month = months[a.getMonth()];
+                        var date = a.getDate();
+                        var hour = a.getHours();
+                        var min = a.getMinutes();
+                        var sec = a.getSeconds();
+                        // var time = year + ' ' + month + ' ' + date + ' ' + hour + ':' + min + ':' + sec ;
+                        var time = year + '-' + month + '-' + date;                    
+                        // console.log(time)
+                        app.bookingDate = time;
+                        // console.log(app)
+                        });    
                     res.json({ message:'Appointment Exists',data:appoint});
                 })
 }
@@ -800,7 +816,24 @@ exports.previousAppoints = (req,res,next)=>{
                     if(appoint.length==0)
                     {
                         return res.json({ message:'Appointment not exist',data:appoint});
-                    }               
+                    }        
+                    appoint.forEach(app=>{       
+                    var a = new Date(app.bookingDate);
+                    // var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                    var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];                    
+                    var year = a.getFullYear();
+                    var month = months[a.getMonth()];
+                    var date = a.getDate();
+                    var hour = a.getHours();
+                    var min = a.getMinutes();
+                    var sec = a.getSeconds();
+                    // var time = year + ' ' + month + ' ' + date + ' ' + hour + ':' + min + ':' + sec ;
+                    var time = year + '-' + month + '-' + date;                    
+                    // console.log(time)
+                    app.bookingDate = time;
+                    // console.log(app)
+                    });
+
                     res.json({ message:'Appointment Exists',data:appoint});
                 })
 }
