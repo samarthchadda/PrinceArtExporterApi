@@ -20,7 +20,7 @@ router.post('/check-owner',ownerController.ownerCheckPhone);
 
 router.post('/check-owner-email',ownerController.ownerCheckEmail);
 
-router.post('/get-owner/:ownerId',ownerController.ownerById);
+router.get('/get-owner/:ownerId',ownerController.ownerById);
 
 router.post('/reset-owner-pwd',ownerController.ownerResetPwd);
 
