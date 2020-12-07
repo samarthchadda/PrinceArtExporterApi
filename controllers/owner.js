@@ -181,6 +181,20 @@ exports.ownerCheckEmail=(req,res,next)=>{
                 })
 }
 
+exports.ownerById=(req,res,next)=>{
+    const ownerId = +req.body.ownerId;
+
+    Owner.findOwnerById(ownerId)
+                .then(user=>{
+                    if(!user)
+                    {
+                        return res.json({ message:'User does not exist',status:false});
+                    }                                       
+                    res.json({ message:'User Exists',status:true, user:user});
+                   
+                })
+}
+
 
 exports.ownerResetPwd=(req,res,next)=>{
     const email = req.body.email;
