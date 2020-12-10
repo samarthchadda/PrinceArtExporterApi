@@ -109,9 +109,10 @@ router.post('/edit-employee',upload.single('empPhoto'),(req,res,next)=>{
     const empNm = req.body.empNm;
     const empType = req.body.empType;
     let services = [];
-    let empServices = req.body.empServices;
-    services = empServices.split(',');
-    console.log(services);
+    let empServicesId = req.body.empServicesId;
+    empServicesId = empServicesId.split(',');
+    empServicesId = empServicesId.map(emp=>emp.trim())
+    console.log(empServicesId);
 
     var imagekit = new ImageKit({
         publicKey : "public_WlmDyQDHleOQopDhwUECOh0zPKU=",
@@ -143,7 +144,7 @@ router.post('/edit-employee',upload.single('empPhoto'),(req,res,next)=>{
             
           empDoc.empName = empNm;   
           empDoc.empType = empType;   
-          empDoc.empServices = services;              
+          empDoc.empServices = empServicesId;              
           empDoc.empImg = result.url;            
            
            
