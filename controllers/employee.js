@@ -1,6 +1,9 @@
 
 const Employee = require('../models/employee');
 
+const Service = require('../models/services');
+
+
 const getDb = require('../util/database').getDB; 
 
 
@@ -39,6 +42,7 @@ exports.getSingleEmployee=(req,res,next)=>{
 exports.getSaloonEmployees=(req,res,next)=>{
 
     const saloonId = req.params.saloonId;
+    let count = 0;
 
     Employee.findEmployeesBySaloonID(JSON.parse(saloonId))
                     .then(employees=>{
@@ -46,8 +50,39 @@ exports.getSaloonEmployees=(req,res,next)=>{
                         {
                             return res.json({ message:'Employee does not exist',data:employees});
                         }
+                        let services = [];
+                        employees.forEach(emp=>{
+                            count = count+1;
+                            emp.empServices.forEach(serId=>{
+                                serId = +serId;
+                                Service.findServiceByServiceID(+serId)
+                                        .then(servData=>{    
+                                          services.push(servData);   
+                                        //   console.log(services);    
+                                        if(services.length==emp.empServices.length)
+                                        {   
+                                           emp.empServices = services;
+                                        //   console.log("EMP Service: ",emp.empServices)   
+                                          res.json({message:"All Employees returned",data:employees});   
+                                        }                                
+                                       
+                                          
+                                        })
+                                        .catch(err=>console.log(err))    
+                            })
+                            // console.log(emp.empServices)
+                            // emp.empServices = services;
+                            
+                        // if(count==employees.length)
+                        // {
+                        //     console.log(count)
+                        //     res.json({message:"All Employees returned",data:employees});   
+                        // }  
+                        
+                     
+                        })
 
-                        res.json({message:"All Employees returned",data:employees});
+
                     })
 
 }
