@@ -28,8 +28,8 @@ router.post('/post-employee',upload.single('empPhoto'),(req,res,next)=>{
     const empNm = req.body.empNm;
     const empType = req.body.empType;
     let services = [];
-    let empServices = req.body.empServices;
-    services = empServices.split(',');
+    let empServicesId = req.body.empServicesId;
+    services = empServicesId.split(',');
     console.log(services);
 
     var imagekit = new ImageKit({

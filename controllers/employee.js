@@ -89,6 +89,7 @@ exports.getSaloonEmployees=(req,res,next)=>{
 
 
 
+
 exports.delEmployee=(req,res,next)=>{
 
     const empId = +req.params.empId;
