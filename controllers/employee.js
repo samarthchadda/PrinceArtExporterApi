@@ -50,8 +50,9 @@ exports.getSaloonEmployees=(req,res,next)=>{
                         {
                             return res.json({ message:'Employee does not exist',data:employees});
                         }
-                        let services = [];
+                        
                         employees.forEach(emp=>{
+                            let services = [];
                             count = count+1;
                             emp.empServices.forEach(serId=>{
                                 serId = +serId;
@@ -62,14 +63,18 @@ exports.getSaloonEmployees=(req,res,next)=>{
                                         if(services.length==emp.empServices.length)
                                         {   
                                            emp.empServices = services;
+                                        //    console.log("Employees :",employees);
+                                           return false;
+                                           
                                         //   console.log("EMP Service: ",emp.empServices)   
-                                          res.json({message:"All Employees returned",data:employees});   
-                                        }                                
-                                       
-                                          
-                                        })
-                                        .catch(err=>console.log(err))    
+                                        //   res.json({message:"All Employees returned",data:employees});   
+                                        }                          
+                                                                                 
+                                        })                                       
+                                        
                             })
+                           
+                           
                             // console.log(emp.empServices)
                             // emp.empServices = services;
                             
@@ -78,10 +83,15 @@ exports.getSaloonEmployees=(req,res,next)=>{
                         //     console.log(count)
                         //     res.json({message:"All Employees returned",data:employees});   
                         // }  
-                        
+                       
                      
                         })
-
+                        setTimeout(()=>{
+                            // console.log(employees);
+                            res.json({message:"All Employees returned",data:employees});   
+                        },1000)
+                        
+                        
 
                     })
 
