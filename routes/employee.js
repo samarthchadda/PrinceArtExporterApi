@@ -29,8 +29,9 @@ router.post('/post-employee',upload.single('empPhoto'),(req,res,next)=>{
     const empType = req.body.empType;
     let services = [];
     let empServicesId = req.body.empServicesId;
-    services = empServicesId.split(',');
-    console.log(services);
+    empServicesId = empServicesId.split(',');
+    empServicesId = empServicesId.map(emp=>emp.trim())
+    console.log(empServicesId);
 
     var imagekit = new ImageKit({
         publicKey : "public_WlmDyQDHleOQopDhwUECOh0zPKU=",
@@ -73,7 +74,7 @@ router.post('/post-employee',upload.single('empPhoto'),(req,res,next)=>{
                 
                              const db = getDb();
                 
-                            const employee = new Employee(empID,saloonId,empNm,empType,result.url,services);
+                            const employee = new Employee(empID,saloonId,empNm,empType,result.url,empServicesId);
                             //saving in database
                         
                             employee.save()
