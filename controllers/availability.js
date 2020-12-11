@@ -1,6 +1,8 @@
 
 const Availability = require('../models/availability');
 
+const Appointment = require('../models/appointment');
+
 const getDb = require('../util/database').getDB; 
 
 
@@ -81,6 +83,81 @@ exports.getSingleEmpAvailDataByDate=(req,res,next)=>{
            
             // console.log(new Date(availDoc.startDate))
              res.json({status:true, data:availDoc});
+        }
+        else{
+            res.json({status:false,message:"No such availability exist"});
+        }          
+
+    })    
+}
+
+
+
+exports.getSingleEmpAvailDataBySingleDate=(req,res,next)=>{
+  
+    const empId = +req.body.empId;
+    let day = req.body.day;
+    let oneDate = req.body.oneDate;    
+
+    oneDate = new Date(oneDate).getTime();
+    console.log(oneDate);
+
+    if(day.toLowerCase() == "monday")
+    {
+        statusKey = 0;
+    }
+    if(day.toLowerCase() == "tuesday")
+    {
+        statusKey = 1;
+    }
+    if(day.toLowerCase() == "wednesday")
+    {
+        statusKey = 2;
+    }
+    if(day.toLowerCase() == "thursday")
+    {
+        statusKey = 3;
+    }
+    if(day.toLowerCase() == "friday")
+    {
+        statusKey = 4;
+    }
+    if(day.toLowerCase() == "saturday")
+    {
+        statusKey = 5;
+    }
+    if(day.toLowerCase() == "sunday")
+    {
+        statusKey = 6;
+    }
+   
+   
+    Availability.findAvailByEmpIdAndSingleDate(empId,oneDate)
+    .then(availDoc=>{
+       
+        if(availDoc){
+
+            Appointment.findAppointByEmpIdAndDate(availDoc.empId,oneDate)
+                    .then(appoint=>{
+                        if(appoint.length!=0)
+                        {
+                            let appointArr = [];
+                            appoint.forEach(app=>{
+                                appointArr.push(app.bookingTime);
+                            })
+
+                            if(appoint.length==appointArr.length)
+                            {
+                                res.json({status:true, availData:availDoc.timeslot[statusKey],appointData:appointArr});
+                            }
+                           
+                        }
+                        else{
+                            res.json({status:false,message:"No such appointment exist"});
+                        }          
+                
+                    })          
+            
         }
         else{
             res.json({status:false,message:"No such availability exist"});

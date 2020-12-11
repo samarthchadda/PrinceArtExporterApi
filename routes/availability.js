@@ -16,6 +16,8 @@ router.get('/all-saloon-availabilities/:saloonId',availController.getSingleSaloo
 
 router.post('/emp-date-availability',availController.getSingleEmpAvailDataByDate);
 
+router.post('/emp-onedate-avail',availController.getSingleEmpAvailDataBySingleDate);
+
 router.post('/saloon-date-availability',availController.getSingleSaloonAvailDataByDate);
 
 

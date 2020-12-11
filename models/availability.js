@@ -64,6 +64,20 @@ class Availability
     }
 
     
+    static findAvailByEmpIdAndSingleDate(id,sDate)
+    {
+        const db = getDb();
+                            
+        return db.collection('availabilities').findOne({ empId:id ,startDate:sDate})
+                                            .then(avail=>{
+                                                                                                
+                                                return avail;  
+                                            })
+                                            .catch(err=>console.log(err));
+
+    }
+
+    
     static findAvailBySaloonIdAndDate(id,sDate,eDate)
     {
         const db = getDb();
