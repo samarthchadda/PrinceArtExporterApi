@@ -89,7 +89,7 @@ class Appointment
     {
         const db = getDb();
                             
-        return db.collection('appointments').find({ empId:eid,bookingDate:bDate }).toArray()
+        return db.collection('appointments').find({ empId:eid,bookingDate:bDate }).sort({bookingTime:1}).toArray()
                                             .then(appointDetail=>{
                                                                                                 
                                                 return appointDetail;  

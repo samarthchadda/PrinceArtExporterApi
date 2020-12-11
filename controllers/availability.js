@@ -137,18 +137,103 @@ exports.getSingleEmpAvailDataBySingleDate=(req,res,next)=>{
        
         if(availDoc){
 
+            let availArr = [];
+            availDoc.timeslot[statusKey].forEach(avail=>{
+                var timePartsStart = avail.srtTime.split(":");
+                timePartsStart = Number(timePartsStart[0]) * 60 + Number(timePartsStart[1]);
+                // avail.srtTime = timePartsStart;
+                // console.log(timePartsStart);
+
+                var timePartsEnd = avail.endTime.split(":");
+                timePartsEnd = Number(timePartsEnd[0]) * 60 + Number(timePartsEnd[1]);
+                // avail.endTime = timePartsEnd;
+                // console.log(timePartsEnd);
+                
+                availArr.push(avail);
+            })
+            if(availDoc.timeslot[statusKey].length == availArr.length)
+            {
+
             Appointment.findAppointByEmpIdAndDate(availDoc.empId,oneDate)
                     .then(appoint=>{
                         if(appoint.length!=0)
                         {
                             let appointArr = [];
                             appoint.forEach(app=>{
+                                var timePartsStart = app.bookingTime.srtTime.split(":");
+                                timePartsStart = Number(timePartsStart[0]) * 60 + Number(timePartsStart[1]);
+                                // app.bookingTime.srtTime = timePartsStart;
+                                // console.log(timePartsStart);
+
+                                var timePartsEnd = app.bookingTime.endTime.split(":");
+                                timePartsEnd = Number(timePartsEnd[0]) * 60 + Number(timePartsEnd[1]);
+                                // app.bookingTime.endTime = timePartsEnd;
+                                // console.log(timePartsEnd);
+                                
+
                                 appointArr.push(app.bookingTime);
                             })
 
                             if(appoint.length==appointArr.length)
                             {
-                                res.json({status:true, availData:availDoc.timeslot[statusKey],appointData:appointArr});
+                                let newTime = [];
+                                appointArr.forEach(app=>{
+                                    availArr.forEach(avl=>{
+                                        if(app.srtTime>=avl.srtTime&&app.srtTime<avl.endTime&&app.endTime>=avl.srtTime&&app.endTime<=avl.endTime)
+                                        {
+                                            let time1 = avl.srtTime;
+                                            let time2 = app.srtTime;
+                                           
+                                            if(time1!=time2)
+                                            {
+                                                let srHR1 = Math.floor(time1/60);
+                                                let srMI1 = time1%60;
+                                                if(srMI1==0 || srMI1==1 || srMI1==2 || srMI1==3 || srMI1==4 || srMI1==5 || srMI1==6 || srMI1==7 ||srMI1==8 ||srMI1==9   )
+                                                {
+                                                    srMI1 = "0"+srMI1;
+                                                }
+                                                let finalTime1 = srHR1+":"+srMI1
+
+                                                let srHR2 = Math.floor(time2/60);
+                                                let srMI2 = time2%60;
+                                                if(srMI2==0 || srMI2==1 || srMI2==2 || srMI2==3 || srMI2==4 || srMI2==5 || srMI2==6 || srMI2==7 ||srMI2==8 ||srMI2==9 )
+                                                {
+                                                    srMI2 = "0"+srMI2;
+                                                }
+                                                let finalTime2 = srHR2+":"+srMI2
+                                                newTime.push({srtTime:finalTime1,endTime:finalTime2});
+                                                // newTime.push({srtTime:time1,endTime:time2});
+                                            }
+                                            
+                                            let time3 = app.endTime;
+                                            let time4 = avl.endTime;
+                                            if(time3!=time4)
+                                            {
+                                                let srHR3 = Math.floor(time3/60);
+                                                let srMI3 = time3%60;
+                                                if(srMI3==0)
+                                                {
+                                                    srMI3 = "0"+srMI3;
+                                                }
+                                                let finalTime3 = srHR3+":"+srMI3;
+
+                                                let srHR4 = Math.floor(time4/60);
+                                                let srMI4 = time4%60;
+                                                if(srMI4==0)
+                                                {
+                                                    srMI4 = "0"+srMI4;
+                                                }
+                                                let finalTime4 = srHR4+":"+srMI4
+                                                newTime.push({srtTime:finalTime3,endTime:finalTime4});
+                                                // newTime.push({srtTime:time3,endTime:time4});
+                                            }
+                                           
+                                        }
+                                    })
+                                })
+                                // console.log(newTime);
+                               
+                                res.json({status:true, availData:availArr,appointData:appointArr});
                             }
                            
                         }
@@ -156,7 +241,8 @@ exports.getSingleEmpAvailDataBySingleDate=(req,res,next)=>{
                             res.json({status:false,message:"No such appointment exist"});
                         }          
                 
-                    })          
+                    })         
+                } 
             
         }
         else{
