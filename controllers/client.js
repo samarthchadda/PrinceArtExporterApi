@@ -75,6 +75,22 @@ exports.getClients=(req,res,next)=>{
                 .catch(err=>console.log(err));
 }
 
+exports.getSingleClient=(req,res,next)=>{
+    
+    const id = +req.params.id;
+   
+    Client.findClientByClientId(JSON.parse(id))
+                .then(appoint=>{
+                    if(!appoint)
+                    {
+                        return res.json({status:false, message:'Client does not exist',data:null});
+                    }
+
+                    res.json({status:true, message:'Client exists',client:appoint});
+                })
+
+}
+
 
 //LOGIN
 exports.clientLogin=(req,res,next)=>{

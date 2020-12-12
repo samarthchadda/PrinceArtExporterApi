@@ -16,6 +16,8 @@ router.post('/client-login',clientController.clientLogin);
 
 router.get('/all-clients',clientController.getClients);
 
+router.get('/all-clients/:id',clientController.getSingleClient);
+
 router.post('/edit-client-email',clientController.editClientEmail);
 
 router.post('/edit-client-name',clientController.editClientName);
