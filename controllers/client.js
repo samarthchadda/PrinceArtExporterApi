@@ -63,6 +63,19 @@ const getDb = require('../util/database').getDB;
 
 
 
+
+exports.getClients=(req,res,next)=>{
+  
+    Client.fetchAllClients()
+                .then(owners=>{
+                   
+                    res.json({message:"All Data returned",allClients:owners})
+
+                })
+                .catch(err=>console.log(err));
+}
+
+
 //LOGIN
 exports.clientLogin=(req,res,next)=>{
     const email = req.body.email;

@@ -14,6 +14,8 @@ var fs = require('fs');
 
 router.post('/client-login',clientController.clientLogin);
 
+router.get('/all-clients',clientController.getClients);
+
 router.post('/edit-client-email',clientController.editClientEmail);
 
 router.post('/edit-client-name',clientController.editClientName);

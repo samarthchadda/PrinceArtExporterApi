@@ -64,6 +64,17 @@ class Client
     }
 
 
+    static fetchAllClients()
+    {
+        const db = getDb();
+        return db.collection('clients').find().toArray()
+                            .then(ownerData=>{
+                               
+                                return ownerData;
+                            })
+                            .catch(err=>console.log(err));
+    }
+
 }
 
 
