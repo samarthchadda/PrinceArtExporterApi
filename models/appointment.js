@@ -38,7 +38,7 @@ class Appointment
     static fetchAllAppointments()
     {
         const db = getDb();
-        return db.collection('appointments').find().sort({bookingDate:1,bookingTime:1}).toArray()
+        return db.collection('appointments').find().sort({bookingDate:-1,bookingTime:-1}).toArray()
                             .then(appointData=>{
                                
                                 return appointData;
