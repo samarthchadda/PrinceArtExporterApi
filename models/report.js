@@ -1,0 +1,67 @@
+const mongodb = require('mongodb');
+const getDb = require('../util/database').getDB; 
+
+const ObjectId = mongodb.ObjectId;
+
+class Report
+{
+    constructor(email,phone,description,screenShot)
+    {        
+        this.email = email;
+        this.phone = phone;
+        this.description = description;  
+        this.screenShot = screenShot;
+      
+    }
+
+
+    save()
+    {
+        const db = getDb();
+        return db.collection('reports').insertOne(this);
+                              
+    }
+
+    static findReportByEmail(email)
+    {
+        const db = getDb();
+                            
+        return db.collection('reports').findOne({ email:email })
+                                            .then(report=>{                                                
+                                                
+                                                return report;  
+                                            })
+                                            .catch(err=>console.log(err));
+
+    }
+
+    static findReportByPhone(phone)
+    {
+        const db = getDb();
+                            
+        return db.collection('reports').findOne({ phone:phone })
+                                            .then(report=>{                                                
+                                                
+                                                return report;  
+                                            })
+                                            .catch(err=>console.log(err));
+
+    }
+
+  
+    static fetchAllReports()
+    {
+        const db = getDb();
+        return db.collection('reports').find().toArray()
+                            .then(reportData=>{
+                               
+                                return reportData;
+                            })
+                            .catch(err=>console.log(err));
+    }
+
+}
+
+
+module.exports = Report;
+
