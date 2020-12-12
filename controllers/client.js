@@ -301,3 +301,26 @@ exports.clientResetPwd=(req,res,next)=>{
                                 .catch(err=>console.log(err));
                 })
 }
+
+
+
+exports.delClient=(req,res,next)=>{
+
+    const clientId = +req.params.clientId;
+
+    Client.findClientByClientId(JSON.parse(clientId))
+                    .then(client=>{
+                        if(!client)
+                        {
+                            return res.json({ message:'Client does not exist',status:false});
+                        }
+
+                        const db = getDb();
+                        db.collection('clients').deleteOne({clientId:clientId})
+                                    .then(resultData=>{
+                                        
+                                        res.json({message:'Client Deleted',status:true});
+                                    })
+                                    .catch(err=>console.log(err));
+                    })
+}
