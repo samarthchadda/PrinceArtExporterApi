@@ -203,6 +203,8 @@ exports.getFavSaloons=(req,res,next)=>{
                     }
 
                     let saloonDataArr = [];
+                    if( appoint.favourites.length>0)
+                    {
                     appoint.favourites.forEach(fav=>{
                         Saloon.findSaloonBySaloonID(+fav)
                         .then(saloonData=>{
@@ -215,6 +217,9 @@ exports.getFavSaloons=(req,res,next)=>{
                         })                      
 
                     })
+                }else{
+                    res.json({status:true, message:'Client exists',favourites:[],favSaloons:[]});
+                }
                     
 
                 })
