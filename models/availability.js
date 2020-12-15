@@ -68,7 +68,7 @@ class Availability
     {
         const db = getDb();
                             
-        return db.collection('availabilities').findOne({ empId:id ,startDate:sDate})
+        return db.collection('availabilities').findOne({ empId:id ,startDate:{$lte:sDate},endDate:{$gte:sDate}})
                                             .then(avail=>{
                                                                                                 
                                                 return avail;  

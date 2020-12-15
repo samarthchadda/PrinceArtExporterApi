@@ -244,7 +244,7 @@ exports.getSingleEmpAvailDataBySingleDate=(req,res,next)=>{
                            
                         }
                         else{
-                            res.json({status:false,message:"No such appointment exist"});
+                            res.json({status:true, availData:availArr,appointData:[]});
                         }          
                 
                     })         
