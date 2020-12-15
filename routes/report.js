@@ -22,7 +22,9 @@ router.post('/post-report-photo',upload.single('reportPhoto'),(req,res,next)=>{
     });
     
     var base64Img = req.file.buffer; 
+    console.log(req.file.mimetype);
 
+    if (req.file.mimetype === 'image/jpeg' || req.file.mimetype === 'image/png') {
         imagekit.upload({
             file : base64Img, //required
             fileName : "reportImg.jpg"   //required
@@ -35,7 +37,13 @@ router.post('/post-report-photo',upload.single('reportPhoto'),(req,res,next)=>{
                 res.json({message:'Image uploaded',status:true,imgUrl:result.url});          
   
                 }
-            });      
+            });  
+    }
+    else{
+        res.json({message:'Only JPEG/PNG images can be uploaded',status:false});         
+    }
+
+            
 
            
            
