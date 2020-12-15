@@ -34,6 +34,10 @@ router.post('/check-client-email',clientController.clientCheckEmail);
 
 router.post('/check-client-phone',clientController.clientCheckPhone);
 
+router.post('/client-fav-saloon',clientController.clientFavSaloon);
+
+router.get('/all-fav-saloons/:clientId',clientController.getFavSaloons);
+
 
 router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
 

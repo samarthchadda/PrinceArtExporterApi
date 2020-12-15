@@ -1,6 +1,8 @@
 
 const Client = require('../models/client');
 
+const Saloon = require('../models/saloon');
+
 const getDb = require('../util/database').getDB; 
 
 
@@ -143,6 +145,80 @@ exports.clientCheckPhone=(req,res,next)=>{
                     res.json({ message:'User Exists',status:true, user:user});
                    
                 })
+}
+
+
+exports.clientFavSaloon=(req,res,next)=>{
+    const clientId = +req.body.clientId;
+    const saloonId = +req.body.saloonId;
+   
+    Client.findClientByClientId(clientId)
+             .then(clientDoc=>{
+                 if(!clientDoc)
+                 {
+                     return res.json({ message:'Client does not exist',status:false});
+                 }
+                
+                 let index = clientDoc.favourites.indexOf(saloonId)
+                 
+                 if(index!=-1)
+                 {
+                    clientDoc.favourites.splice(index,1)
+                    const db = getDb();
+                    db.collection('clients').updateOne({clientId:clientId},{$set:clientDoc})
+                                .then(resultData=>{
+                                    
+                                    res.json({message:'Removed from favourites',status:true,client:clientDoc});
+                                })
+                                .catch(err=>console.log(err));
+                   
+                 }
+                 else{
+                    clientDoc.favourites.push(saloonId);
+                 
+                    const db = getDb();
+                    db.collection('clients').updateOne({clientId:clientId},{$set:clientDoc})
+                                .then(resultData=>{
+                                    
+                                    res.json({message:'Add to favourites',status:true,client:clientDoc});
+                                })
+                                .catch(err=>console.log(err));
+                 }
+
+            
+             })
+}
+
+
+
+exports.getFavSaloons=(req,res,next)=>{
+    
+    const clientId = +req.params.clientId;
+   
+    Client.findClientByClientId(JSON.parse(clientId))
+                .then(appoint=>{
+                    if(!appoint)
+                    {
+                        return res.json({status:false, message:'Client does not exist'});
+                    }
+
+                    let saloonDataArr = [];
+                    appoint.favourites.forEach(fav=>{
+                        Saloon.findSaloonBySaloonID(+fav)
+                        .then(saloonData=>{
+                            saloonDataArr.push(saloonData)
+                            // console.log(saloonDataArr)
+                            if(saloonDataArr.length==appoint.favourites.length)
+                            {
+                                res.json({status:true, message:'Client exists',favourites:appoint.favourites,favSaloons:saloonDataArr});
+                            }
+                        })                      
+
+                    })
+                    
+
+                })
+
 }
 
 

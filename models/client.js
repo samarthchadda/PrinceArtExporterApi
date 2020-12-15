@@ -13,6 +13,7 @@ class Client
         this.email = email;        
         this.password = pwd;
         this.clientImg = img;
+        this.favourites = [];
       
     }
 
