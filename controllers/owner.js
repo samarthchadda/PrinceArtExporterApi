@@ -71,7 +71,7 @@ exports.ownerRegister = (req,res,next)=>{
     const ownerImg = null;
     const isVerified = false;
     const regDate = new Date().getTime();
-    const token = null;
+    const deviceToken = req.body.deviceToken;
 
     Owner.findOwnerByEmail(email)
                 .then(userDoc=>{
@@ -99,7 +99,7 @@ exports.ownerRegister = (req,res,next)=>{
                         db.collection('ownerCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const owner = new Owner(onwerID,ownerName,email,phone,password,ownerImg,isVerified,regDate,token);
+                            const owner = new Owner(onwerID,ownerName,email,phone,password,ownerImg,isVerified,regDate,deviceToken);
                             //saving in database
                         
                             return owner.save()

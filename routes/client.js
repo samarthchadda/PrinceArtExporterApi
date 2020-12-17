@@ -48,7 +48,7 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
     const phone = +req.body.phone;
     const email = req.body.email;    
     const password = req.body.password;
-    const token = null;
+    const deviceToken = req.body.deviceToken;
     const imgUrl = req.body.imgUrl;
 
        // adding auto-generated id
@@ -100,7 +100,7 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
                     
                                 const db = getDb();
                                 console.log(imgUrl);
-                                const client = new Client(clientID,clientName,phone,email,password,result.url,token);
+                                const client = new Client(clientID,clientName,phone,email,password,result.url,deviceToken);
 
                                 //saving in database                        
                                 client.save()
