@@ -49,7 +49,13 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
     const email = req.body.email;    
     const password = req.body.password;
     const token = null;
+    const imgUrl = req.body.imgUrl;
 
+       // adding auto-generated id
+       let newVal;
+       const db = getDb();   
+    if(imgUrl==null|| imgUrl=="")
+    {
     var imagekit = new ImageKit({
         publicKey : "public_WlmDyQDHleOQopDhwUECOh0zPKU=",
         privateKey : "private_0YX4jtTBzNLifx3C2Egcgb1xNZs=",
@@ -57,10 +63,8 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
     });
     
     var base64Img = req.file.buffer;
-
-    // adding auto-generated id
-    let newVal;
-    const db = getDb();     
+    
+   
     db.collection('clientCounter').find().toArray().then(data=>{
         
         newVal = data[data.length-1].count;
@@ -95,7 +99,7 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
                                 console.log(result.url);
                     
                                 const db = getDb();
-                    
+                                console.log(imgUrl);
                                 const client = new Client(clientID,clientName,phone,email,password,result.url,token);
 
                                 //saving in database                        
@@ -123,6 +127,65 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
                     res.json({status:false,error:err})
                 })             
      })
+    }
+    else{
+        db.collection('clientCounter').find().toArray().then(data=>{
+        
+            newVal = data[data.length-1].count;
+           
+            newVal = newVal + 1;
+            console.log(newVal);
+           
+            clientID = newVal;
+            
+            db.collection('clientCounter').insertOne({count:newVal})
+                    .then(result=>{
+    
+                   Client.findClientByEmail(email)
+                    .then(client=>{
+                        if(client){                        
+                            return res.json({status:false, message:'Client already exists(Enter unique email)'});
+                        }
+    
+                        Client.findClientByPhone(phone)
+                        .then(client=>{
+                            if(client){                        
+                                return res.json({status:false, message:'Client already exists(Enter unique phone)'});
+                            }
+                            
+                           
+                                    // console.log(result.url);
+                        
+                                    const db = getDb();
+                                    console.log(imgUrl);
+                                    client = new Client(clientID,clientName,phone,email,password,imgUrl,token);
+    
+                                    //saving in database                        
+                                    client.save()
+                                    .then(resultData=>{
+                                        
+                                        res.json({status:true,message:"Client Added",data:resultData["ops"][0]});
+                                        
+                                    })
+                                    .catch(err=>{
+                                        res.json({status:false,message:"Client not added"});
+                                        
+                                    });                
+                                
+                            
+                        })
+    
+                    }).catch(err=>console.log(err));                
+                                       
+                    })
+                    .then(resultData=>{
+                       
+                    })
+                    .catch(err=>{
+                        res.json({status:false,error:err})
+                    })             
+         }) 
+    }
 });
 
 
