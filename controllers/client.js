@@ -326,6 +326,34 @@ exports.editClientPhone=(req,res,next)=>{
              })
 }
 
+
+exports.editClientToken=(req,res,next)=>{
+    //parsing data from incoming request
+    const clientId = +req.body.clientId;
+    const deviceToken = req.body.deviceToken;
+   
+    Client.findClientByClientId(JSON.parse(+clientId))
+             .then(clientDoc=>{
+                 if(!clientDoc)
+                 {
+                     return res.json({ message:'Client does not exist',status:false});
+                 }              
+
+                     clientDoc.deviceToken = deviceToken;
+                 
+                     const db = getDb();
+                     db.collection('clients').updateOne({clientId:clientId},{$set:clientDoc})
+                                 .then(resultData=>{
+                                     
+                                     res.json({message:'Details Updated',status:true,client:clientDoc});
+                                 })
+                                 .catch(err=>console.log(err));
+                               
+             })
+}
+
+
+
 exports.editClientName=(req,res,next)=>{
     //parsing data from incoming request
     const clientId = +req.body.clientId;

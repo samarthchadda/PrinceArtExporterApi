@@ -28,6 +28,8 @@ router.post('/edit-client-name',clientController.editClientName);
 
 router.post('/edit-client-phone',clientController.editClientPhone);
 
+router.post('/edit-client-token',clientController.editClientToken);
+
 router.post('/edit-client-password',clientController.clientResetPwd);
 
 router.post('/check-client-email',clientController.clientCheckEmail);
@@ -46,6 +48,7 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
     const phone = +req.body.phone;
     const email = req.body.email;    
     const password = req.body.password;
+    const token = null;
 
     var imagekit = new ImageKit({
         publicKey : "public_WlmDyQDHleOQopDhwUECOh0zPKU=",
@@ -93,7 +96,7 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
                     
                                 const db = getDb();
                     
-                                const client = new Client(clientID,clientName,phone,email,password,result.url);
+                                const client = new Client(clientID,clientName,phone,email,password,result.url,token);
 
                                 //saving in database                        
                                 client.save()

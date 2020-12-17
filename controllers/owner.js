@@ -71,6 +71,7 @@ exports.ownerRegister = (req,res,next)=>{
     const ownerImg = null;
     const isVerified = false;
     const regDate = new Date().getTime();
+    const token = null;
 
     Owner.findOwnerByEmail(email)
                 .then(userDoc=>{
@@ -98,7 +99,7 @@ exports.ownerRegister = (req,res,next)=>{
                         db.collection('ownerCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const owner = new Owner(onwerID,ownerName,email,phone,password,ownerImg,isVerified,regDate);
+                            const owner = new Owner(onwerID,ownerName,email,phone,password,ownerImg,isVerified,regDate,token);
                             //saving in database
                         
                             return owner.save()
@@ -328,6 +329,34 @@ exports.editOwner=(req,res,next)=>{
                  {
                     ownerDoc.phone = phone;
                  }
+
+                 const db = getDb();
+                 db.collection('owners').updateOne({ownerId:ownerId},{$set:ownerDoc})
+                             .then(resultData=>{
+                                 
+                                 res.json({message:'Details Updated',status:true,owner:ownerDoc});
+                             })
+                             .catch(err=>console.log(err));
+             })
+}
+
+
+
+
+exports.editOwnerToken=(req,res,next)=>{
+    //parsing data from incoming request
+    const ownerId = +req.body.ownerId;
+    const deviceToken = req.body.deviceToken;    
+
+    Owner.findOwnerById(+ownerId)
+             .then(ownerDoc=>{
+                 if(!ownerDoc)
+                 {
+                     return res.json({ message:'Owner does not exist',status:false});
+                 }
+                
+                ownerDoc.deviceToken = deviceToken;
+                
 
                  const db = getDb();
                  db.collection('owners').updateOne({ownerId:ownerId},{$set:ownerDoc})

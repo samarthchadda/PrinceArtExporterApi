@@ -5,7 +5,7 @@ const ObjectId = mongodb.ObjectId;
 
 class Client
 {
-    constructor(id,name,phone,email,pwd,img)
+    constructor(id,name,phone,email,pwd,img,token)
     {
         this.clientId = id;
         this.clientName = name;
@@ -14,6 +14,7 @@ class Client
         this.password = pwd;
         this.clientImg = img;
         this.favourites = [];
+        this.deviceToken = token;
       
     }
 
