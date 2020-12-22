@@ -144,6 +144,9 @@ exports.getSaloonsByMonth=(req,res,next)=>{
             // console.log(allData)
             if(dates.length == allData.length)
             {
+                allData.sort((a, b) => {
+                    return a.month - b.month;
+                });
                 res.json({message:"All Data returned",allSaloons:allData})
             }
 

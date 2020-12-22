@@ -219,7 +219,10 @@ exports.getClientsByMonth=(req,res,next)=>{
             allData.push({month:d.month.toString(),clients:saloons.length})
             // console.log(allData)
             if(dates.length == allData.length)
-            {
+            {   
+                allData.sort((a, b) => {
+                    return a.month - b.month;
+                });
                 res.json({message:"All Data returned",allClients:allData})
             }
 
