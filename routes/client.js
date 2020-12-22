@@ -16,6 +16,8 @@ router.post('/client-login',clientController.clientLogin);
 
 router.get('/all-clients',clientController.getClients);
 
+router.get('/all-clients-month',clientController.getClientsByMonth);
+
 router.get('/all-clients/:id',clientController.getSingleClient);
 
 router.post('/edit-client-details',clientController.editClientDetails);
@@ -50,6 +52,7 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
     const password = req.body.password;
     const deviceToken = req.body.deviceToken;
     const imgUrl = req.body.imgUrl;
+    const regDate = new Date().getTime();
 
        // adding auto-generated id
        let newVal;
@@ -100,7 +103,7 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
                     
                                 const db = getDb();
                                 console.log(imgUrl);
-                                const client = new Client(clientID,clientName,phone,email,password,result.url,deviceToken);
+                                const client = new Client(clientID,clientName,phone,email,password,result.url,deviceToken,regDate);
 
                                 //saving in database                        
                                 client.save()

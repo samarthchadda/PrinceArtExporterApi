@@ -117,6 +117,119 @@ exports.clientLogin=(req,res,next)=>{
 }
 
 
+exports.getClientsByMonth=(req,res,next)=>{
+    var monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+
+    var today = new Date();
+    var d;
+    var months = [];
+    var d = new Date();
+    var year = d.getFullYear();
+
+        //for last 6 months(including current month)
+    // for(var i = 5; i > -1; i -= 1) {
+
+        //for last 6 months(excluding current month)
+    for(var i = 6; i > 0; i -= 1) {
+      d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      months.push(monthNames[d.getMonth()]);
+    //   console.log(month);
+    }
+    // console.log(months)
+    let dates = [];
+    months.forEach(m=>{
+        
+        if(m=="january")
+        {
+            m = 0;
+        }
+        if(m=="february")
+        {
+            m = 1;
+        }
+        if(m=="march")
+        {
+            m = 2;
+        }
+        if(m=="april")
+        {
+            m = 3;
+        }
+        if(m=="may")
+        {
+            m = 4;
+        }
+        if(m=="june")
+        {
+            m = 5;
+        }
+        if(m=="july")
+        {
+            m = 6;
+        }
+        if(m=="august")
+        {
+            m = 7;
+        }
+        if(m=="september")
+        {
+            m = 8;
+        }
+        if(m=="october")
+        {
+            m = 9;
+        }
+        if(m=="november")
+        {
+            m = 10;
+        }
+        if(m=="december")
+        {
+            m = 11;
+        }
+        
+        
+        const firstDay = new Date(year, m, 1);
+        // alert(firstDay.getDate());
+        const lastDay = new Date(year, m + 1, 0);
+        // alert(lastDay.getDate());
+        // console.log(firstDay,lastDay)
+        m = m+1;
+        m = m<10?"0"+m:m;   
+        dates.push({
+                        srtDate: firstDay.getDate()<10?year.toString()+"-"+m.toString()+"-0"+firstDay.getDate().toString():year.toString()+"-"+m.toString()+"-"+firstDay.getDate().toString(),
+                        endDate: lastDay.getDate()<10?year.toString()+"-"+m.toString()+"-0"+lastDay.getDate().toString():year.toString()+"-"+m.toString()+"-"+lastDay.getDate().toString(),
+                        month:m
+                    });
+  
+    })
+    // console.log(dates)
+    var allData = [];
+    dates.forEach(d=>{
+        let startDate = d.srtDate;
+        startDate = new Date(startDate).getTime();
+        // console.log(startDate);
+    
+        let endDate = d.endDate;
+        endDate = new Date(endDate).getTime();
+        // console.log(startDate,endDate)
+        Client.findClientByDates(startDate,endDate)
+        .then(saloons=>{
+            // console.log(saloons.length)
+            allData.push({month:d.month.toString(),clients:saloons.length})
+            // console.log(allData)
+            if(dates.length == allData.length)
+            {
+                res.json({message:"All Data returned",allClients:allData})
+            }
+
+        })
+        .catch(err=>console.log(err));
+    })
+   
+}
+
+
 
 exports.clientCheckEmail=(req,res,next)=>{
     const email = req.body.email;

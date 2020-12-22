@@ -5,7 +5,7 @@ const ObjectId = mongodb.ObjectId;
 
 class Client
 {
-    constructor(id,name,phone,email,pwd,img,token)
+    constructor(id,name,phone,email,pwd,img,token,date)
     {
         this.clientId = id;
         this.clientName = name;
@@ -15,6 +15,7 @@ class Client
         this.clientImg = img;
         this.favourites = [];
         this.deviceToken = token;
+        this.registrationDate = date;
       
     }
 
@@ -50,6 +51,19 @@ class Client
                                             })
                                             .catch(err=>console.log(err));
 
+    }
+
+
+    static findClientByDates(sDate,eDate)
+    {
+        const db = getDb();
+                            
+        return db.collection('clients').find({ registrationDate:{$gte:sDate,$lte:eDate} }).toArray()
+                                            .then(appointDetail=>{
+                                                                                                
+                                                return appointDetail;  
+                                            })
+                                            .catch(err=>console.log(err));
     }
 
     static findClientByClientId(id)

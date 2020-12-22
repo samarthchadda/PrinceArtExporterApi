@@ -42,6 +42,18 @@ class Saloon
 
     }
 
+    static findSaloonByDates(sDate,eDate)
+    {
+        const db = getDb();
+                            
+        return db.collection('saloons').find({ registrationDate:{$gte:sDate,$lte:eDate} }).toArray()
+                                            .then(appointDetail=>{
+                                                                                                
+                                                return appointDetail;  
+                                            })
+                                            .catch(err=>console.log(err));
+    }
+
     static findSaloonBySaloonID(id)
     {
         const db = getDb();

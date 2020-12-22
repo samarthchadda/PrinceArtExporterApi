@@ -8,6 +8,8 @@ const multer = require('multer');
 
 router.get('/all-saloons',saloonController.getSaloons);
 
+router.get('/all-saloons-month',saloonController.getSaloonsByMonth);
+
 router.get('/all-saloons-limit/:limit/:start',saloonController.getLimitSaloons);
 
 router.post('/saloon-register',saloonController.saloonRegister);
