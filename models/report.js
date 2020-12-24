@@ -5,12 +5,14 @@ const ObjectId = mongodb.ObjectId;
 
 class Report
 {
-    constructor(email,phone,description,screenShot)
+    constructor(name,email,phone,description,screenShot,date)
     {        
+        this.name = name;
         this.email = email;
         this.phone = phone;
         this.description = description;  
         this.screenShot = screenShot;
+        this.reportDate = date;
       
     }
 
@@ -52,7 +54,7 @@ class Report
     static fetchAllReports()
     {
         const db = getDb();
-        return db.collection('reports').find().toArray()
+        return db.collection('reports').find().sort({reportDate:-1}).toArray()
                             .then(reportData=>{
                                
                                 return reportData;

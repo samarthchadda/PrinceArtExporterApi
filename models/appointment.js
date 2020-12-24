@@ -176,7 +176,7 @@ class Appointment
     static empWeekRevenue(eid, sDate,eDate)
     {
         const db = getDb();
-                            
+                                                                                            //array of objects
         return db.collection('appointments').find({ empId:eid,bookingDate:{$gte:sDate,$lte:eDate} }).toArray()
                                             .then(appointDetail=>{
                                                                                                 
