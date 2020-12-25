@@ -3,6 +3,7 @@ const router = express.Router();
 const employeeController = require('../controllers/employee');
 const Employee = require('../models/employee');
 const Saloon = require('../models/saloon');
+const Service = require('../models/services');
 
 
 router.get('/all-employees',employeeController.getAllEmployees);
@@ -79,8 +80,26 @@ router.post('/post-employee',upload.single('empPhoto'),(req,res,next)=>{
                         
                             employee.save()
                             .then(resultData=>{
-                                
-                                res.json({status:true,message:"Employee Added",data:resultData["ops"][0]});
+                                let services = [];
+                                // console.log(resultData["ops"][0].empServices);
+                                resultData["ops"][0].empServices.forEach(empServ=>{
+                                    Service.findServiceByServiceID(+empServ)
+                                                .then(resServData=>{
+                                                    if(resServData){
+                                                        services.push(resServData)
+                                                        console.log(services);
+                                                        console.log(resultData["ops"][0].empServices.length)
+                                                        
+                                                        if(resultData["ops"][0].empServices.length == services.length)
+                                                        {
+                                                            resultData["ops"][0].empServices = services;
+                                                            res.json({status:true,message:"Employee Added",data:resultData["ops"][0]});
+                                                        }   
+                                                   }
+                                                })
+                                              
+                                })
+                                               
                                 
                             })
                             .catch(err=>{
