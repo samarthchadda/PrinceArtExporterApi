@@ -170,8 +170,28 @@ router.post('/edit-employee',upload.single('empPhoto'),(req,res,next)=>{
            const db = getDb();
            db.collection('employees').updateOne({empId:empId},{$set:empDoc})
                        .then(resultData=>{
+                        let services = [];
+                        // console.log(resultData["ops"][0].empServices);
+                        empDoc.empServices.forEach(empServ=>{
+                            Service.findServiceByServiceID(+empServ)
+                                        .then(resServData=>{
+                                            if(resServData){
+                                                services.push(resServData)
+                                                console.log(services);
+                                                console.log(empDoc.empServices.length)
+                                                
+                                                if(empDoc.empServices.length == services.length)
+                                                {
+                                                    empDoc.empServices = services;
+                                                    res.json({message:'Details Updated',status:true,employee:empDoc});
+                                                }   
+                                           }
+                                        })
+                                      
+                        })
+                                
                            
-                           res.json({message:'Details Updated',status:true,employee:empDoc});
+                          
                        })
                       .catch(err=>console.log(err));
   
