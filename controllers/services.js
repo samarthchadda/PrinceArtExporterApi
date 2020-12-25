@@ -145,7 +145,7 @@ exports.editService=(req,res,next)=>{
                  db.collection('services').updateOne({serviceId:serviceId},{$set:serviceDoc})
                              .then(resultData=>{
                                  
-                                 res.json({message:'Details Updated',status:true});
+                                 res.json({message:'Details Updated',status:true,service:serviceDoc});
                              })
                              .catch(err=>console.log(err));
              })
