@@ -127,12 +127,16 @@ router.post('/edit-employee',upload.single('empPhoto'),(req,res,next)=>{
     const empId = +req.body.empId;
     const empNm = req.body.empNm;
     const empType = req.body.empType;
+    const empUrl = req.body.empUrl;    
     let services = [];
     let empServicesId = req.body.empServicesId;
     empServicesId = empServicesId.split(',');
     empServicesId = empServicesId.map(emp=>emp.trim())
     console.log(empServicesId);
 
+    if(empUrl==null||empUrl=="")
+    {
+        
     var imagekit = new ImageKit({
         publicKey : "public_WlmDyQDHleOQopDhwUECOh0zPKU=",
         privateKey : "private_0YX4jtTBzNLifx3C2Egcgb1xNZs=",
@@ -199,7 +203,62 @@ router.post('/edit-employee',upload.single('empPhoto'),(req,res,next)=>{
             });      
 
            }
-        })      
+        })   
+    }
+    else{
+        
+   
+    const db = getDb();
+    Employee.findEmployeeByEmpID(+empId)
+    .then(empDoc=>{
+        
+        if(!empDoc)
+        {
+             res.json({ message:'Employee does not exist',status:false});
+        }
+        else{
+
+        
+            
+          empDoc.empName = empNm;   
+          empDoc.empType = empType;   
+          empDoc.empServices = empServicesId;              
+          empDoc.empImg = empUrl;            
+           
+           
+           const db = getDb();
+           db.collection('employees').updateOne({empId:empId},{$set:empDoc})
+                       .then(resultData=>{
+                        let services = [];
+                        // console.log(resultData["ops"][0].empServices);
+                        empDoc.empServices.forEach(empServ=>{
+                            Service.findServiceByServiceID(+empServ)
+                                        .then(resServData=>{
+                                            if(resServData){
+                                                services.push(resServData)
+                                                console.log(services);
+                                                console.log(empDoc.empServices.length)
+                                                
+                                                if(empDoc.empServices.length == services.length)
+                                                {
+                                                    empDoc.empServices = services;
+                                                    res.json({message:'Details Updated',status:true,employee:empDoc});
+                                                }   
+                                           }
+                                        })
+                                      
+                        })
+                                
+                           
+                          
+                       })
+                      .catch(err=>console.log(err));
+    
+
+           }
+        })   
+    }
+   
 })
 
 
