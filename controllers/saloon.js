@@ -494,7 +494,7 @@ exports.editSaloon=(req,res,next)=>{
     const saloonName = req.body.saloonName;
     const address = req.body.address;
     const phone = +req.body.phone;
-    const landline = req.body.landline;
+    const landline = +req.body.landline;
     
    
     Saloon.findSaloonBySaloonID(JSON.parse(saloonId))
