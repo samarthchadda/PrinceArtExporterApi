@@ -102,7 +102,8 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
                                 console.log(result.url);
                     
                                 const db = getDb();
-                                console.log(imgUrl);
+                                console.log(regDate);
+
                                 const client = new Client(clientID,clientName,phone,email,password,result.url,deviceToken,regDate);
 
                                 //saving in database                        
@@ -161,7 +162,7 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
                         
                                     const db = getDb();
                                     console.log(imgUrl);
-                                    client = new Client(clientID,clientName,phone,email,password,imgUrl,deviceToken);
+                                    client = new Client(clientID,clientName,phone,email,password,imgUrl,deviceToken,regDate);
     
                                     //saving in database                        
                                     client.save()
