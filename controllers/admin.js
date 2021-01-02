@@ -6,7 +6,7 @@ const sendgridTransport = require('nodemailer-sendgrid-transport');
 
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth:{
-        api_key:'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'
+        api_key:'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'
         
     }
 }))
@@ -104,7 +104,7 @@ exports.sendToken = (req,res,next)=>{
         
             transporter.sendMail({
                 to:email,
-                from:'samarthchadda@gmail.com',
+                from:'finditbookit.es@gmail.com',
                 subject:'Fibi App - OTP',
                 html:`
                 <p> You requested a password reset</p>
