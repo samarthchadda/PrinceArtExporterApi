@@ -125,6 +125,7 @@ exports.getClientsByMonth=(req,res,next)=>{
     var months = [];
     var d = new Date();
     var year = d.getFullYear();
+    // console.log(year)
 
         //for last 6 months(including current month)
     // for(var i = 5; i > -1; i -= 1) {
@@ -132,7 +133,11 @@ exports.getClientsByMonth=(req,res,next)=>{
         //for last 6 months(excluding current month)
     for(var i = 6; i > 0; i -= 1) {
       d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+    //   console.log(d.getFullYear())
       months.push(monthNames[d.getMonth()]);
+
+      year = d.getFullYear();
+    //   console.log(year)
     //   console.log(month);
     }
     // console.log(months)
@@ -195,7 +200,8 @@ exports.getClientsByMonth=(req,res,next)=>{
         // alert(lastDay.getDate());
         // console.log(firstDay,lastDay)
         m = m+1;
-        m = m<10?"0"+m:m;   
+        m = m<10?"0"+m:m; 
+        // console.log(year)  
         dates.push({
                         srtDate: firstDay.getDate()<10?year.toString()+"-"+m.toString()+"-0"+firstDay.getDate().toString():year.toString()+"-"+m.toString()+"-"+firstDay.getDate().toString(),
                         endDate: lastDay.getDate()<10?year.toString()+"-"+m.toString()+"-0"+lastDay.getDate().toString():year.toString()+"-"+m.toString()+"-"+lastDay.getDate().toString(),
@@ -212,7 +218,7 @@ exports.getClientsByMonth=(req,res,next)=>{
     
         let endDate = d.endDate;
         endDate = new Date(endDate).getTime();
-        // console.log(startDate,endDate)
+        console.log(startDate,endDate)
         Client.findClientByDates(startDate,endDate)
         .then(saloons=>{
             // console.log(saloons.length)

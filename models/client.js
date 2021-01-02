@@ -60,7 +60,7 @@ class Client
                             
         return db.collection('clients').find({ registrationDate:{$gte:sDate,$lte:eDate} }).toArray()
                                             .then(appointDetail=>{
-                                                                                                
+                                            //    console.log(appointDetail)                                                 
                                                 return appointDetail;  
                                             })
                                             .catch(err=>console.log(err));

@@ -3,6 +3,8 @@ const Availability = require('../models/availability');
 
 const Appointment = require('../models/appointment');
 
+const Employee = require('../models/employee');
+
 const getDb = require('../util/database').getDB; 
 
 
@@ -36,7 +38,17 @@ exports.getSingleEmpAvailData=(req,res,next)=>{
       
         if(availDoc){
            
-             res.json({status:true, data:availDoc});
+            Employee.findEmployeeByEmpID(empId)
+            .then(emp=>{
+                // console.log(emp.saloonId);
+                Availability.findAvailBySaloonId(emp.saloonId)
+                .then(availSaloon=>{
+                    // console.log(availSaloon);
+                    
+             res.json({status:true, data:availDoc,saloonData : availSaloon});
+                })
+                
+            })
         }
         else{
             res.json({status:false,message:"No such availability exist"});
