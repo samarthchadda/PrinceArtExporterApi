@@ -34,6 +34,8 @@ router.post('/del-saloon-photo',saloonController.delSaloonPhoto);
 
 router.get('/del-saloon/:saloonId',saloonController.delSaloon);
 
+router.get('/all-counts',saloonController.getCounts);
+
 
 const getDb = require('../util/database').getDB; 
 const upload = multer();

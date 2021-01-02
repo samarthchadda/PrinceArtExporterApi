@@ -156,7 +156,7 @@ router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{
                             if(client){                        
                                 return res.json({status:false, message:'Client already exists(Enter unique phone)'});
                             }
-                            
+                           
                            
                                     // console.log(result.url);
                         

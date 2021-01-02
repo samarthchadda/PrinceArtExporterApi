@@ -1,5 +1,10 @@
 
 const Saloon = require('../models/saloon');
+const Client = require('../models/client');
+const Owner = require('../models/owner');
+const Appointment = require('../models/appointment');
+
+
 
 const Service = require('../models/services');
 
@@ -36,6 +41,28 @@ exports.getSaloons=(req,res,next)=>{
                    
                     res.json({message:"All Data returned",allSaloons:saloons})
 
+                })
+                .catch(err=>console.log(err));
+}
+
+exports.getCounts=(req,res,next)=>{
+  
+    Saloon.fetchAllSaloons()
+                .then(saloons=>{
+                   
+                    Owner.fetchAllOwners()
+                    .then(owners=>{
+
+                        Client.fetchAllClients()
+                        .then(clients=>{
+
+                            Appointment.fetchAllAppointments()
+                            .then(appoints=>{
+                                res.json({totalSaloons:saloons.length,totalOwners:owners.length,totalClients:clients.length,totalBookings:appoints.length})
+                            })                          
+                        })               
+                    })
+                  
                 })
                 .catch(err=>console.log(err));
 }
