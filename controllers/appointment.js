@@ -192,7 +192,7 @@ exports.getAllAppointmentsMonth=(req,res,next)=>{
         Appointment.findAppointsByDates(startDate,endDate)
         .then(saloons=>{
             // console.log(saloons.length)
-            allData.push({month:d.month.toString(),clients:saloons.length})
+            allData.push({month:d.month.toString(),appoints:saloons.length})
             // console.log(allData)
             if(dates.length == allData.length)
             {   
