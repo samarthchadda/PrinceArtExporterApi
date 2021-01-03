@@ -334,7 +334,7 @@ exports.editOwner=(req,res,next)=>{
                  db.collection('owners').updateOne({ownerId:ownerId},{$set:ownerDoc})
                              .then(resultData=>{
                                  
-                                 res.json({message:'Details Updated',status:true,owner:ownerDoc});
+                                 res.json({message:'All Details Updated',status:true,owner:ownerDoc});
                              })
                              .catch(err=>console.log(err));
              })
