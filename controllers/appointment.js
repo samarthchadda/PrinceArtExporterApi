@@ -199,7 +199,7 @@ exports.getAllAppointmentsMonth=(req,res,next)=>{
                 allData.sort((a, b) => {
                     return a.key - b.key;
                 });
-                res.json({message:"All Data returned",allClients:allData})
+                res.json({message:"All Data returned",allAppoints:allData})
             }
 
         })
