@@ -82,85 +82,100 @@ exports.getAllAppointmentsMonth=(req,res,next)=>{
     var monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 
     var today = new Date();
+    // var today = new Date();
     var d;
     var months = [];
     var d = new Date();
+    var month;
     var year = d.getFullYear();
+    // console.log(year)
 
         //for last 6 months(including current month)
     // for(var i = 5; i > -1; i -= 1) {
-
+        var keyData = 1;
         //for last 6 months(excluding current month)
     for(var i = 6; i > 0; i -= 1) {
       d = new Date(today.getFullYear(), today.getMonth() - i, 1);
-      months.push(monthNames[d.getMonth()]);
+    //   console.log(d.getFullYear())
+   
+      months.push({month:monthNames[d.getMonth()],year:d.getFullYear(),key:keyData});
+      keyData = keyData+1;
+    //   console.log(keyData)
+         month = monthNames[d.getMonth()];
+         console.log(months)
+//   console.log(month,d.getFullYear());
+//   year = d.getFullYear();
+
+    //   year = d.getFullYear();
+    //   console.log(year)
     //   console.log(month);
     }
     // console.log(months)
     let dates = [];
     months.forEach(m=>{
         
-        if(m=="january")
+        if(m.month=="january")
         {
-            m = 0;
+            mo = 0;
         }
-        if(m=="february")
+        if(m.month=="february")
         {
-            m = 1;
+            mo = 1;
         }
-        if(m=="march")
+        if(m.month=="march")
         {
-            m = 2;
+            mo = 2;
         }
-        if(m=="april")
+        if(m.month=="april")
         {
-            m = 3;
+            mo = 3;
         }
-        if(m=="may")
+        if(m.month=="may")
         {
-            m = 4;
+            mo = 4;
         }
-        if(m=="june")
+        if(m.month=="june")
         {
-            m = 5;
+            mo = 5;
         }
-        if(m=="july")
+        if(m.month=="july")
         {
-            m = 6;
+            mo = 6;
         }
-        if(m=="august")
+        if(m.month=="august")
         {
-            m = 7;
+            mo = 7;
         }
-        if(m=="september")
+        if(m.month=="september")
         {
-            m = 8;
+            mo = 8;
         }
-        if(m=="october")
+        if(m.month=="october")
         {
-            m = 9;
+            mo = 9;
         }
-        if(m=="november")
+        if(m.month=="november")
         {
-            m = 10;
+            mo = 10;
         }
-        if(m=="december")
+        if(m.month=="december")
         {
-            m = 11;
+            mo = 11;
         }
         
         
-        const firstDay = new Date(year, m, 1);
+        const firstDay = new Date(m.year, mo, 1);
         // alert(firstDay.getDate());
-        const lastDay = new Date(year, m + 1, 0);
+        const lastDay = new Date(m.year, mo + 1, 0);
         // alert(lastDay.getDate());
         // console.log(firstDay,lastDay)
-        m = m+1;
-        m = m<10?"0"+m:m;   
+        mo = mo+1;
+        mo = mo<10?"0"+mo:mo; 
+        // console.log(year)  
         dates.push({
-                        srtDate: firstDay.getDate()<10?year.toString()+"-"+m.toString()+"-0"+firstDay.getDate().toString():year.toString()+"-"+m.toString()+"-"+firstDay.getDate().toString(),
-                        endDate: lastDay.getDate()<10?year.toString()+"-"+m.toString()+"-0"+lastDay.getDate().toString():year.toString()+"-"+m.toString()+"-"+lastDay.getDate().toString(),
-                        month:m
+                        srtDate: firstDay.getDate()<10?m.year.toString()+"-"+mo.toString()+"-0"+firstDay.getDate().toString():m.year.toString()+"-"+mo.toString()+"-"+firstDay.getDate().toString(),
+                        endDate: lastDay.getDate()<10?m.year.toString()+"-"+mo.toString()+"-0"+lastDay.getDate().toString():m.year.toString()+"-"+mo.toString()+"-"+lastDay.getDate().toString(),
+                        month:mo
                     });
   
     })
@@ -173,18 +188,18 @@ exports.getAllAppointmentsMonth=(req,res,next)=>{
     
         let endDate = d.endDate;
         endDate = new Date(endDate).getTime();
-        // console.log(startDate,endDate)
+        console.log(startDate,endDate)
         Appointment.findAppointsByDates(startDate,endDate)
         .then(saloons=>{
             // console.log(saloons.length)
-            allData.push({month:d.month.toString(),appoints:saloons.length})
+            allData.push({month:d.month.toString(),clients:saloons.length})
             // console.log(allData)
             if(dates.length == allData.length)
-            {
+            {   
                 allData.sort((a, b) => {
-                    return a.month - b.month;
+                    return a.key - b.key;
                 });
-                res.json({message:"All Data returned",allAppoints:allData})
+                res.json({message:"All Data returned",allClients:allData})
             }
 
         })

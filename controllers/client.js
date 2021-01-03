@@ -120,7 +120,7 @@ exports.clientLogin=(req,res,next)=>{
 exports.getClientsByMonth=(req,res,next)=>{
     var monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 
-    var today = new Date("2021-03-01");
+    var today = new Date();
     // var today = new Date();
     var d;
     var months = [];
