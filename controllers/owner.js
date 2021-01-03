@@ -343,6 +343,39 @@ exports.editOwner=(req,res,next)=>{
 
 
 
+exports.editAdminOwner=(req,res,next)=>{
+    //parsing data from incoming request
+    const ownerId = +req.body.ownerId;
+    const ownerName = req.body.ownerName;
+    const email = req.body.email;
+    const phone = +req.body.phone;    
+
+    Owner.findOwnerById(+ownerId)
+             .then(ownerDoc=>{
+                 if(!ownerDoc)
+                 {
+                     return res.json({ message:'Owner does not exist',status:false});
+                 }
+          
+                    ownerDoc.email = email;
+                
+                    ownerDoc.ownerName = ownerName;
+              
+                    ownerDoc.phone = phone;
+               
+                 const db = getDb();
+                 db.collection('owners').updateOne({ownerId:ownerId},{$set:ownerDoc})
+                             .then(resultData=>{
+                                 
+                                 res.json({message:'All Details Updated',status:true,owner:ownerDoc});
+                             })
+                             .catch(err=>console.log(err));
+             })
+}
+
+
+
+
 exports.editOwnerToken=(req,res,next)=>{
     //parsing data from incoming request
     const ownerId = +req.body.ownerId;
