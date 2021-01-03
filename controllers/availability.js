@@ -41,12 +41,19 @@ exports.getSingleEmpAvailData=(req,res,next)=>{
             Employee.findEmployeeByEmpID(empId)
             .then(emp=>{
                 // console.log(emp.saloonId);
-                Availability.findAvailBySaloonId(emp.saloonId)
-                .then(availSaloon=>{
-                    // console.log(availSaloon);
-                    
-             res.json({status:true, data:availDoc,saloonData : availSaloon});
-                })
+                if(emp)
+                {
+                    Availability.findAvailBySaloonId(emp.saloonId)
+                    .then(availSaloon=>{
+                        // console.log(availSaloon);
+                        
+                 res.json({status:true, data:availDoc,saloonData : availSaloon});
+                    })
+                }
+                else
+                {
+                    res.json({status:true,data:[]});
+                }             
                 
             })
         }
