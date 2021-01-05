@@ -119,14 +119,14 @@ exports.tutorRegister = (req,res,next)=>{
 
 //LOGIN
 exports.tutorLogin=(req,res,next)=>{
-    const email = req.body.email;
+    const phone = +req.body.email;
     const password = req.body.password;
     
-    Tutor.findTutorByEmail(email)
+    Tutor.findTutorByPhone(phone)
                 .then(user=>{
                     if(!user)
                     {
-                        return res.json({ message:'Enter valid email Id',status:false});
+                        return res.json({ message:'Enter valid Phone',status:false});
                     }
 
                     if(user.password == password)
