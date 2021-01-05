@@ -1,5 +1,5 @@
 
-const Owner = require('../models/owner');
+const Tutor = require('../models/tutor');
 
 const getDb = require('../util/database').getDB; 
 
@@ -60,52 +60,41 @@ exports.getOwners=(req,res,next)=>{
 }
 
 //POST
-exports.ownerRegister = (req,res,next)=>{
+exports.tutorRegister = (req,res,next)=>{
   
-    let onwerID;
-    //parsing data from incoming request
-    const ownerName = req.body.ownerName;
-    const email = req.body.email;    
+    let tutorID;
+    //parsing data from incoming request    
     const phone = +req.body.phone;
     const password = req.body.password;
-    const ownerImg = null;
-    const isVerified = false;
     const regDate = new Date().getTime();
     const deviceToken = req.body.deviceToken;
 
-    Owner.findOwnerByEmail(email)
+    Tutor.findTutorByPhone(phone)
                 .then(userDoc=>{
                     if(userDoc){                        
-                        return res.json({status:false, message:'Onwer Already Exists(Enter unique email and phone)',owner:userDoc});
+                        return res.json({status:false, message:'Tutor Already Exists(Enter unique phone)',tutor:userDoc});
                     }
                    
-                    
-                    Owner.findOwnerByPhone(phone)
-                    .then(userDoc=>{
-                        if(userDoc){                        
-                            return res.json({status:false, message:'Onwer Already Exists(Enter unique email and phone)',owner:userDoc});
-                        }
-
                     const db = getDb();     
-                    db.collection('ownerCounter').find().toArray().then(data=>{
+                    db.collection('tutorCounter').find().toArray().then(data=>{
         
                         newVal = data[data.length-1].count;
                        
                         newVal = newVal + 1;
                         console.log(newVal);
                        
-                        onwerID = newVal;
+                        tutorID = newVal;
                         
-                        db.collection('ownerCounter').insertOne({count:newVal})
+                        db.collection('tutorCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const owner = new Owner(onwerID,ownerName,email,phone,password,ownerImg,isVerified,regDate,deviceToken);
+                            const tutor = new Tutor(tutorID,null,null,null,phone,password,null,null,null,null,null,null,null,false,regDate,deviceToken);
                             //saving in database
                         
-                            return owner.save()
+                            return tutor.save()
                             .then(resultData=>{
                                 
-                                res.json({status:true,message:"Owner Registered",owner:resultData["ops"][0]});
+                                res.json({status:true,message:"Tutor Registered",tutor:resultData["ops"][0]});
                                 
                             })
                             .catch(err=>console.log(err));                                                    
@@ -119,7 +108,7 @@ exports.ownerRegister = (req,res,next)=>{
                                 })             
                      })   
                      
-                    })
+                
                 })
                 .then(resultInfo=>{                   
                   
@@ -129,11 +118,11 @@ exports.ownerRegister = (req,res,next)=>{
 
 
 //LOGIN
-exports.ownerLogin=(req,res,next)=>{
+exports.tutorLogin=(req,res,next)=>{
     const email = req.body.email;
     const password = req.body.password;
     
-    Owner.findOwnerByEmail(email)
+    Tutor.findTutorByEmail(email)
                 .then(user=>{
                     if(!user)
                     {
@@ -142,7 +131,7 @@ exports.ownerLogin=(req,res,next)=>{
 
                     if(user.password == password)
                     {                        
-                        res.json({ message:'Login Successful',status:true, owner:user});
+                        res.json({ message:'Login Successful',status:true, tutor:user});
                     }else{
                        
                         res.json({ message:'Enter valid credentials',status:false});
@@ -342,60 +331,27 @@ exports.editOwner=(req,res,next)=>{
 
 
 
-
-exports.editAdminOwner=(req,res,next)=>{
+exports.editTutorDesc=(req,res,next)=>{
     //parsing data from incoming request
-    const ownerId = +req.body.ownerId;
-    const ownerName = req.body.ownerName;
-    const email = req.body.email;
-    const phone = +req.body.phone;    
+    const tutorId = +req.body.tutorId;
+    const descTitle = req.body.descTitle;
+    const descContent = req.body.descContent;      
 
-    Owner.findOwnerById(+ownerId)
+    Tutor.findTutorById(+tutorId)
              .then(ownerDoc=>{
                  if(!ownerDoc)
                  {
-                     return res.json({ message:'Owner does not exist',status:false});
-                 }
-          
-                    ownerDoc.email = email;
-                
-                    ownerDoc.ownerName = ownerName;
-              
-                    ownerDoc.phone = phone;
-               
-                 const db = getDb();
-                 db.collection('owners').updateOne({ownerId:ownerId},{$set:ownerDoc})
-                             .then(resultData=>{
-                                 
-                                 res.json({message:'All Details Updated',status:true,owner:ownerDoc});
-                             })
-                             .catch(err=>console.log(err));
-             })
-}
-
-
-
-
-exports.editOwnerToken=(req,res,next)=>{
-    //parsing data from incoming request
-    const ownerId = +req.body.ownerId;
-    const deviceToken = req.body.deviceToken;    
-
-    Owner.findOwnerById(+ownerId)
-             .then(ownerDoc=>{
-                 if(!ownerDoc)
-                 {
-                     return res.json({ message:'Owner does not exist',status:false});
+                     return res.json({ message:'Tutor does not exist',status:false});
                  }
                 
-                ownerDoc.deviceToken = deviceToken;
-                
+                ownerDoc.descTitle = descTitle;
+                ownerDoc.descContent = descContent;                               
 
                  const db = getDb();
-                 db.collection('owners').updateOne({ownerId:ownerId},{$set:ownerDoc})
+                 db.collection('tutors').updateOne({tutorId:tutorId},{$set:ownerDoc})
                              .then(resultData=>{
                                  
-                                 res.json({message:'Details Updated',status:true,owner:ownerDoc});
+                                 res.json({message:'Details Updated',status:true,tutor:ownerDoc});
                              })
                              .catch(err=>console.log(err));
              })

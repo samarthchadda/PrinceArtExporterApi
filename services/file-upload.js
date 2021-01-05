@@ -4,8 +4,8 @@ const multerS3 = require('multer-s3');
  
 //providing some additional information for our aws service
 aws.config.update({
-    secretAccessKey:'LTANIV5aFd4mYI8qfv8Eiw+4rs5F4mBwPSg6NDdF',
-    accessKeyId:'AKIAI6LUKSBYLPH6MP6Q',
+    secretAccessKey:'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',
+    accessKeyId:'AKIAICPAI4JU5AMQHZ3Q',
     region:'us-east-1'
 });
 
@@ -32,7 +32,7 @@ const upload = multer({
   
     s3: s3,
     
-    bucket: 'manusamarth',
+    bucket: 'hufnaan-tutor',
     //access control for the file
     acl:'public-read',   //check all its values options from aws docs
 

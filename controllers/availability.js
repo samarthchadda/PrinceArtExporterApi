@@ -3,7 +3,6 @@ const Availability = require('../models/availability');
 
 const Appointment = require('../models/appointment');
 
-const Employee = require('../models/employee');
 
 const getDb = require('../util/database').getDB; 
 
