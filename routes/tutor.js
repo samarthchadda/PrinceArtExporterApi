@@ -40,14 +40,7 @@ router.post('/owner-verify',tutorController.ownerVerify);
 
 router.post('/add-tutor-about',(req,res,next)=>{
     
-    const tutorId = +req.body.tutorId;
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const email = req.body.email;
-    const country = req.body.country;
-    const languages = req.body.languages;
-    const subject = req.body.subject;
-    const hourlyRate = +req.body.hourlyRate;    
+   
     
     singleupload(req,res,function(err){
         if(err)
@@ -56,6 +49,16 @@ router.post('/add-tutor-about',(req,res,next)=>{
         }
         else
         {
+            const tutorId = +req.body.tutorId;
+            console.log(tutorId)
+            const firstName = req.body.firstName;
+            console.log(firstName)
+            const lastName = req.body.lastName;
+            const email = req.body.email;
+            const country = req.body.country;
+            const languages = req.body.languages;
+            const subject = req.body.subject;
+            const hourlyRate = +req.body.hourlyRate;    
             // return res.json({ imgUrl:req.file.location,status:true});
 
             Tutor.findTutorById(+tutorId)
