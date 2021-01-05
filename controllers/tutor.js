@@ -126,7 +126,7 @@ exports.tutorLogin=(req,res,next)=>{
                 .then(user=>{
                     if(!user)
                     {
-                        return res.json({ message:'Enter valid Phone',status:false});
+                        return res.json({ message:'Tutor does not exist(Enter valid Phone)',status:false});
                     }
 
                     if(user.password == password)
