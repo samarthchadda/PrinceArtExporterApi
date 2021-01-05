@@ -119,7 +119,7 @@ exports.tutorRegister = (req,res,next)=>{
 
 //LOGIN
 exports.tutorLogin=(req,res,next)=>{
-    const phone = +req.body.email;
+    const phone = +req.body.phone;
     const password = req.body.password;
     
     Tutor.findTutorByPhone(phone)
