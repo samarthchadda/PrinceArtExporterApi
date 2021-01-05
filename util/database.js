@@ -7,9 +7,8 @@ let _db;
 
 
 const mongoConnect = (callback)=>{
-    // zEctuMof6mTVnBkd
-                                                                      
-    mongoClient.connect('mongodb+srv://samarthmanu:3WYKlEQFsomn0iqz@cluster0.yjjcm.mongodb.net/fibiDB?retryWrites=true&w=majority',
+                                             
+    mongoClient.connect('mongodb+srv://hufnaan:zEctuMof6mTVnBkd@cluster0.fwifn.mongodb.net/test',
                                                                                 { useUnifiedTopology:true,useNewUrlParser:true})
                                 .then(client=>{
                                     console.log("Connected....\n");
