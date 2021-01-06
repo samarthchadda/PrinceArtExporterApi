@@ -37,6 +37,7 @@ router.get('/del-owner/:ownerId',tutorController.delOwner);
 
 router.post('/owner-verify',tutorController.ownerVerify);
 
+router.post('/add-tutor-description',tutorController.tutorDescription);
 
 
 router.post('/add-tutor-about',(req,res,next)=>{

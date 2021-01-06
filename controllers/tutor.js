@@ -141,6 +141,35 @@ exports.tutorLogin=(req,res,next)=>{
 }
 
 
+exports.tutorDescription = (req,res,next)=>{
+
+    const tutorId = +req.body.tutorId;
+    console.log(tutorId)
+    const descTitle = req.body.descTitle;
+    const descContent = req.body.descContent;   
+
+    Tutor.findTutorById(+tutorId)
+     .then(ownerDoc=>{
+         if(!ownerDoc)
+         {
+             return res.json({ message:'Tutor does not exist',status:false});
+         }                
+                  
+        ownerDoc.descTitle = descTitle;                
+        ownerDoc.descContent = descContent;  
+
+         const db = getDb();
+         db.collection('tutors').updateOne({tutorId:tutorId},{$set:ownerDoc})
+                     .then(resultData=>{
+                         
+                         res.json({message:'All Details Updated',status:true,tutor:ownerDoc});
+                     })
+                     .catch(err=>console.log(err));
+     })
+
+
+}
+
 
 exports.ownerCheckPhone=(req,res,next)=>{
     const phone = +req.body.phone;
