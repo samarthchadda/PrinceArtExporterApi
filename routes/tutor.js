@@ -42,6 +42,8 @@ router.post('/owner-verify',tutorController.ownerVerify);
 
 router.post('/add-tutor-description',tutorController.tutorDescription);
 
+router.post('/forgot-tutor-pwd',tutorController.tutorForgotPwd);
+
 
 router.post('/add-tutor-about',(req,res,next)=>{
     

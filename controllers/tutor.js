@@ -189,6 +189,34 @@ exports.tutorDescription = (req,res,next)=>{
 }
 
 
+
+exports.tutorForgotPwd = (req,res,next)=>{
+
+    const phone = +req.body.phone;
+    const newPassword = req.body.newPassword;
+
+    Tutor.findTutorByPhone(+phone)
+     .then(ownerDoc=>{
+         if(!ownerDoc)
+         {
+             return res.json({ message:'Tutor does not exist',status:false});
+         }                
+                  
+        ownerDoc.password = newPassword;     
+
+         const db = getDb();
+         db.collection('tutors').updateOne({phone:phone},{$set:ownerDoc})
+                     .then(resultData=>{
+                         
+                         res.json({message:'All Details Updated',status:true,tutor:ownerDoc});
+                     })
+                     .catch(err=>console.log(err));
+     })
+
+
+}
+
+
 exports.ownerCheckPhone=(req,res,next)=>{
     const phone = +req.body.phone;
 
