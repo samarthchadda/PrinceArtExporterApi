@@ -11,7 +11,8 @@ var fs = require('fs');
 
 var upload1 = require('../services/file-upload');
 const singleupload = upload1.single('resume');
-const singleUploadVideo = upload1.single('tutorVideo')
+const singleUploadVideo = upload1.single('tutorVideo');
+const multiUpload = upload1.array('tutorPhotos',5);
 
 router.post('/tutor-login',tutorController.tutorLogin);
 
@@ -115,6 +116,45 @@ router.post('/add-tutor-video',(req,res,next)=>{
                  }                
                       
                 ownerDoc.video = req.file.location;
+
+                 const db = getDb();
+                 db.collection('tutors').updateOne({tutorId:tutorId},{$set:ownerDoc})
+                             .then(resultData=>{
+                                 
+                                 res.json({message:'All Details Updated',status:true,tutor:ownerDoc});
+                             })
+                             .catch(err=>console.log(err));
+             })
+        }
+
+    })    
+})
+
+
+
+router.post('/add-tutor-photos',(req,res,next)=>{
+          
+    multiUpload(req,res,function(err){
+        if(err)
+        {
+            return res.json({ message:err,status:false});
+        }
+        else
+        {
+            const tutorId = +req.body.tutorId;
+            console.log(tutorId)
+
+            Tutor.findTutorById(+tutorId)
+             .then(ownerDoc=>{
+                 if(!ownerDoc)
+                 {
+                     return res.json({ message:'Tutor does not exist',status:false});
+                 }                
+                      
+                // ownerDoc.video = req.file.location;
+                req.files.forEach(file=>{
+                    ownerDoc.tutorImages.push(file.location);
+                })
 
                  const db = getDb();
                  db.collection('tutors').updateOne({tutorId:tutorId},{$set:ownerDoc})
