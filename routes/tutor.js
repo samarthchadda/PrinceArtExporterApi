@@ -11,6 +11,7 @@ var fs = require('fs');
 
 var upload1 = require('../services/file-upload');
 const singleupload = upload1.single('resume');
+const singleUploadVideo = upload1.single('tutorVideo')
 
 router.post('/tutor-login',tutorController.tutorLogin);
 
@@ -93,54 +94,38 @@ router.post('/add-tutor-about',(req,res,next)=>{
 
 
 
-
-router.post('/edit-owner-photo',upload.single('ownerPhoto'),(req,res,next)=>{
-    
-    const ownerId = +req.body.ownerId;
-
-    var imagekit = new ImageKit({
-        publicKey : "public_WlmDyQDHleOQopDhwUECOh0zPKU=",
-        privateKey : "private_0YX4jtTBzNLifx3C2Egcgb1xNZs=",
-        urlEndpoint : "https://ik.imagekit.io/4afsv20kjs"
-    });
-    
-    var base64Img = req.file.buffer;
- 
-
-    const db = getDb();
-    Owner.findOwnerById(+ownerId)
-    .then(empDoc=>{
-        
-        if(!empDoc)
+router.post('/add-tutor-video',(req,res,next)=>{
+          
+    singleUploadVideo(req,res,function(err){
+        if(err)
         {
-             res.json({ message:'Owner does not exist',status:false});
+            return res.json({ message:err,status:false});
         }
-        else{
+        else
+        {
+            const tutorId = +req.body.tutorId;
+            console.log(tutorId)
 
-        imagekit.upload({
-            file : base64Img, //required
-            fileName : "ownerImg.jpg"   //required
-            
-        }, function(error, result) {
-            if(error) {console.log(error);}
-            else {
-                console.log(result.url);                    
-            
-          empDoc.ownerImg = result.url;             
-           
-           const db = getDb();
-           db.collection('owners').updateOne({ownerId:ownerId},{$set:empDoc})
-                       .then(resultData=>{
-                           
-                           res.json({message:'Details Updated',status:true,imageUrl:result.url});
-                       })
-                      .catch(err=>console.log(err));
-  
-                }
-            });      
+            Tutor.findTutorById(+tutorId)
+             .then(ownerDoc=>{
+                 if(!ownerDoc)
+                 {
+                     return res.json({ message:'Tutor does not exist',status:false});
+                 }                
+                      
+                ownerDoc.video = req.file.location;
 
-           }
-        })      
+                 const db = getDb();
+                 db.collection('tutors').updateOne({tutorId:tutorId},{$set:ownerDoc})
+                             .then(resultData=>{
+                                 
+                                 res.json({message:'All Details Updated',status:true,tutor:ownerDoc});
+                             })
+                             .catch(err=>console.log(err));
+             })
+        }
+
+    })    
 })
 
 
