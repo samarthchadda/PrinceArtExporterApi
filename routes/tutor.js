@@ -18,7 +18,9 @@ router.post('/tutor-login',tutorController.tutorLogin);
 
 router.post('/tutor-signup',tutorController.tutorRegister);
 
-router.get('/all-owners',tutorController.getOwners);
+router.get('/all-tutors',tutorController.getTutors);
+
+router.get('/all-tutors/:tutorId',tutorController.getSingleTutor);
 
 router.post('/check-owner',tutorController.ownerCheckPhone);
 
@@ -154,7 +156,7 @@ router.post('/add-tutor-photos',(req,res,next)=>{
                 // ownerDoc.video = req.file.location;
 
                 ownerDoc.tutorImages = []; //emptying array
-                
+
                 req.files.forEach(file=>{
                     ownerDoc.tutorImages.push(file.location);
                 })

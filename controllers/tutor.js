@@ -48,16 +48,34 @@ const transporter = nodemailer.createTransport(sendgridTransport({
 }))
 
 
-exports.getOwners=(req,res,next)=>{
+exports.getTutors=(req,res,next)=>{
   
-    Owner.fetchAllOwners()
+    Tutor.fetchAllTutors()
                 .then(owners=>{
                    
-                    res.json({message:"All Data returned",allOwners:owners})
+                    res.json({message:"All Data returned",allTutors:owners})
 
                 })
                 .catch(err=>console.log(err));
 }
+
+
+exports.getSingleTutor=(req,res,next)=>{
+    
+    const tutorId = +req.params.tutorId;
+   
+    Tutor.findTutorById(tutorId)
+                .then(tutor=>{
+                    if(!tutor)
+                    {
+                        return res.json({status:false, message:'Tutor does not exist'});
+                    }
+
+                    res.json({status:true, message:'Tutor exists',tutor:tutor});
+                })
+
+}
+
 
 //POST
 exports.tutorRegister = (req,res,next)=>{
