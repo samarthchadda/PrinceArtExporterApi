@@ -10,6 +10,7 @@ const clientRoutes = require('./routes/client');
 const adminRoutes = require('./routes/admin');
 const appointmentRoutes = require('./routes/appointment');
 const reportRoutes = require('./routes/report');
+const courseRoutes = require('./routes/course');
 
 
 
@@ -47,6 +48,7 @@ app.use('/api',clientRoutes);
 app.use('/api',adminRoutes);
 app.use('/api',appointmentRoutes);
 app.use('/api',reportRoutes);
+app.use('/api',courseRoutes);
 
 
 let port = process.env.PORT || 8080;
