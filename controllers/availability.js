@@ -313,34 +313,37 @@ exports.availTutorRegister = (req,res,next)=>{
     const tutorId = +req.body.tutorId;
     // const availStatus = req.body.availStatus;    
     const timeslot = req.body.timeslot;
-    let startDate = req.body.startDate;    
-    let endDate = req.body.endDate;
+    // let startDate = req.body.startDate;    
+    // let endDate = req.body.endDate;
 
-    startDate = new Date(startDate).getTime();
-    console.log(startDate);
+    // startDate = new Date(startDate).getTime();
+    // console.log(startDate);
 
-    endDate = new Date(endDate).getTime();
-    console.log(endDate);
+    // endDate = new Date(endDate).getTime();
+    // console.log(endDate);
 
 
-    Availability.findAvailByTutorIdAndDate(tutorId,startDate,endDate)
+    // Availability.findAvailByTutorIdAndDate(tutorId,startDate,endDate)
+    Availability.findAvailByTutorId(tutorId)
             .then(availData=>{
+                // console.log(availData)
                 if(availData){
-                    
+                 
                     // availData.availStatus = availStatus;
-                    // availData.timeslot = timeslot;
-                    // const db = getDb();
+                    availData.timeslot = timeslot;
+                    const db = getDb();
                     // return db.collection('availabilities').updateOne({empId:empId,startDate:startDate,endDate:endDate},{$set:availData})
-                    //             .then(resultData=>{
+                    return db.collection('availabilities').updateOne({tutorId:tutorId},{$set:availData})
+                                .then(resultData=>{
                                     
-                    //                return res.json({message:'Details Updated',status:true});
-                    //             })
-                    //             .catch(err=>console.log(err));
-                    return res.json({status:false, message:'Availability already registered for this week'});
+                                   return res.json({message:'Details Updated',status:true,availability:availData});
+                                })
+                                .catch(err=>console.log(err));
+                    // return res.json({status:false, message:'Availability already registered for this tutor'});
                 }
                 
                     //saving in database
-                    const availability = new Availability(tutorId,timeslot,startDate,endDate);
+                    const availability = new Availability(tutorId,timeslot);
 
                     return availability.save()
                     .then(resultData=>{

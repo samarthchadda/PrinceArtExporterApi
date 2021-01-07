@@ -5,13 +5,13 @@ const ObjectId = mongodb.ObjectId;
 
 class Availability
 {
-    constructor(id,timeslot,startDate,endDate)
+    constructor(id,timeslot)
     {
         this.tutorId = id;
         // this.availStatus = status;
         this.timeslot = timeslot;
-        this.startDate = startDate;
-        this.endDate = endDate;                       
+        // this.startDate = startDate;
+        // this.endDate = endDate;                       
     }
 
 
@@ -23,11 +23,23 @@ class Availability
     }
 
     
+    // static findAvailByTutorId(id)
+    // {
+    //     const db = getDb();
+                            
+    //     return db.collection('availabilities').find({ tutorId:id }).toArray()
+    //                                         .then(avail=>{
+                                                                                                                                               
+    //                                             return avail;  
+    //                                         })
+    //                                         .catch(err=>console.log(err));
+
+    // }
     static findAvailByTutorId(id)
     {
         const db = getDb();
                             
-        return db.collection('availabilities').find({ tutorId:id }).toArray()
+        return db.collection('availabilities').findOne({ tutorId:id })
                                             .then(avail=>{
                                                                                                                                                
                                                 return avail;  
