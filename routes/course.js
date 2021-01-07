@@ -10,7 +10,13 @@ var ImageKit = require("imagekit");
 var fs = require('fs');
 
 
-router.post('/tutor-signup',courseController.courseRegister);
+router.post('/course-register',courseController.courseRegister);
+
+router.post('/all-courses',courseController.getAllCourses);
+
+router.post('/all-courses/:courseId',courseController.getSingleCourse);
+
+router.post('/tutor-courses/:tutorId',courseController.getTutorCourses);
 
 
 module.exports = router;

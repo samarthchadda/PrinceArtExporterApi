@@ -77,3 +77,36 @@ exports.getAllCourses=(req,res,next)=>{
                 })
                 .catch(err=>console.log(err));
 }
+
+
+exports.getSingleCourse=(req,res,next)=>{
+    
+    const courseId = +req.params.courseId;
+   
+    Course.findCourseByCourseId(courseId)
+                .then(course=>{
+                    if(!course)
+                    {
+                        return res.json({status:false, message:'Course does not exist'});
+                    }
+
+                    res.json({status:true, message:'Course exists',course:course});
+                })
+
+}
+
+exports.getTutorCourses=(req,res,next)=>{
+    
+    const tutorId = +req.params.tutorId;
+   
+    Course.fetchAllCoursesByTutorId(tutorId)
+                .then(courses=>{
+                    if(courses.length==0)
+                    {
+                        return res.json({status:false, message:'Course does not exist',courses:[]});
+                    }
+
+                    res.json({status:true, message:'Course exists',courses:courses});
+                })
+
+}
