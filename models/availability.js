@@ -90,6 +90,17 @@ class Availability
 
     // }
 
+    static fetchAllAvails()
+    {
+        const db = getDb();
+        
+        return db.collection('availabilities').find().toArray()
+                                                .then(avail=>{
+                                                                                                                                                   
+                                                     return avail;  
+                                                 })
+                                                 .catch(err=>console.log(err));   
+    }
  
 
 }

@@ -4,14 +4,14 @@ const availController = require('../controllers/availability');
 
 
 
-router.get('/all-emp-availabilities',availController.getAllEmpAvailData);
+router.get('/all-tutor-availabilities',availController.getAllTutorAvailData);
+
+router.get('/all-tutor-availabilities/:tutorId',availController.getSingleTutorAvailData);
+
 
 router.get('/all-saloon-availabilities',availController.getAllSaloonAvailData);
 
-
 router.get('/all-emp-availabilities/:empId',availController.getSingleEmpAvailData);
-
-router.get('/all-saloon-availabilities/:saloonId',availController.getSingleSaloonAvailData);
 
 
 router.post('/emp-date-availability',availController.getSingleEmpAvailDataByDate);
@@ -23,8 +23,8 @@ router.post('/saloon-date-availability',availController.getSingleSaloonAvailData
 
 router.post('/post-tutor-availability',availController.availTutorRegister);
 
-router.post('/post-saloon-availability',availController.availSaloonRegister);
 
+router.post('/post-saloon-availability',availController.availSaloonRegister);
 
 router.post('/edit-emp-availability',availController.availEmpEdit);
 

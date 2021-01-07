@@ -7,11 +7,11 @@ const Appointment = require('../models/appointment');
 const getDb = require('../util/database').getDB; 
 
 
-exports.getAllEmpAvailData=(req,res,next)=>{
+exports.getAllTutorAvailData=(req,res,next)=>{
   
-    Availability.fetchAllEmpAvails()
+    Availability.fetchAllAvails()
                 .then(avails=>{                   
-                    res.json({message:"All employee data returned",avails:avails})
+                    res.json({message:"All tutor avail data returned",avails:avails})
 
                 })
                 .catch(err=>console.log(err));
@@ -63,19 +63,19 @@ exports.getSingleEmpAvailData=(req,res,next)=>{
     })    
 }
 
-exports.getSingleSaloonAvailData=(req,res,next)=>{
+exports.getSingleTutorAvailData=(req,res,next)=>{
   
-    const saloonId = +req.params.saloonId;
+    const tutorId = +req.params.tutorId;
    
-    Availability.findAvailBySaloonId(JSON.parse(saloonId))
+    Availability.findAvailByTutorId(tutorId)
     .then(availDoc=>{
        
         if(availDoc){
            
-             res.json({status:true, data:availDoc});
+             res.json({status:true, availability:availDoc});
         }
         else{
-            res.json({status:false,message:"No such availability exist"});
+            res.json({status:false,message:"No such availability exist",availability:null});
         }          
 
     })    
