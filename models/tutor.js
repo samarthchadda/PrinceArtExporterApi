@@ -5,7 +5,7 @@ const ObjectId = mongodb.ObjectId;
 
 class Tutor
 {
-    constructor(id,fname,lname,email,phone,pwd,country,subject,resume,rate,title,content,video,isVerified,date,token)
+    constructor(id,fname,lname,email,phone,pwd,country,langName,langLevel,subject,resume,rate,title,content,video,isVerified,date,token)
     {
         this.tutorId  = id;
         this.firstName = fname;
@@ -15,7 +15,9 @@ class Tutor
         this.password = pwd;
         this.country = country;
         this.tutorImages = [];
-        this.languages = [];
+        // this.languages = [];
+        this.langName = langName;
+        this.langLevel = langLevel
         this.subject = subject;
         this.resume = resume;
         this.hourlyRate = rate;

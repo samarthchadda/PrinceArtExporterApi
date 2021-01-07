@@ -21,7 +21,7 @@ router.post('/emp-onedate-avail',availController.getSingleEmpAvailDataBySingleDa
 router.post('/saloon-date-availability',availController.getSingleSaloonAvailDataByDate);
 
 
-router.post('/post-emp-availability',availController.availEmpRegister);
+router.post('/post-tutor-availability',availController.availTutorRegister);
 
 router.post('/post-saloon-availability',availController.availSaloonRegister);
 

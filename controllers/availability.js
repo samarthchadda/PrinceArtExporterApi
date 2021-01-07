@@ -307,12 +307,11 @@ exports.getSingleSaloonAvailDataByDate=(req,res,next)=>{
 
 
 //POST
-exports.availEmpRegister = (req,res,next)=>{
+exports.availTutorRegister = (req,res,next)=>{
   
     //parsing data from incoming request
-    const empId = +req.body.empId;
-    const saloonId = null;    
-    const availStatus = req.body.availStatus;    
+    const tutorId = +req.body.tutorId;
+    // const availStatus = req.body.availStatus;    
     const timeslot = req.body.timeslot;
     let startDate = req.body.startDate;    
     let endDate = req.body.endDate;
@@ -324,24 +323,24 @@ exports.availEmpRegister = (req,res,next)=>{
     console.log(endDate);
 
 
-    Availability.findAvailByEmpIdAndDate(empId,startDate,endDate)
+    Availability.findAvailByTutorIdAndDate(tutorId,startDate,endDate)
             .then(availData=>{
                 if(availData){
                     
-                    availData.availStatus = availStatus;
-                    availData.timeslot = timeslot;
-                    const db = getDb();
-                    return db.collection('availabilities').updateOne({empId:empId,startDate:startDate,endDate:endDate},{$set:availData})
-                                .then(resultData=>{
+                    // availData.availStatus = availStatus;
+                    // availData.timeslot = timeslot;
+                    // const db = getDb();
+                    // return db.collection('availabilities').updateOne({empId:empId,startDate:startDate,endDate:endDate},{$set:availData})
+                    //             .then(resultData=>{
                                     
-                                   return res.json({message:'Details Updated',status:true});
-                                })
-                                .catch(err=>console.log(err));
-                    // return res.json({status:false, message:'Availability already registered for this week'});
+                    //                return res.json({message:'Details Updated',status:true});
+                    //             })
+                    //             .catch(err=>console.log(err));
+                    return res.json({status:false, message:'Availability already registered for this week'});
                 }
                 
                     //saving in database
-                    const availability = new Availability(empId,saloonId,availStatus,timeslot,startDate,endDate);
+                    const availability = new Availability(tutorId,timeslot,startDate,endDate);
 
                     return availability.save()
                     .then(resultData=>{

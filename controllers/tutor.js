@@ -106,7 +106,7 @@ exports.tutorRegister = (req,res,next)=>{
                         db.collection('tutorCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const tutor = new Tutor(tutorID,null,null,null,phone,password,null,null,null,null,null,null,null,false,regDate,deviceToken);
+                            const tutor = new Tutor(tutorID,null,null,null,phone,password,null,null,null,null,null,null,null,null,null,false,regDate,deviceToken);
                             //saving in database
                         
                             return tutor.save()
@@ -299,9 +299,7 @@ exports.userData=(req,res,next)=>{
 
                     res.json({ message:'User Exists',Data:parent});
 
-
                 })
-
 }
 
 
