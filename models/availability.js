@@ -23,23 +23,11 @@ class Availability
     }
 
     
-    // static findAvailByTutorId(id)
-    // {
-    //     const db = getDb();
-                            
-    //     return db.collection('availabilities').find({ tutorId:id }).toArray()
-    //                                         .then(avail=>{
-                                                                                                                                               
-    //                                             return avail;  
-    //                                         })
-    //                                         .catch(err=>console.log(err));
-
-    // }
     static findAvailByTutorId(id)
     {
         const db = getDb();
                             
-        return db.collection('availabilities').findOne({ tutorId:id })
+        return db.collection('availabilities').find({ tutorId:id }).toArray()
                                             .then(avail=>{
                                                                                                                                                
                                                 return avail;  
@@ -47,6 +35,18 @@ class Availability
                                             .catch(err=>console.log(err));
 
     }
+    // static findAvailByTutorId(id)
+    // {
+    //     const db = getDb();
+                            
+    //     return db.collection('availabilities').findOne({ tutorId:id })
+    //                                         .then(avail=>{
+                                                                                                                                               
+    //                                             return avail;  
+    //                                         })
+    //                                         .catch(err=>console.log(err));
+
+    // }
     
 
     static findAvailByTutorIdAndDate(id,sDate,eDate)
