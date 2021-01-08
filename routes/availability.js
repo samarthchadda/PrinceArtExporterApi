@@ -8,20 +8,21 @@ router.get('/all-tutor-availabilities',availController.getAllTutorAvailData);
 
 router.get('/all-tutor-availabilities/:tutorId',availController.getSingleTutorAvailData);
 
+router.post('/tutor-date-availability',availController.getSingleTutorAvailDataByDate);
+
+router.post('/post-tutor-availability',availController.availTutorRegister);
+
 
 router.get('/all-saloon-availabilities',availController.getAllSaloonAvailData);
 
 router.get('/all-emp-availabilities/:empId',availController.getSingleEmpAvailData);
 
 
-router.post('/emp-date-availability',availController.getSingleEmpAvailDataByDate);
-
 router.post('/emp-onedate-avail',availController.getSingleEmpAvailDataBySingleDate);
 
 router.post('/saloon-date-availability',availController.getSingleSaloonAvailDataByDate);
 
 
-router.post('/post-tutor-availability',availController.availTutorRegister);
 
 
 router.post('/post-saloon-availability',availController.availSaloonRegister);

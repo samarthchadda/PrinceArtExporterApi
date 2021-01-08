@@ -82,9 +82,9 @@ exports.getSingleTutorAvailData=(req,res,next)=>{
 }
 
 
-exports.getSingleEmpAvailDataByDate=(req,res,next)=>{
+exports.getSingleTutorAvailDataByDate=(req,res,next)=>{
   
-    const empId = +req.body.empId;
+    const tutorId = +req.body.tutorId;
 
     let startDate = req.body.startDate;     
     let endDate = req.body.endDate;
@@ -94,16 +94,16 @@ exports.getSingleEmpAvailDataByDate=(req,res,next)=>{
     endDate = new Date(endDate).getTime();
     console.log(endDate);
    
-    Availability.findAvailByEmpIdAndDate(empId,startDate,endDate)
+    Availability.findAvailByTutorIdAndDate(tutorId,startDate,endDate)
     .then(availDoc=>{
        
         if(availDoc){
            
             // console.log(new Date(availDoc.startDate))
-             res.json({status:true, data:availDoc});
+             res.json({status:true, availability:availDoc});
         }
         else{
-            res.json({status:false,message:"No such availability exist"});
+            res.json({status:false,message:"No such availability exist",availability:null});
         }          
 
     })    
