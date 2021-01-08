@@ -70,12 +70,12 @@ exports.getSingleTutorAvailData=(req,res,next)=>{
     Availability.findAvailByTutorId(tutorId)
     .then(availDoc=>{
        
-        if(availDoc.length==0){
+        if(availDoc.length>0){
            
              res.json({status:true, availability:availDoc});
         }
         else{
-            res.json({status:false,message:"No such availability exist",availability:null});
+            res.json({status:false,message:"No such availability exist",availability:availDoc});
         }          
 
     })    
