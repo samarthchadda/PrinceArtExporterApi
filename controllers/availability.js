@@ -70,7 +70,7 @@ exports.getSingleTutorAvailData=(req,res,next)=>{
     Availability.findAvailByTutorId(tutorId)
     .then(availDoc=>{
        
-        if(availDoc){
+        if(availDoc.length==0){
            
              res.json({status:true, availability:availDoc});
         }
@@ -86,7 +86,7 @@ exports.getSingleEmpAvailDataByDate=(req,res,next)=>{
   
     const empId = +req.body.empId;
 
-    let startDate = req.body.startDate;    
+    let startDate = req.body.startDate;     
     let endDate = req.body.endDate;
     startDate = new Date(startDate).getTime();
     console.log(startDate);
