@@ -313,18 +313,18 @@ exports.availTutorRegister = (req,res,next)=>{
     const tutorId = +req.body.tutorId;
     // const availStatus = req.body.availStatus;    
     const timeslot = req.body.timeslot;
-    // let startDate = req.body.startDate;    
-    // let endDate = req.body.endDate;
+    let startDate = req.body.startDate;    
+    let endDate = req.body.endDate;
 
-    // startDate = new Date(startDate).getTime();
-    // console.log(startDate);
+    startDate = new Date(startDate).getTime();
+    console.log(startDate);
 
-    // endDate = new Date(endDate).getTime();
-    // console.log(endDate);
+    endDate = new Date(endDate).getTime();
+    console.log(endDate);
 
-
-    // Availability.findAvailByTutorIdAndDate(tutorId,startDate,endDate)
-    Availability.findAvailByTutorId(tutorId)
+  
+    // Availability.findAvailByTutorId(tutorId)
+    Availability.findAvailByTutorIdAndDate(tutorId,startDate,endDate)
             .then(availData=>{
                 // console.log(availData)
                 if(availData){
@@ -343,7 +343,7 @@ exports.availTutorRegister = (req,res,next)=>{
                 }
                 
                     //saving in database
-                    const availability = new Availability(tutorId,timeslot);
+                    const availability = new Availability(tutorId,timeslot,startDate,endDate);
 
                     return availability.save()
                     .then(resultData=>{

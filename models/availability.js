@@ -5,13 +5,13 @@ const ObjectId = mongodb.ObjectId;
 
 class Availability
 {
-    constructor(id,timeslot)
+    constructor(id,timeslot,startDate,endDate)
     {
         this.tutorId = id;
         // this.availStatus = status;
         this.timeslot = timeslot;
-        // this.startDate = startDate;
-        // this.endDate = endDate;                       
+        this.startDate = startDate;
+        this.endDate = endDate;                       
     }
 
 
