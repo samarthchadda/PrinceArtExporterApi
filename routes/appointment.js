@@ -3,7 +3,7 @@ const router = express.Router();
 const appointController = require('../controllers/appointment');
 
 
-router.get('/all-appointments',appointController.getAllAppointments);
+router.get('/all-session-bookings',appointController.getAllAppointments);
 
 router.get('/all-appointments-month',appointController.getAllAppointmentsMonth);
 
