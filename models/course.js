@@ -5,17 +5,13 @@ const ObjectId = mongodb.ObjectId;
 
 class Course
 {
-    constructor(id,name,level,duration,startDate,tutorId,score,review,isActive)
+    constructor(id,name,img,desc,tutorIds,date)
     {
         this.courseId  = id;
         this.courseName = name;
-        this.courseLevel = level;
-        this.duration = duration;        
-        this.startDate = startDate;
-        this.tutorId = tutorId;
-        this.score = score;
-        this.review = review;
-        this.isActive = isActive
+        this.courseImage = img;
+        this.courseDesc = desc;
+        this.tutorIds = [];
         this.registrationDate = date;
         
     }

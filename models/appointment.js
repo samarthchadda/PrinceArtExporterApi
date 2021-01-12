@@ -7,21 +7,16 @@ class Appointment
 {
    
    
-    constructor(id,saloonId,empId,serviceId,serviceName,clientName,clientPhone,empName,time,date,day,cost,note)
+    constructor(id,tutorId,tname,duration,timeSlot,date,day,cost)
     {          
         this.appointmentId = id;
-        this.saloonId = saloonId;
-        this.empId = empId;
-        this.serviceId = serviceId;
-        this.serviceName = serviceName;
-        this.clientName = clientName;
-        this.clientPhone = clientPhone;
-        this.empName = empName;
-        this.bookingTime = time;
+        this.tutorId = tutorId;
+        this.tutorName = tname;
+        this.duration = duration;
+        this.timeSlot = timeSlot;
         this.bookingDate = date;
         this.bookingDay = day;
         this.totalCost = cost;         
-        this.note = note;     
         this.appointDate = new Date();             
         
     }
@@ -38,7 +33,7 @@ class Appointment
     static fetchAllAppointments()
     {
         const db = getDb();
-        return db.collection('appointments').find().sort({bookingDate:-1,bookingTime:-1}).toArray()
+        return db.collection('appointments').find().sort({bookingDate:-1,timeSlot:-1}).toArray()
                             .then(appointData=>{
                                
                                 return appointData;
@@ -59,37 +54,26 @@ class Appointment
 
     }
 
-    static findAppointsBySaloonId(sid)
+    static findAppointsByTutorId(tid)
     {
         const db = getDb();
                             
-        return db.collection('appointments').find({ saloonId:sid}).toArray()
+        return db.collection('appointments').find({ tutorId:tid}).toArray()
                                             .then(appointDetail=>{
                                                                                                 
                                                 return appointDetail;  
                                             })
                                             .catch(err=>console.log(err));
 
-    }
-
-    static findAppointsByEmpId(eid)
-    {
-        const db = getDb();
-                            
-        return db.collection('appointments').find({ empId:eid }).toArray()
-                                            .then(appointDetail=>{
-                                                                                                
-                                                return appointDetail;  
-                                            })
-                                            .catch(err=>console.log(err));
     }
 
   
-    static findAppointByEmpIdAndDate(eid,bDate)
+  
+    static findAppointByTutorIdAndDate(tid,bDate)
     {
         const db = getDb();
                             
-        return db.collection('appointments').find({ empId:eid,bookingDate:bDate }).sort({bookingTime:1}).toArray()
+        return db.collection('appointments').find({ tutorId:tid,bookingDate:bDate }).sort({timeSlot:1}).toArray()
                                             .then(appointDetail=>{
                                                                                                 
                                                 return appointDetail;  
@@ -97,11 +81,11 @@ class Appointment
                                             .catch(err=>console.log(err));
     }
 
-    static findAppointByEmpIdAndDateTime(eid,bDate,srtTime,endTime)
+    static findAppointByTutorIdAndDateTime(tid,bDate,srtTime,endTime)
     {
         const db = getDb();
                             
-        return db.collection('appointments').find({ empId:eid,bookingDate:bDate,'bookingTime.srtTime':srtTime,'bookingTime.endTime':endTime}).toArray()
+        return db.collection('appointments').find({ tutorId:tid,bookingDate:bDate,'timeSlot.startTime':srtTime,'timeSlot.endTime':endTime}).toArray()
                                             .then(appointDetail=>{
                                                                                                 
                                                 return appointDetail;  
@@ -110,17 +94,6 @@ class Appointment
     }
 
 
-    static findAppointBySaloonIdAndDate(sid, bDate)
-    {
-        const db = getDb();
-                            
-        return db.collection('appointments').find({ saloonId:sid,bookingDate:bDate }).toArray()
-                                            .then(appointDetail=>{
-                                                                                                
-                                                return appointDetail;  
-                                            })
-                                            .catch(err=>console.log(err));
-    }
 
 
     static findAppointByClientPhoneAndCDate(phone, cDate)

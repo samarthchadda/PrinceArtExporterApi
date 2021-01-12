@@ -5,14 +5,10 @@ const getDb = require('../util/database').getDB;
 exports.postAppointment = (req,res,next)=>{  
 
     let appointId;
-    const saloonId = +req.body.saloonId ;
-    const empId = +req.body.empId;   
-    const serviceId = req.body.serviceId;
-    const serviceName = req.body.serviceName;
-    const clientName = req.body.clientName;
-    const clientPhone = req.body.clientPhone;
-    const empName = req.body.empName;
-    const bookingTime = req.body.bookingTime;
+    const tutorId = +req.body.tutorId ;
+    const tutorName = req.body.tutorName;
+    const duration = +req.body.duration;
+    const timeSlot = req.body.timeSlot;
     // console.log("Start Time : ", bookingTime.srtTime,"End Time : ",bookingTime.endTime);
     // console.log(bookingTime.srtTime == bookingTime.endTime)
     let bookingDate = req.body.bookingDate;
@@ -20,13 +16,12 @@ exports.postAppointment = (req,res,next)=>{
     console.log(bookingDate);
     const bookingDay = req.body.bookingDay;
     const totalCost = +req.body.totalCost;
-    const note = req.body.note;
 
-    Appointment.findAppointByEmpIdAndDateTime(empId,bookingDate,bookingTime.srtTime,bookingTime.endTime)
-    .then(appointDoc=>{
-        if(appointDoc.length!=0){                        
-            return res.json({status:false, message:'Appointment Already Exists'});
-        }
+    // Appointment.findAppointByTutorIdAndDateTime(tutorId,bookingDate,timeSlot.startTime,timeSlot.endTime)
+    // .then(appointDoc=>{
+    //     if(appointDoc.length!=0){                        
+    //         return res.json({status:false, message:'Appointment Already Exists for this tutor in this timeslot'});
+    //     }
 
         let newVal;
         const db = getDb();     
@@ -41,7 +36,7 @@ exports.postAppointment = (req,res,next)=>{
             db.collection('appCounter').insertOne({count:newVal})
                     .then(result=>{
                         
-                        const appointment = new Appointment(appointId,saloonId,empId,serviceId,serviceName,clientName,clientPhone,empName,bookingTime,bookingDate,bookingDay,totalCost,note);
+                        const appointment = new Appointment(appointId,tutorId,tutorName,duration,timeSlot,bookingDate,bookingDay,totalCost);
                        
                         //saving in database                    
                         return appointment.save()
@@ -59,7 +54,7 @@ exports.postAppointment = (req,res,next)=>{
                         res.json({status:false,message:"Appointment Creation Failed ",error:err})
                     })                             
         })    
-    })
+    // })
     .then(resultInfo=>{                   
       
     })

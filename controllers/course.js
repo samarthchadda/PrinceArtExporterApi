@@ -3,69 +3,69 @@ const Course = require('../models/course');
 const getDb = require('../util/database').getDB; 
 
 
-//POST
-exports.courseRegister = (req,res,next)=>{
+// //POST
+// exports.courseRegister = (req,res,next)=>{
   
-    let courseID;
-    //parsing data from incoming request    
-    const courseName = req.body.courseName;
-    const courseLevel = req.body.courseLevel;
-    const duration = req.body.duration;
-    const startDate = req.body.startDate;  
-    startDate = new Date(startDate).getTime();
-    console.log(startDate);  
-    const tutorId = +req.body.tutorId;
-    const score = +req.body.score;
-    const review = req.body.review;
-    const isActive = req.body.isActive;  
-    const regDate = new Date().getTime();
+//     let courseID;
+//     //parsing data from incoming request    
+//     const courseName = req.body.courseName;
+//     const courseLevel = req.body.courseLevel;
+//     const duration = req.body.duration;
+//     const startDate = req.body.startDate;  
+//     startDate = new Date(startDate).getTime();
+//     console.log(startDate);  
+//     const tutorIds = req.body.tutorIds;  //array of IDs
+//     const score = +req.body.score;
+//     const review = req.body.review;
+//     const isActive = req.body.isActive;  
+//     const regDate = new Date().getTime();
 
-    // Course.findcourseByPhone(phone)
-    //             .then(userDoc=>{
-    //                 if(userDoc){                        
-    //                     return res.json({status:false, message:'course Already Exists(Enter unique phone)',course:userDoc});
-    //                 }
+//     // Course.findcourseByPhone(phone)
+//     //             .then(userDoc=>{
+//     //                 if(userDoc){                        
+//     //                     return res.json({status:false, message:'course Already Exists(Enter unique phone)',course:userDoc});
+//     //                 }
                    
-                    const db = getDb();     
-                    db.collection('courseCounter').find().toArray().then(data=>{
+//                     const db = getDb();     
+//                     db.collection('courseCounter').find().toArray().then(data=>{
         
-                        newVal = data[data.length-1].count;
+//                         newVal = data[data.length-1].count;
                        
-                        newVal = newVal + 1;
-                        console.log(newVal);
+//                         newVal = newVal + 1;
+//                         console.log(newVal);
                        
-                        courseID = newVal;
+//                         courseID = newVal;
                         
-                        db.collection('courseCounter').insertOne({count:newVal})
-                                .then(result=>{
+//                         db.collection('courseCounter').insertOne({count:newVal})
+//                                 .then(result=>{
                                               
-                            const course = new Course(courseID,courseName,courseLevel,duration,startDate,tutorId,score,review,isActive);
-                            //saving in database
+//                             const course = new Course(courseID,courseName,courseLevel,duration,startDate,tutorIds,score,review,isActive);
+//                             //saving in database
                         
-                            return course.save()
-                            .then(resultData=>{
+//                             return course.save()
+//                             .then(resultData=>{
                                 
-                                res.json({status:true,message:"Course Registered",course:resultData["ops"][0]});
+//                                 res.json({status:true,message:"Course Registered",course:resultData["ops"][0]});
                                 
-                            })
-                            .catch(err=>console.log(err));                                                    
+//                             })
+//                             .catch(err=>console.log(err));                                                    
                                   
-                                })
-                                .then(resultData=>{
+//                                 })
+//                                 .then(resultData=>{
                                    
-                                })
-                                .catch(err=>{
-                                    res.json({status:false,error:err})
-                                })             
-                     })   
+//                                 })
+//                                 .catch(err=>{
+//                                     res.json({status:false,error:err})
+//                                 })             
+//                      })   
                      
                 
-                // })
-                .then(resultInfo=>{                   
+//                 // })
+//                 .then(resultInfo=>{                   
                   
-                })
-                .catch(err=>console.log(err));      
-}
+//                 })
+//                 .catch(err=>console.log(err));      
+// }
 
 
 exports.getAllCourses=(req,res,next)=>{
