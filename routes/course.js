@@ -17,9 +17,9 @@ router.get('/all-courses',courseController.getAllCourses);
 
 router.get('/all-courses/:courseId',courseController.getSingleCourse);
 
-router.post('/tutor-courses/:tutorId',courseController.getTutorCourses);
+router.get('/tutor-courses/:tutorId',courseController.getTutorCourses);
 
-
+router.post('/add-course-tutor',courseController.postCourseTutor);
 
 
 //POST

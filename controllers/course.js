@@ -67,6 +67,41 @@ const getDb = require('../util/database').getDB;
 //                 .catch(err=>console.log(err));      
 // }
 
+exports.postCourseTutor = (req,res,next)=>{
+
+    const courseId = +req.body.courseId;
+    const tutorId = +req.body.tutorId;    
+   
+    Course.findCourseByCourseId(courseId)
+                .then(course=>{
+                    if(!course)
+                    {
+                        return res.json({status:false, message:'Course does not exist'});
+                    }
+
+                    var tutorIndex = course.tutorIds.findIndex(t=>t==tutorId);
+                    if(tutorIndex>=0)
+                    {
+                        return res.json({status:false, message:'Tutor Already exist'});
+                    } 
+                    else
+                    {
+                        course.tutorIds.push(tutorId)
+                        const db = getDb();
+                        db.collection('courses').updateOne({courseId:courseId},{$set:course})
+                                    .then(resultData=>{                                    
+                                        
+                                      res.json({status:true, message:'Course Updated',course:course});
+                                    })
+                                    .catch(err=>console.log(err));
+
+                    }
+
+              
+
+                })
+
+}
 
 exports.getAllCourses=(req,res,next)=>{
   
