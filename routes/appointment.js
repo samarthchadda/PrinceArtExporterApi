@@ -10,6 +10,10 @@ router.get('/all-appointments-month',appointController.getAllAppointmentsMonth);
 
 router.get('/all-session-bookings/:id',appointController.getSingleAppointment);
 
+router.get('/tutor-session-bookings/:id',appointController.getTutorAppointments);
+
+router.get('/student-session-bookings/:id',appointController.getStudentAppointments);
+
 router.post('/post-session',appointController.postAppointment);
 
 router.post('/saloon-appointment',appointController.getAppointBySaloonAndBdate);

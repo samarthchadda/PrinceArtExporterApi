@@ -223,6 +223,39 @@ exports.getSingleAppointment=(req,res,next)=>{
 
 }
 
+exports.getTutorAppointments=(req,res,next)=>{
+    
+    const id = +req.params.id;
+   
+    Appointment.findAppointsByTutorId(JSON.parse(id))
+                .then(appoint=>{
+                    if(appoint.length==0)
+                    {
+                        return res.json({status:false, message:'Appointment does not exist',appointments:[]});
+                    }
+
+                    res.json({status:true, message:'Appointment exists',appointments:appoint});
+                })
+
+}
+
+
+exports.getStudentAppointments=(req,res,next)=>{
+    
+    const id = +req.params.id;
+   
+    Appointment.findAppointsByStudentId(JSON.parse(id))
+                .then(appoint=>{
+                    if(appoint.length==0)
+                    {
+                        return res.json({status:false, message:'Appointment does not exist',appointments:[]});
+                    }
+
+                    res.json({status:true, message:'Appointment exists',appointments:appoint});
+                })
+
+}
+
 
 exports.getAppointByEmpIdDate=(req,res,next)=>{
     

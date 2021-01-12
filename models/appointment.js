@@ -70,6 +70,18 @@ class Appointment
 
     }
 
+    static findAppointsByStudentId(sid)
+    {
+        const db = getDb();
+                            
+        return db.collection('appointments').find({ studentId:sid}).toArray()
+                                            .then(appointDetail=>{
+                                                                                                
+                                                return appointDetail;  
+                                            })
+                                            .catch(err=>console.log(err));
+
+    }
   
   
     static findAppointByTutorIdAndDate(tid,bDate)
