@@ -8,7 +8,7 @@ router.get('/all-session-bookings',appointController.getAllAppointments);
 router.get('/all-appointments-month',appointController.getAllAppointmentsMonth);
 
 
-router.get('/all-appointments/:id',appointController.getSingleAppointment);
+router.get('/all-session-bookings/:id',appointController.getSingleAppointment);
 
 router.post('/post-session',appointController.postAppointment);
 

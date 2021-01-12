@@ -215,10 +215,10 @@ exports.getSingleAppointment=(req,res,next)=>{
                 .then(appoint=>{
                     if(!appoint)
                     {
-                        return res.json({status:false, message:'Appointment does not exist',data:null});
+                        return res.json({status:false, message:'Appointment does not exist',appointment:null});
                     }
 
-                    res.json({status:true, message:'Appointment exists',data:appoint});
+                    res.json({status:true, message:'Appointment exists',appointment:appoint});
                 })
 
 }
