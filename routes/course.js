@@ -13,9 +13,9 @@ var fs = require('fs');
 var upload1 = require('../services/file-upload');
 const singleupload = upload1.single('courseImg');
 
-router.post('/all-courses',courseController.getAllCourses);
+router.get('/all-courses',courseController.getAllCourses);
 
-router.post('/all-courses/:courseId',courseController.getSingleCourse);
+router.get('/all-courses/:courseId',courseController.getSingleCourse);
 
 router.post('/tutor-courses/:tutorId',courseController.getTutorCourses);
 
