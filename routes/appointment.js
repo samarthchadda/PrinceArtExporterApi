@@ -10,7 +10,7 @@ router.get('/all-appointments-month',appointController.getAllAppointmentsMonth);
 
 router.get('/all-appointments/:id',appointController.getSingleAppointment);
 
-router.post('/post-appointment',appointController.postAppointment);
+router.post('/post-session',appointController.postAppointment);
 
 router.post('/saloon-appointment',appointController.getAppointBySaloonAndBdate);
 

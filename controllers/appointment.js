@@ -16,6 +16,8 @@ exports.postAppointment = (req,res,next)=>{
     console.log(bookingDate);
     const bookingDay = req.body.bookingDay;
     const totalCost = +req.body.totalCost;
+    const studentId = +req.body.studentId;
+    const studentName = req.body.studentName;    
 
     // Appointment.findAppointByTutorIdAndDateTime(tutorId,bookingDate,timeSlot.startTime,timeSlot.endTime)
     // .then(appointDoc=>{
@@ -36,7 +38,7 @@ exports.postAppointment = (req,res,next)=>{
             db.collection('appCounter').insertOne({count:newVal})
                     .then(result=>{
                         
-                        const appointment = new Appointment(appointId,tutorId,tutorName,duration,timeSlot,bookingDate,bookingDay,totalCost);
+                        const appointment = new Appointment(appointId,tutorId,tutorName,duration,timeSlot,bookingDate,bookingDay,totalCost,studentId,studentName,0);
                        
                         //saving in database                    
                         return appointment.save()
