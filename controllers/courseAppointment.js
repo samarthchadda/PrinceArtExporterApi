@@ -73,7 +73,7 @@ exports.postAppointment = (req,res,next)=>{
 
 exports.getAllAppointments=(req,res,next)=>{
     
-    Appointment.fetchAllAppointments()
+    CourseAppointment.fetchAllAppointments()
                 .then(appointments=>{
                    
                     res.json({message:"All Data returned",allAppointments:appointments})
@@ -89,7 +89,7 @@ exports.getSingleAppointment=(req,res,next)=>{
     
     const id = +req.params.id;
    
-    Appointment.findAppointByID(JSON.parse(id))
+    CourseAppointment.findAppointByID(JSON.parse(id))
                 .then(appoint=>{
                     if(!appoint)
                     {

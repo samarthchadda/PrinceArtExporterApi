@@ -3,9 +3,9 @@ const router = express.Router();
 const courseAppointController = require('../controllers/courseAppointment');
 
 
-router.get('/all-session-bookings',courseAppointController.getAllAppointments);
+router.get('/all-course-bookings',courseAppointController.getAllAppointments);
 
-router.get('/all-session-bookings/:id',courseAppointController.getSingleAppointment);
+router.get('/all-course-bookings/:id',courseAppointController.getSingleAppointment);
 
 router.get('/tutor-session-bookings/:id',courseAppointController.getTutorAppointments);
 
