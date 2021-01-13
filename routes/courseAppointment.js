@@ -13,7 +13,7 @@ router.get('/student-course-bookings/:id',courseAppointController.getStudentAppo
 
 router.post('/post-course-booking',courseAppointController.postAppointment);
 
-router.post('/edit-sessionBooking-status',courseAppointController.editSessionAppointment);
+router.post('/edit-courseBooking-status',courseAppointController.editSessionAppointment);
 
 
 

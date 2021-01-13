@@ -120,7 +120,7 @@ exports.editSessionAppointment=(req,res,next)=>{
     const appointmentId = +req.body.appointmentId;
     const status = +req.body.status;
        
-    Appointment.findAppointByID(JSON.parse(appointmentId))
+    CourseAppointment.findAppointByID(JSON.parse(appointmentId))
                 .then(appoint=>{
                     if(!appoint)
                     {
