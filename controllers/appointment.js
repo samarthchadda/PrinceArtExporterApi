@@ -222,8 +222,8 @@ exports.getSingleAppointment=(req,res,next)=>{
                     Tutor.findTutorById(+appoint.tutorId)
                     .then(tutorData=>{
 
-                        let newData = {...appoint,tutor:tutorData}
-                        res.json({status:true, message:'Appointment exists',appointment:newData});
+                        // let newData = {...appoint,tutor:tutorData}
+                        res.json({status:true, message:'Appointment exists',appointment:appointment,tutor:tutorData});
                     })
                     .catch(err=>console.log(err))
 
