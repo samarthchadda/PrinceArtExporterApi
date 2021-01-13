@@ -223,6 +223,32 @@ exports.getSingleAppointment=(req,res,next)=>{
 
 }
 
+exports.editSessionAppointment=(req,res,next)=>{
+    
+    const appointmentId = +req.body.appointmentId;
+    const status = +req.body.status;
+       
+    Appointment.findAppointByID(JSON.parse(appointmentId))
+                .then(appoint=>{
+                    if(!appoint)
+                    {
+                        return res.json({status:false, message:'Appointment does not exist',appointment:null});
+                    }
+
+                    appoint.status = status;
+                    const db = getDb();
+                    db.collection('appointments').updateOne({appointmentId:appointmentId},{$set:appoint})
+                                .then(resultData=>{
+                                    
+                                    res.json({message:'Details Updated',status:true,appointment:appoint});
+                                })
+                                .catch(err=>console.log(err));
+
+                    // res.json({status:true, message:'Appointment exists',appointment:appoint});
+                })
+
+}
+
 exports.getTutorAppointments=(req,res,next)=>{
     
     const id = +req.params.id;

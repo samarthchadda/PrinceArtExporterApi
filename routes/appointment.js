@@ -16,6 +16,8 @@ router.get('/student-session-bookings/:id',appointController.getStudentAppointme
 
 router.post('/post-session',appointController.postAppointment);
 
+router.post('/edit-sessionBooking-status',appointController.editSessionAppointment);
+
 router.post('/saloon-appointment',appointController.getAppointBySaloonAndBdate);
 
 router.post('/check-appointment',appointController.getAppointByEmpIdDate);
