@@ -129,7 +129,7 @@ exports.editSessionAppointment=(req,res,next)=>{
 
                     appoint.status = status;
                     const db = getDb();
-                    db.collection('appointments').updateOne({appointmentId:appointmentId},{$set:appoint})
+                    db.collection('courseAppointments').updateOne({appointmentId:appointmentId},{$set:appoint})
                                 .then(resultData=>{
                                     
                                     res.json({message:'Details Updated',status:true,appointment:appoint});
