@@ -223,7 +223,7 @@ exports.getSingleAppointment=(req,res,next)=>{
                     .then(tutorData=>{
 
                         // let newData = {...appoint,tutor:tutorData}
-                        res.json({status:true, message:'Appointment exists',appointment:appointment,tutor:tutorData});
+                        res.json({status:true, message:'Appointment exists',appointment:appoint,tutor:tutorData});
                     })
                     .catch(err=>console.log(err))
 
