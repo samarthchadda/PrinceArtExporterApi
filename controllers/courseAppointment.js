@@ -145,7 +145,7 @@ exports.getTutorAppointments=(req,res,next)=>{
     
     const id = +req.params.id;
    
-    Appointment.findAppointsByTutorId(JSON.parse(id))
+    CourseAppointment.findAppointsByTutorId(JSON.parse(id))
                 .then(appoint=>{
                     if(appoint.length==0)
                     {
@@ -162,7 +162,7 @@ exports.getStudentAppointments=(req,res,next)=>{
     
     const id = +req.params.id;
    
-    Appointment.findAppointsByStudentId(JSON.parse(id))
+    CourseAppointment.findAppointsByStudentId(JSON.parse(id))
                 .then(appoint=>{
                     if(appoint.length==0)
                     {
