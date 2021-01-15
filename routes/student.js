@@ -20,7 +20,7 @@ router.get('/all-students',studentController.getStudents);
 
 router.get('/all-clients-month',studentController.getClientsByMonth);
 
-router.get('/all-students/:id',studentController.getSingleClient);
+router.get('/all-students/:id',studentController.getSingleStudent);
 
 router.post('/edit-client-details',studentController.editClientDetails);
 
