@@ -3,19 +3,19 @@ const getDb = require('../util/database').getDB;
 
 const ObjectId = mongodb.ObjectId;
 
-class Client
+class Student
 {
-    constructor(id,name,phone,email,pwd,img,token,date)
+    constructor(id,fname,lname,phone,email,pwd,img,token)
     {
-        this.clientId = id;
-        this.clientName = name;
+        this.studentId = id;
+        this.firstName = fname;
+        this.lastName = lname;        
         this.phone = phone;
         this.email = email;        
         this.password = pwd;
-        this.clientImg = img;
-        this.favourites = [];
+        this.studentsImg = img;
         this.deviceToken = token;
-        this.registrationDate = date;
+        this.registrationDate = new Date();
       
     }
 
@@ -23,15 +23,15 @@ class Client
     save()
     {
         const db = getDb();
-        return db.collection('clients').insertOne(this);
+        return db.collection('students').insertOne(this);
                               
     }
 
-    static findClientByEmail(email)
+    static findStudentByEmail(email)
     {
         const db = getDb();
                             
-        return db.collection('clients').findOne({ email:email })
+        return db.collection('students').findOne({ email:email })
                                             .then(client=>{                                                
                                                 
                                                 return client;  
@@ -40,11 +40,11 @@ class Client
 
     }
 
-    static findClientByPhone(phone)
+    static findStudentByPhone(phone)
     {
         const db = getDb();
                             
-        return db.collection('clients').findOne({ phone:phone })
+        return db.collection('students').findOne({ phone:phone })
                                             .then(client=>{                                                
                                                 
                                                 return client;  
@@ -54,11 +54,11 @@ class Client
     }
 
 
-    static findClientByDates(sDate,eDate)
+    static findStudentByDates(sDate,eDate)
     {
         const db = getDb();
                             
-        return db.collection('clients').find({ registrationDate:{$gte:sDate,$lte:eDate} }).toArray()
+        return db.collection('students').find({ registrationDate:{$gte:sDate,$lte:eDate} }).toArray()
                                             .then(appointDetail=>{
                                             //    console.log(appointDetail)                                                 
                                                 return appointDetail;  
@@ -66,11 +66,11 @@ class Client
                                             .catch(err=>console.log(err));
     }
 
-    static findClientByClientId(id)
+    static findStudentByStudentId(id)
     {
         const db = getDb();
                             
-        return db.collection('clients').findOne({ clientId:id })
+        return db.collection('students').findOne({ studentId:id })
                                             .then(client=>{                                                
                                                 
                                                 return client;  
@@ -80,10 +80,10 @@ class Client
     }
 
 
-    static fetchAllClients()
+    static fetchAllstudents()
     {
         const db = getDb();
-        return db.collection('clients').find().toArray()
+        return db.collection('students').find().toArray()
                             .then(ownerData=>{
                                
                                 return ownerData;
@@ -94,5 +94,5 @@ class Client
 }
 
 
-module.exports = Client;
+module.exports = Student;
 

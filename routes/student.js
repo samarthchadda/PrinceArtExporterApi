@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const clientController = require('../controllers/client');
+const studentController = require('../controllers/student');
 
-const Client = require('../models/client');
+const Client = require('../models/student');
 
 const multer = require('multer');
 const getDb = require('../util/database').getDB; 
@@ -12,35 +12,37 @@ var ImageKit = require("imagekit");
 var fs = require('fs');
 
 
-router.post('/client-login',clientController.clientLogin);
+router.post('/student-login',studentController.studentLogin);
 
-router.get('/all-clients',clientController.getClients);
+router.post('/student-register',studentController.studentRegister)
 
-router.get('/all-clients-month',clientController.getClientsByMonth);
+router.get('/all-students',studentController.getStudents);
 
-router.get('/all-clients/:id',clientController.getSingleClient);
+router.get('/all-clients-month',studentController.getClientsByMonth);
 
-router.post('/edit-client-details',clientController.editClientDetails);
+router.get('/all-students/:id',studentController.getSingleClient);
 
-router.get('/del-client/:clientId',clientController.delClient);
+router.post('/edit-client-details',studentController.editClientDetails);
 
-router.post('/edit-client-email',clientController.editClientEmail);
+router.get('/del-client/:clientId',studentController.delClient);
 
-router.post('/edit-client-name',clientController.editClientName);
+router.post('/edit-client-email',studentController.editClientEmail);
 
-router.post('/edit-client-phone',clientController.editClientPhone);
+router.post('/edit-client-name',studentController.editClientName);
 
-router.post('/edit-client-token',clientController.editClientToken);
+router.post('/edit-client-phone',studentController.editClientPhone);
 
-router.post('/edit-client-password',clientController.clientResetPwd);
+router.post('/edit-client-token',studentController.editClientToken);
 
-router.post('/check-client-email',clientController.clientCheckEmail);
+router.post('/edit-client-password',studentController.clientResetPwd);
 
-router.post('/check-client-phone',clientController.clientCheckPhone);
+router.post('/check-client-email',studentController.clientCheckEmail);
 
-router.post('/client-fav-saloon',clientController.clientFavSaloon);
+router.post('/check-client-phone',studentController.clientCheckPhone);
 
-router.get('/all-fav-saloons/:clientId',clientController.getFavSaloons);
+router.post('/client-fav-saloon',studentController.clientFavSaloon);
+
+router.get('/all-fav-saloons/:clientId',studentController.getFavSaloons);
 
 
 router.post('/client-register',upload.single('clientImg'),(req,res,next)=>{

@@ -6,7 +6,7 @@ const app = express();
 
 const tutorRoutes = require('./routes/tutor');
 const availRoutes = require('./routes/availability');
-const clientRoutes = require('./routes/client');
+const studentRoutes = require('./routes/student');
 const adminRoutes = require('./routes/admin');
 const appointmentRoutes = require('./routes/appointment');
 const reportRoutes = require('./routes/report');
@@ -45,7 +45,7 @@ app.get('/',(req,res)=>{
 });
 app.use('/api',tutorRoutes);
 app.use('/api',availRoutes);
-app.use('/api',clientRoutes);
+app.use('/api',studentRoutes);
 app.use('/api',adminRoutes);
 app.use('/api',appointmentRoutes);
 app.use('/api',reportRoutes);

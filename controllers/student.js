@@ -1,75 +1,82 @@
 
-const Client = require('../models/client');
+const Student = require('../models/student');
 
 const getDb = require('../util/database').getDB; 
 
 
-//POST
-// exports.clientRegister = (req,res,next)=>{
+// POST
+exports.studentRegister = (req,res,next)=>{
   
-//     let clientID;
-//     //parsing data from incoming request
-//     const clientName = req.body.clientName;
-//     const phone = +req.body.phone;
-//     const email = req.body.email;    
-//     const password = req.body.password;
-//     const image = null;
+    let studentID;
+    //parsing data from incoming request
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const phone = +req.body.phone;
+    const email = req.body.email;    
+    const password = req.body.password;
+    const image = null;
 
-//     Client.findClientByEmail(email)
-//                 .then(userDoc=>{
-//                     if(userDoc){                        
-//                         return res.json({status:false, message:'Client Already Exists'});
-//                     }
+    Student.findStudentByPhone(+phone)
+                .then(userDoc=>{
+                    if(userDoc){                        
+                        return res.json({status:false, message:'Student Already Exists(Enter Unique Phone)'});
+                    }
+                    Student.findStudentByEmail(email)
+                    .then(userDoc=>{
+                        if(userDoc){                        
+                            return res.json({status:false, message:'Student Already Exists(Enter Unique email)'});
+                        }
                    
-//                     const db = getDb();     
-//                     db.collection('clientCounter').find().toArray().then(data=>{
+                    const db = getDb();     
+                    db.collection('studentCounter').find().toArray().then(data=>{
         
-//                         newVal = data[data.length-1].count;
+                        newVal = data[data.length-1].count;
                        
-//                         newVal = newVal + 1;
-//                         console.log(newVal);
+                        newVal = newVal + 1;
+                        console.log(newVal);
                        
-//                         clientID = newVal;
+                        studentID = newVal;
                         
-//                         db.collection('clientCounter').insertOne({count:newVal})
-//                                 .then(result=>{
+                        db.collection('studentCounter').insertOne({count:newVal})
+                                .then(result=>{
                                               
-//                             const client = new Client(clientID,clientName,phone,email,password,image);
-//                             //saving in database
+                            const student = new Student(studentID,firstName,lastName,phone,email,password,image,null);
+                            //saving in database
                         
-//                             return client.save()
-//                             .then(resultData=>{
+                            return student.save()
+                            .then(resultData=>{
                                 
-//                                 res.json({status:true,message:"Client Registered",client:resultData["ops"][0]});
+                                res.json({status:true,message:"Student Registered",student:resultData["ops"][0]});
                                 
-//                             })
-//                             .catch(err=>console.log(err));                                                    
+                            })
+                            .catch(err=>console.log(err));                                                    
                                   
-//                                 })
-//                                 .then(resultData=>{
+                                })
+                                .then(resultData=>{
                                    
-//                                 })
-//                                 .catch(err=>{
-//                                     res.json({status:false,error:err})
-//                                 })             
-//                      })   
+                                })
+                                .catch(err=>{
+                                    res.json({status:false,error:err})
+                                })             
+                     })   
+                    })
 
-//                 })
-//                 .then(resultInfo=>{                   
+                })
+                .then(resultInfo=>{                   
                   
-//                 })
-//                 .catch(err=>console.log(err));      
-// }
+                })
+                .catch(err=>console.log(err));      
+}
 
 
 
 
-exports.getClients=(req,res,next)=>{
+exports.getStudents=(req,res,next)=>{
   
-    Client.fetchAllClients()
-                .then(owners=>{
+    Student.fetchAllstudents()
+                .then(students=>{
                    
-                    res.json({message:"All Data returned",allClients:owners})
+                    res.json({message:"All Data returned",allStudents:students})
 
                 })
                 .catch(err=>console.log(err));
@@ -93,20 +100,20 @@ exports.getSingleClient=(req,res,next)=>{
 
 
 //LOGIN
-exports.clientLogin=(req,res,next)=>{
-    const email = req.body.email;
+exports.studentLogin=(req,res,next)=>{
+    const phone = +req.body.phone;
     const password = req.body.password;
     
-    Client.findClientByEmail(email)
+    Student.findStudentByPhone(+phone)
                 .then(user=>{
                     if(!user)
                     {
-                        return res.json({ message:'Client does not exist',status:false});
+                        return res.json({ message:'Student does not exist',status:false});
                     }
 
                     if(user.password == password)
                     {                        
-                        res.json({ message:'Login Successful',status:true, client:user});
+                        res.json({ message:'Login Successful',status:true, student:user});
                     }else{
                        
                         res.json({ message:'Login Unsuccessful....Password is incorrect',status:false});
