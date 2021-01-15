@@ -13,7 +13,7 @@ class Student
         this.phone = phone;
         this.email = email;        
         this.password = pwd;
-        this.studentsImg = img;
+        this.studentImg = img;
         this.deviceToken = token;
         this.registrationDate = new Date();
       
