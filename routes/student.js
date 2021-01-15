@@ -35,7 +35,7 @@ router.post('/edit-client-phone',studentController.editClientPhone);
 
 router.post('/edit-client-token',studentController.editClientToken);
 
-router.post('/edit-client-password',studentController.clientResetPwd);
+router.post('/forgot-password-student',studentController.studentResetPwd);
 
 router.post('/check-client-email',studentController.clientCheckEmail);
 

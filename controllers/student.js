@@ -523,24 +523,24 @@ exports.editClientName=(req,res,next)=>{
 
 
 
-exports.clientResetPwd=(req,res,next)=>{
-    const email = req.body.email;
-    const password = req.body.password;
+exports.studentResetPwd=(req,res,next)=>{
+    const phone = +req.body.phone;
+    const newPassword = req.body.newPassword;
 
-    Client.findClientByEmail(email)
+    Student.findStudentByPhone(+phone)
                 .then(user=>{
                     if(!user)
                     {
-                        return res.json({ message:'User does not exist',status:false});
+                        return res.json({ message:'Student does not exist',status:false});
                     }
 
-                    user.password = password;
+                    user.password = newPassword;
                    
                     const db = getDb();
-                    db.collection('clients').updateOne({email:email},{$set:user})
+                    db.collection('students').updateOne({phone:phone},{$set:user})
                                 .then(resultData=>{
                                     
-                                    res.json({ message:'Password successfully changed',status:true,user:user});
+                                    res.json({ message:'Password successfully changed',status:true,student:user});
                                 })
                                 .catch(err=>console.log(err));
                 })
