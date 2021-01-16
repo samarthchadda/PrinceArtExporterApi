@@ -1,6 +1,7 @@
 const Appointment = require('../models/appointment');
 const getDb = require('../util/database').getDB; 
 const Tutor = require('../models/tutor');
+const Student = require('../models/student');
 
 
 exports.postAppointment = (req,res,next)=>{  
@@ -222,8 +223,12 @@ exports.getSingleAppointment=(req,res,next)=>{
                     Tutor.findTutorById(+appoint.tutorId)
                     .then(tutorData=>{
 
-                        // let newData = {...appoint,tutor:tutorData}
-                        res.json({status:true, message:'Appointment exists',appointment:appoint,tutor:tutorData});
+                        Student.findStudentByStudentId(+appoint.studentId)
+                        .then(studentData=>{
+                              // let newData = {...appoint,tutor:tutorData}
+                        res.json({status:true, message:'Appointment exists',appointment:appoint,tutor:tutorData,student:studentData});
+                        })
+                      
                     })
                     .catch(err=>console.log(err))
 
