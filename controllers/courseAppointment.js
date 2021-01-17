@@ -3,6 +3,7 @@ const getDb = require('../util/database').getDB;
 const Tutor = require('../models/tutor');
 const Course = require('../models/course');
 const Student = require('../models/student');
+const Appointment = require('../models/appointment');
 
 
 exports.postAppointment = (req,res,next)=>{  
@@ -181,3 +182,147 @@ exports.getStudentAppointments=(req,res,next)=>{
 
 }
 
+
+
+exports.getAppointsGraph= async (req,res,next)=>{
+    var monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+
+    var today = new Date();
+    var d;
+    var months = [];
+    var d = new Date();
+    var month;
+    var year = d.getFullYear();
+  
+        var keyData = 1;
+      
+    for(var i = 5; i > -1; i -= 1) {
+      d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+    //   console.log(d.getFullYear())
+   
+      months.push({month:monthNames[d.getMonth()],year:d.getFullYear(),key:+keyData});
+      keyData = keyData+1;
+    //   console.log(keyData)
+         month = monthNames[d.getMonth()];
+        //  console.log(months)
+
+    }
+    // console.log(months)
+    let dates = [];
+    months.forEach(m=>{
+        
+        if(m.month=="january")
+        {
+            mo = 0;
+        }
+        if(m.month=="february")
+        {
+            mo = 1;
+        }
+        if(m.month=="march")
+        {
+            mo = 2;
+        }
+        if(m.month=="april")
+        {
+            mo = 3;
+        }
+        if(m.month=="may")
+        {
+            mo = 4;
+        }
+        if(m.month=="june")
+        {
+            mo = 5;
+        }
+        if(m.month=="july")
+        {
+            mo = 6;
+        }
+        if(m.month=="august")
+        {
+            mo = 7;
+        }
+        if(m.month=="september")
+        {
+            mo = 8;
+        }
+        if(m.month=="october")
+        {
+            mo = 9;
+        }
+        if(m.month=="november")
+        {
+            mo = 10;
+        }
+        if(m.month=="december")
+        {
+            mo = 11;
+        }
+        
+        
+        const firstDay = new Date(m.year, mo, 1);
+        // alert(firstDay.getDate());
+        const lastDay = new Date(m.year, mo + 1, 0);
+        // alert(lastDay.getDate());
+        // console.log(firstDay,lastDay)
+        mo = mo+1;
+        mo = mo<10?"0"+mo:mo; 
+        // console.log(year)  
+        dates.push({
+                        srtDate: firstDay.getDate()<10?m.year.toString()+"-"+mo.toString()+"-0"+firstDay.getDate().toString():m.year.toString()+"-"+mo.toString()+"-"+firstDay.getDate().toString(),
+                        endDate: lastDay.getDate()<10?m.year.toString()+"-"+mo.toString()+"-0"+lastDay.getDate().toString():m.year.toString()+"-"+mo.toString()+"-"+lastDay.getDate().toString(),
+                        month:mo,
+                        key:m.key
+                    });
+  
+    })
+    // console.log(dates)
+    var allData = [];
+    var allCost  = 0;
+    var totalAppointments = 0;
+    dates.forEach(d=>{
+        // console.log(d)
+        let startDate = d.srtDate;
+        startDate = new Date(startDate).getTime();
+        // console.log(startDate);
+    
+        let endDate = d.endDate;
+        endDate = new Date(endDate).getTime();
+        // console.log(startDate,endDate)
+        CourseAppointment.findAppointsByDates(startDate,endDate)
+        .then(cAppData=>{
+
+            Appointment.findAppointsByDates(startDate,endDate)
+            .then(appData=>{
+                  // console.log(saloons.length)
+                allData.push({month:d.month.toString(),appointments:(cAppData.length+appData.length),key:d.key,startDate:d.srtDate,endDate:d.endDate})
+                // allCost = allCost + cAppData.totalCost;
+                cAppData.forEach(c=>{
+                    allCost = allCost+c.totalCost;
+                })
+                appData.forEach(c=>{
+                    allCost = allCost+c.totalCost;
+                })
+              
+                // console.log(allData)
+                if(dates.length == allData.length)
+                {   
+                    allData.sort((a, b) => {
+                        return a.key - b.key;
+                    });
+                    allData.forEach(a=>{
+                        totalAppointments = totalAppointments + a.appointments;
+                    })
+                    res.json({message:"All Data returned",allAppoints:allData,totalAppointments:totalAppointments,totalAmount:allCost})
+                    // totalAppointments = 0;
+                    // totalAmount = 0;
+                }
+            })
+          
+
+        })
+        .catch(err=>console.log(err));
+    })
+   
+}
