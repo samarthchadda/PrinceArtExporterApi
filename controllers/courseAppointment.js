@@ -185,7 +185,7 @@ exports.getStudentAppointments=(req,res,next)=>{
 
 
 exports.getAppointsGraph= async (req,res,next)=>{
-    const tutorId = req.params.tutorId;
+    const tutorId = +req.params.tutorId;
     var monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 
     var today = new Date();
