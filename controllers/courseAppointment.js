@@ -185,6 +185,7 @@ exports.getStudentAppointments=(req,res,next)=>{
 
 
 exports.getAppointsGraph= async (req,res,next)=>{
+    const tutorId = req.params.tutorId;
     var monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 
     var today = new Date();
@@ -290,10 +291,10 @@ exports.getAppointsGraph= async (req,res,next)=>{
         let endDate = d.endDate;
         endDate = new Date(endDate).getTime();
         // console.log(startDate,endDate)
-        CourseAppointment.findAppointsByDates(startDate,endDate)
+        CourseAppointment.findAppointsByDates(tutorId,startDate,endDate)
         .then(cAppData=>{
 
-            Appointment.findAppointsByDates(startDate,endDate)
+            Appointment.findAppointsByDates(tutorId,startDate,endDate)
             .then(appData=>{
                   // console.log(saloons.length)
                 allData.push({month:d.month.toString(),appointments:(cAppData.length+appData.length),key:d.key,startDate:d.srtDate,endDate:d.endDate})

@@ -148,11 +148,11 @@ class Appointment
                                             .catch(err=>console.log(err));
     }
 
-    static findAppointsByDates(sDate,eDate)
+    static findAppointsByDates(tutorId,sDate,eDate)
     {
         const db = getDb();
                             
-        return db.collection('appointments').find({ bookingDate:{$gte:sDate,$lte:eDate} }).toArray()
+        return db.collection('appointments').find({tutorId, bookingDate:{$gte:sDate,$lte:eDate} }).toArray()
                                             .then(appointDetail=>{
                                                                                                 
                                                 return appointDetail;  

@@ -15,7 +15,7 @@ router.post('/post-course-booking',courseAppointController.postAppointment);
 
 router.post('/edit-courseBooking-status',courseAppointController.editSessionAppointment);
 
-router.get('/appoint-analytics',courseAppointController.getAppointsGraph);
+router.get('/appoint-analytics/:tutorId',courseAppointController.getAppointsGraph);
 
 
 module.exports = router;
