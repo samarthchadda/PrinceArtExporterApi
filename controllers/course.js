@@ -103,6 +103,34 @@ exports.postCourseTutor = (req,res,next)=>{
 
 }
 
+exports.editCourseStatus = (req,res,next)=>{
+
+    const courseId = +req.body.courseId;
+    const newStatus = req.body.newStatus;    
+   
+    Course.findCourseByCourseId(courseId)
+                .then(course=>{
+                    if(!course)
+                    {
+                        return res.json({status:false, message:'Course does not exist'});
+                    }
+                   
+                    course.isActive = newStatus;
+
+                    const db = getDb();
+                    db.collection('courses').updateOne({courseId:courseId},{$set:course})
+                                .then(resultData=>{                                    
+                                    
+                                    res.json({status:true, message:'Course Updated',course:course});
+                                })
+                                .catch(err=>console.log(err));
+                                 
+                })
+
+}
+
+
+
 exports.getAllCourses=(req,res,next)=>{
   
     Course.fetchAllCourses()

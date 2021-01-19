@@ -21,6 +21,7 @@ router.get('/tutor-courses/:tutorId',courseController.getTutorCourses);
 
 router.post('/add-course-tutor',courseController.postCourseTutor);
 
+router.post('/edit-course-status',courseController.editCourseStatus);
 
 //POST
 router.post('/course-register', (req,res,next)=>{
@@ -61,7 +62,7 @@ router.post('/course-register', (req,res,next)=>{
                         db.collection('courseCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const course = new Course(courseID,courseName,req.file.location,courseDesc,null,regDate);
+                            const course = new Course(courseID,courseName,req.file.location,courseDesc,null,false,regDate);
                             //saving in database
                         
                             return course.save()
