@@ -315,7 +315,7 @@ exports.getAppointsGraph= async (req,res,next)=>{
                     allData.forEach(a=>{
                         totalAppointments = totalAppointments + a.appointments;
                     })
-                    res.json({message:"All Data returned",allAppoints:allData,totalAppointments:totalAppointments,totalAmount:allCost})
+                    res.json({message:"All Data returned",allAppoints:allData,totalAppointments:totalAppointments,totalAmount:allCost,averageMonthlyApp:(totalAppointments/30),averageMonthlyIncome:(totalAppointments/30)})
                     // totalAppointments = 0;
                     // totalAmount = 0;
                 }
