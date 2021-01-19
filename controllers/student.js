@@ -363,29 +363,31 @@ exports.getFavSaloons=(req,res,next)=>{
 
 
 
-exports.editClientDetails=(req,res,next)=>{
+exports.editStudentDetails=(req,res,next)=>{
     //parsing data from incoming request
-    const clientId = +req.body.clientId;
-    const clientName = req.body.clientName;
+    const studentId = +req.body.studentId;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
     const email = req.body.email;
-    const phone = req.body.phone;  
+    const phone = +req.body.phone;  
    
-    Client.findClientByClientId(clientId)
+    Student.findStudentByStudentId(+studentId)
              .then(clientDoc=>{
                  if(!clientDoc)
                  {
-                     return res.json({ message:'Client does not exist',status:false});
+                     return res.json({ message:'Student does not exist',status:false});
                  }
                 
-                 clientDoc.clientName = clientName;
+                 clientDoc.firstName = firstName;
+                 clientDoc.lastName = lastName;                 
                  clientDoc.email = email;
                  clientDoc.phone = phone;
                  
                  const db = getDb();
-                 db.collection('clients').updateOne({clientId:clientId},{$set:clientDoc})
+                 db.collection('students').updateOne({studentId:studentId},{$set:clientDoc})
                              .then(resultData=>{
                                  
-                                 res.json({message:'Details Updated',status:true});
+                                 res.json({message:'Details Updated',status:true,student:clientDoc});
                              })
                              .catch(err=>console.log(err));
              })

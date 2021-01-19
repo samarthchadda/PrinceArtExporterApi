@@ -23,7 +23,7 @@ router.get('/all-clients-month',studentController.getClientsByMonth);
 
 router.get('/all-students/:id',studentController.getSingleStudent);
 
-router.post('/edit-client-details',studentController.editClientDetails);
+router.post('/edit-student-details',studentController.editStudentDetails);
 
 router.get('/del-client/:clientId',studentController.delClient);
 
