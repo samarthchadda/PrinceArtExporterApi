@@ -315,7 +315,14 @@ exports.getAppointsGraph= async (req,res,next)=>{
                     allData.forEach(a=>{
                         totalAppointments = totalAppointments + a.appointments;
                     })
-                    res.json({message:"All Data returned",allAppoints:allData,totalAppointments:totalAppointments,totalAmount:allCost,averageMonthlyApp:(totalAppointments/30),averageMonthlyIncome:(totalAppointments/30)})
+
+                    var averageMonthlyApp = (totalAppointments/30);
+                    averageMonthlyApp = Math.round((averageMonthlyApp + Number.EPSILON) * 100) / 100
+
+                    var averageMonthlyIncome = (allCost/30);
+                    averageMonthlyIncome = Math.round((averageMonthlyIncome + Number.EPSILON) * 100) / 100
+
+                    res.json({message:"All Data returned",allAppoints:allData,totalAppointments:totalAppointments,totalAmount:allCost,averageMonthlyApp:averageMonthlyApp,averageMonthlyIncome:averageMonthlyIncome})
                     // totalAppointments = 0;
                     // totalAmount = 0;
                 }
