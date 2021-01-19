@@ -62,7 +62,7 @@ router.post('/course-register', (req,res,next)=>{
                         db.collection('courseCounter').insertOne({count:newVal})
                                 .then(result=>{
                                               
-                            const course = new Course(courseID,courseName,req.file.location,courseDesc,null,false,regDate);
+                            const course = new Course(courseID,courseName,req.file.location,courseDesc,null,regDate);
                             //saving in database
                         
                             return course.save()
