@@ -9,6 +9,8 @@ router.get('/all-course-bookings/:id',courseAppointController.getSingleAppointme
 
 router.get('/tutor-course-bookings/:id',courseAppointController.getTutorAppointments);
 
+router.get('/tutor-course-bookings-current/:id',courseAppointController.getTutorCurrentAppointments);
+
 router.get('/student-course-bookings/:id',courseAppointController.getStudentAppointments);
 
 router.post('/post-course-booking',courseAppointController.postAppointment);

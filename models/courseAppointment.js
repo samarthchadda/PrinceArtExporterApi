@@ -129,11 +129,11 @@ class CourseAppointment
 
 
 
-    static findAppointByClientPhoneAndCDate(phone, cDate)
+    static findAppointByTutorIdAndCDate(tutorId, cDate)
     {
         const db = getDb();
                                                                                                   //ascending order of booking date and booking time
-        return db.collection('courseAppointments').find({ clientPhone:phone,bookingDate:{$gte:cDate}  }).sort({bookingDate:1,bookingTime:1}).toArray()
+        return db.collection('courseAppointments').find({ tutorId:tutorId,bookingDate:{$gte:cDate}  }).sort({bookingDate:1,timeSlot:1}).toArray()
                                             .then(appointDetail=>{
                                                                                                 
                                                 return appointDetail;  
