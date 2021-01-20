@@ -209,6 +209,34 @@ exports.getAllAppointmentsMonth=(req,res,next)=>{
 
 
 
+exports.getTutorCurrentAppointments=(req,res,next)=>{
+    
+    const id = +req.params.id;
+    //current date
+    var currDate = new Date();
+    var dd = String(currDate.getDate()).padStart(2, '0');
+    var mm = String(currDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = currDate.getFullYear();
+
+    currDate =yyyy + '-' +mm + '-' + dd ;
+    // console.log(currDate);
+    currDate = new Date(currDate).getTime();
+   
+    Appointment.findAppointByTutorIdAndCDate(JSON.parse(id),currDate)
+                .then(appoint=>{
+                    if(appoint.length==0)
+                    {
+                        return res.json({status:false, message:'Appointment does not exist',appointments:[]});
+                    }
+
+                    res.json({status:true, message:'Appointment exists',appointments:appoint});
+                })
+
+}
+
+
+
+
 exports.getSingleAppointment=(req,res,next)=>{
     
     const id = +req.params.id;

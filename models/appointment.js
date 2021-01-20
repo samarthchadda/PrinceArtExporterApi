@@ -123,18 +123,7 @@ class Appointment
                                             .catch(err=>console.log(err));
     }
 
-    static findAppointByClientPhoneAndPDate(phone, cDate)
-    {
-        const db = getDb();
-                                                                                              //descending order of booking date and booking time
-        return db.collection('appointments').find({ clientPhone:phone,bookingDate:{$lt:cDate} }).sort({bookingDate:-1,bookingTime:-1}).toArray()
-                                            .then(appointDetail=>{
-                                                                                                
-                                                return appointDetail;  
-                                            })
-                                            .catch(err=>console.log(err));
-    }
-
+ 
    
     static saloonWeekRevenue(sid, sDate,eDate)
     {
@@ -160,6 +149,17 @@ class Appointment
                                             .catch(err=>console.log(err));
     }
 
+    static findAppointByTutorIdAndCDate(tutorId, cDate)
+    {
+        const db = getDb();
+                                                                                                  //ascending order of booking date and booking time
+        return db.collection('appointments').find({ tutorId:tutorId,bookingDate:{$gte:cDate}  }).sort({bookingDate:1,timeSlot:1}).toArray()
+                                            .then(appointDetail=>{
+                                                                                                
+                                                return appointDetail;  
+                                            })
+                                            .catch(err=>console.log(err));
+    }
 
     static empWeekRevenue(eid, sDate,eDate)
     {

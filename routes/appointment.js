@@ -22,6 +22,7 @@ router.post('/saloon-appointment',appointController.getAppointBySaloonAndBdate);
 
 router.post('/check-appointment',appointController.getAppointByEmpIdDate);
 
+router.get('/tutor-bookings-current/:id',appointController.getTutorCurrentAppointments);
 
 router.post('/appoint-revenue-day',appointController.getDayRevenuePerSaloon);
 
