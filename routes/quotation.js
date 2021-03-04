@@ -7,6 +7,8 @@ var verifyToken = myTokenFile.verifyToken;
 
 router.post('/create-quotation',verifyToken,quotationController.createQuotation);
 
+router.post('/user-quotations',verifyToken,quotationController.getUserQuotations);
+
 
 module.exports = router;
 

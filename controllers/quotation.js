@@ -1,4 +1,5 @@
 const Quotation = require('../models/quotation');
+const User = require('../models/user');
 
 const getDb = require('../util/database').getDB; 
 
@@ -70,4 +71,43 @@ exports.createQuotation = (req,res,next)=>{
 
 }
 
+
+exports.getUserQuotations = (req,res,next)=>{
+    const email = req.body.email;
+
+    jwt.verify(req.token,'secretkey',(err,authData)=>{
+        if(err)
+        {
+            res.sendStatus(403);
+        }
+        else{
+            if(authData.user.email == email)
+            {
+                User.findUserByEmail(email)
+                .then(user=>{
+                    if(!user)
+                    {
+                        return res.json({status:false,message:"User does not exist"});
+                    }
+                    Quotation.findQuotationsByEmail(email)
+                    .then(quotData=>{
+                        
+                        res.json({status:true,quotations:quotData});
+                
+                    }).catch(err=>{
+                        res.json({status:false,err:err});
+                    })
+                })
+                .catch(err=>{
+                    res.json({status:false,err:err});
+                })
+               
+            }
+            else{
+                res.json({status:false,message:"Enter Logged In User Details"})
+            }          
+        }
+    });
+  
+}
 
