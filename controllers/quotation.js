@@ -128,7 +128,55 @@ exports.getSingleQuotationDetail = (req,res,next)=>{
                 {
                     return res.json({status:false,message:"Quotation does not exist"});   
                 }
-                res.json({status:true,quotation:quotData});
+                res.json({status:true,quotation:quotData,authData:authData});
+        
+            }).catch(err=>{
+                res.json({status:false,err:err});
+            })               
+                   
+        }
+    });
+     
+}
+
+
+exports.editSingleQuotation = (req,res,next)=>{
+
+    const quotationNo = +req.body.quotationNo;
+    const buyerName = req.body.buyerName;
+    const country = req.body.country;
+    const currency = req.body.currency;
+    const size = req.body.size;
+    const price = req.body.price;
+    const containerSize = req.body.containerSize;   
+
+    jwt.verify(req.token,'secretkey',(err,authData)=>{
+        if(err)
+        {
+            res.sendStatus(403);
+        }
+        else{         
+                
+            Quotation.findQuotationByQuotNo(quotationNo)
+            .then(quotData=>{
+                if(!quotData)
+                {
+                    return res.json({status:false,message:"Quotation does not exist"});   
+                }
+                quotData.buyerName = buyerName;
+                quotData.country = country;
+                quotData.currency = currency;
+                quotData.size = size;
+                quotData.price = price;                
+                quotData.containerSize = containerSize;
+                 
+                     const db = getDb();
+                     db.collection('quotations').updateOne({quotationNo:quotationNo},{$set:quotData})
+                                 .then(resultData=>{
+                                     
+                                     res.json({message:'Details Updated',status:true,quotation:quotData,authData:authData});
+                                 })
+                                 .catch(err=>console.log(err));
         
             }).catch(err=>{
                 res.json({status:false,err:err});

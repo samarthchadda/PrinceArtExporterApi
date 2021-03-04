@@ -11,6 +11,8 @@ router.post('/user-quotations',verifyToken,quotationController.getUserQuotations
 
 router.get('/quotation-details/:quotationNo',verifyToken,quotationController.getSingleQuotationDetail);
 
+router.post('/edit-quotation',verifyToken,quotationController.editSingleQuotation);
+
 
 module.exports = router;
 
