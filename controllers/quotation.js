@@ -111,3 +111,30 @@ exports.getUserQuotations = (req,res,next)=>{
   
 }
 
+
+exports.getSingleQuotationDetail = (req,res,next)=>{
+    const quotationNo = +req.body.quotationNo;
+
+    jwt.verify(req.token,'secretkey',(err,authData)=>{
+        if(err)
+        {
+            res.sendStatus(403);
+        }
+        else{         
+                
+            Quotation.findQuotationByQuotNo(quotationNo)
+            .then(quotData=>{
+                if(!quotData)
+                {
+                    return res.json({status:false,message:"Quotation does not exist"});   
+                }
+                res.json({status:true,quotation:quotData});
+        
+            }).catch(err=>{
+                res.json({status:false,err:err});
+            })               
+                   
+        }
+    });
+     
+}
