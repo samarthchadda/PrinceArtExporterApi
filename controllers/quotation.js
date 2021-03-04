@@ -113,7 +113,7 @@ exports.getUserQuotations = (req,res,next)=>{
 
 
 exports.getSingleQuotationDetail = (req,res,next)=>{
-    const quotationNo = +req.body.quotationNo;
+    const quotationNo = +req.params.quotationNo;
 
     jwt.verify(req.token,'secretkey',(err,authData)=>{
         if(err)

@@ -9,7 +9,7 @@ router.post('/create-quotation',verifyToken,quotationController.createQuotation)
 
 router.post('/user-quotations',verifyToken,quotationController.getUserQuotations);
 
-router.post('/quotation-details',verifyToken,quotationController.getSingleQuotationDetail);
+router.get('/quotation-details/:quotationNo',verifyToken,quotationController.getSingleQuotationDetail);
 
 
 module.exports = router;
