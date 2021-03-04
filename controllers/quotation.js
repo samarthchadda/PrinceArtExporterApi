@@ -1,7 +1,5 @@
-const Appointment = require('../models/appointment');
-const getDb = require('../util/database').getDB; 
-const Tutor = require('../models/tutor');
-const Student = require('../models/student');
+const Appointment = require('../models/quotation');
+
 
 
 exports.postAppointment = (req,res,next)=>{  

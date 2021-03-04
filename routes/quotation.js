@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const appointController = require('../controllers/appointment');
+const appointController = require('../controllers/quotation');
 
 
 router.get('/all-session-bookings',appointController.getAllAppointments);

@@ -8,7 +8,7 @@ let _db;
 
 const mongoConnect = (callback)=>{
                                              
-    mongoClient.connect('mongodb+srv://hufnaan:zEctuMof6mTVnBkd@cluster0.fwifn.mongodb.net/test',
+    mongoClient.connect('mongodb+srv://testUser:KuKumsbjVy4O5VVL@cluster0.pc0yw.mongodb.net/test',
                                                                                 { useUnifiedTopology:true,useNewUrlParser:true})
                                 .then(client=>{
                                     console.log("Connected....\n");

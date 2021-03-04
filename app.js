@@ -1,30 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+
+var tokenFile = require('./services/verifyTokenFile');
+
 const mongoConnect = require('./util/database').mongoConnect;
 
 const app = express();
 
-const tutorRoutes = require('./routes/tutor');
-const availRoutes = require('./routes/availability');
-const studentRoutes = require('./routes/student');
-const adminRoutes = require('./routes/admin');
-const appointmentRoutes = require('./routes/appointment');
-const reportRoutes = require('./routes/report');
-const courseRoutes = require('./routes/course');
-const courseAppointRoutes = require('./routes/courseAppointment');
-
-
-
+const userRoutes = require('./routes/user');
+const quotationRoutes = require('./routes/quotation');
 
 app.use('/uploads',express.static('uploads'));
-app.use('/uploadCourses',express.static('uploadCourses'));
-app.use('/uploadNews',express.static('uploadNews'));
-app.use('/uploadFaculty',express.static('uploadFaculty'));
-
 
 
 app.use(bodyParser.json());  //for application/json data
-
 
 
 //enabling CORS package
@@ -43,15 +33,9 @@ app.use((req,res,next)=>{
 app.get('/',(req,res)=>{
     res.json({message:"deploy api"});
 });
-app.use('/api',tutorRoutes);
-app.use('/api',availRoutes);
-app.use('/api',studentRoutes);
-app.use('/api',adminRoutes);
-app.use('/api',appointmentRoutes);
-app.use('/api',reportRoutes);
-app.use('/api',courseRoutes);
-app.use('/api',courseAppointRoutes);
 
+app.use('/api',userRoutes);
+app.use('/api',quotationRoutes);
 
 let port = process.env.PORT || 8080;
 //establishing DB connection
