@@ -130,14 +130,14 @@ exports.forgotUserPassword = (req,res,next)=>{
     hash.update(password);
     var hex = hash.digest('hex');
 
-    jwt.verify(req.token,'secretkey',(err,authData)=>{
-        if(err)
-        {
-            res.sendStatus(403);
-        }
-        else{
-            if(authData.user.email == email)
-            {
+    // jwt.verify(req.token,'secretkey',(err,authData)=>{
+    //     if(err)
+    //     {
+    //         res.sendStatus(403);
+    //     }
+    //     else{
+    //         if(authData.user.email == email)
+    //         {
                 User.findUserByEmail(email)
                 .then(userDoc=>{
                     if(!userDoc)
@@ -155,12 +155,12 @@ exports.forgotUserPassword = (req,res,next)=>{
                                 })
                                 .catch(err=>console.log(err));
                 })   
-            }
-            else{
-                res.json({status:false,message:"Enter Logged In User Details"})
-            }          
-        }
-    });
+    //         }
+    //         else{
+    //             res.json({status:false,message:"Enter Logged In User Details"})
+    //         }          
+    //     }
+    // });
    
 }
 
