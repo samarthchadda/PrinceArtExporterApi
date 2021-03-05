@@ -230,13 +230,13 @@ exports.delSingleQuotationItem = (req,res,next)=>{
             .then(quotations=>{
                 if(!quotations)
                 {
-                    return res.json({status:true,message:"Quotation does not exists"});            
+                    return res.json({status:false,message:"Quotation does not exists"});            
                 }
                 const index = quotations.items.findIndex(i=>i.itemNo == itemNo);
                 console.log(index);
                 if(index == -1)
                 {
-                    return res.json({status:true,message:"Item does not Exists"});        
+                    return res.json({status:false,message:"Item does not Exists"});        
                 }
         
                 quotations.items.splice(index,1);
@@ -270,7 +270,7 @@ exports.delSingleQuotation = (req,res,next)=>{
             .then(quotations=>{
                 if(!quotations)
                 {
-                    return res.json({status:true,message:"Quotation does not exists"});            
+                    return res.json({status:false,message:"Quotation does not exists"});            
                 }
                
                 const db = getDb();
