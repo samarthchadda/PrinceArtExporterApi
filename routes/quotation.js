@@ -43,6 +43,8 @@ router.get('/quotation-details/:quotationNo',verifyToken,quotationController.get
 
 router.post('/edit-quotation',verifyToken,quotationController.editSingleQuotation);
 
+router.get('/del-quotation/:quotationNo',verifyToken,quotationController.delSingleQuotation);
+
 router.get('/del-quotation-item/:itemNo/:quotationNo',verifyToken,quotationController.delSingleQuotationItem);
 
 router.get('/get-quotation-items/:quotationNo',verifyToken,quotationController.getQuotationItems);

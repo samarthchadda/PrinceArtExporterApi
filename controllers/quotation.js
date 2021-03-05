@@ -253,3 +253,36 @@ exports.delSingleQuotationItem = (req,res,next)=>{
     });
 
 }
+
+
+exports.delSingleQuotation = (req,res,next)=>{
+
+    const quotationNo = +req.params.quotationNo;
+
+    jwt.verify(req.token,'secretkey',(err,authData)=>{
+        if(err)
+        {
+            res.sendStatus(403);
+        }
+        else{         
+                
+            Quotation.findQuotationByQuotNo(quotationNo)
+            .then(quotations=>{
+                if(!quotations)
+                {
+                    return res.json({status:true,message:"Quotation does not exists"});            
+                }
+               
+                const db = getDb();
+                db.collection('quotations').deleteOne({quotationNo:quotationNo})
+                    .then(resultData=>{
+                        
+                        res.json({message:'Quotation Deleted Successfully',status:true,authData:authData});
+                    })
+                    .catch(err=>console.log(err));
+        
+            })  
+        }
+    });
+
+}
