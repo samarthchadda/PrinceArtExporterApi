@@ -186,3 +186,70 @@ exports.editSingleQuotation = (req,res,next)=>{
     });
      
 }
+
+
+
+exports.getQuotationItems = (req,res,next)=>{
+    const quotationNo = +req.params.quotationNo;
+
+    jwt.verify(req.token,'secretkey',(err,authData)=>{
+        if(err)
+        {
+            res.sendStatus(403);
+        }
+        else{         
+                
+            Quotation.findQuotationByQuotNo(quotationNo)
+            .then(quotData=>{
+                if(!quotData)
+                {
+                    return res.json({status:false,message:"Quotation does not exist"});   
+                }
+                res.json({status:true,items:quotData.items,authData:authData});
+        
+            }).catch(err=>{
+                res.json({status:false,err:err});
+            })               
+                   
+        }
+    });
+     
+}
+
+exports.delSingleQuotationItem = (req,res,next)=>{
+    const itemNo = +req.params.itemNo;
+    const quotationNo = +req.params.quotationNo;
+    jwt.verify(req.token,'secretkey',(err,authData)=>{
+        if(err)
+        {
+            res.sendStatus(403);
+        }
+        else{         
+                
+            Quotation.findQuotationByQuotNo(quotationNo)
+            .then(quotations=>{
+                if(!quotations)
+                {
+                    return res.json({status:true,message:"Quotation does not exists"});            
+                }
+                const index = quotations.items.findIndex(i=>i.itemNo == itemNo);
+                console.log(index);
+                if(index == -1)
+                {
+                    return res.json({status:true,message:"Item does not Exists"});        
+                }
+        
+                quotations.items.splice(index,1);
+                const db = getDb();
+                db.collection('quotations').updateOne({quotationNo:quotationNo},{$set:quotations})
+                    .then(resultData=>{
+                        
+                        res.json({message:'Item Deleted Successfully',status:true,updatedQuot:quotations,authData:authData});
+                    })
+                    .catch(err=>console.log(err));
+        
+            })  
+        }
+    });
+
+}

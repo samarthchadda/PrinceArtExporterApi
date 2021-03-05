@@ -43,6 +43,9 @@ router.get('/quotation-details/:quotationNo',verifyToken,quotationController.get
 
 router.post('/edit-quotation',verifyToken,quotationController.editSingleQuotation);
 
+router.get('/del-quotation-item/:itemNo/:quotationNo',verifyToken,quotationController.delSingleQuotationItem);
+
+router.get('/get-quotation-items/:quotationNo',verifyToken,quotationController.getQuotationItems);
 
 router.post('/create-item',verifyToken,upload.fields([{
     name: 'images', maxCount: 10
