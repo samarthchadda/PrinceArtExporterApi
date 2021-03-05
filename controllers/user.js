@@ -151,7 +151,7 @@ exports.forgotUserPassword = (req,res,next)=>{
                     db.collection('users').updateOne({email:email},{$set:userDoc})
                                 .then(resultData=>{
                                     
-                                    res.json({ message:'Password Changed Successfully',status:true,userDetails:userDoc,authData:authData});    
+                                    res.json({ message:'Password Changed Successfully',status:true,userDetails:userDoc});    
                                 })
                                 .catch(err=>console.log(err));
                 })   
