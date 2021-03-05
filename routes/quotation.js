@@ -66,22 +66,42 @@ router.post('/create-item',verifyToken,upload.fields([{
                 
         
     let itemNo;
-    
+    let canvas1;
+    let canvas2;
+
     const quotationNo = +req.body.quotationNo;
     let images = req.files.images;
-    let canvas1 = req.files.canvas1[0];
-    let canvas2 = req.files.canvas2[0];
+    if(typeof req.files.canvas1 == 'undefined')
+    {
+        return res.json({status:false, messages:"Enter Photo for 'canvas1' field"});
+    }else{
+         canvas1 = req.files.canvas1[0];
+    }
+   
+
+    if(typeof req.files.canvas2 == 'undefined')
+    {
+        return res.json({status:false, messages:"Enter Photo for 'canvas2' field"});
+    }else{
+        canvas2 = req.files.canvas2[0];
+    }
 
     let newImages = [];
 
     canvas1 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas1.filename;
     canvas2 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas2.filename;
     
-    images.forEach(img=>{
-        img = img.filename;
-        img = "https://prince-art-exporter.herokuapp.com/api/download/"+img;
-        newImages.push(img);
-    })
+    if(typeof images == 'undefined')
+    {
+        return res.json({status:false, messages:"Enter Photos for 'images' field"});
+    }
+    else{
+        images.forEach(img=>{
+            img = img.filename;
+            img = "https://prince-art-exporter.herokuapp.com/api/download/"+img;
+            newImages.push(img);
+        })
+    }
 
     const db = getDb();     
         db.collection('itemCounter').find().toArray().then(data=>{
@@ -122,6 +142,96 @@ router.post('/create-item',verifyToken,upload.fields([{
                     })                             
         })          
         
+        }
+    });
+            
+});
+
+router.post('/edit-quotation-item',verifyToken,upload.fields([{
+    name: 'images', maxCount: 10
+  }, {
+    name: 'canvas1', maxCount: 1
+  },
+  {
+    name: 'canvas2', maxCount: 1
+  }]),(req,res,next)=>{
+    jwt.verify(req.token,'secretkey',(err,authData)=>{
+        if(err)
+        {
+            res.sendStatus(403);
+        }
+        else{                        
+     
+   
+    let canvas1;
+    let canvas2;
+
+    const itemNo = +req.body.itemNo;
+    const quotationNo = +req.body.quotationNo;
+    let images = req.files.images;
+    if(typeof req.files.canvas1 == 'undefined')
+    {
+        return res.json({status:false, messages:"Enter Photo for 'canvas1' field"});
+    }else{
+         canvas1 = req.files.canvas1[0];
+    }
+   
+
+    if(typeof req.files.canvas2 == 'undefined')
+    {
+        return res.json({status:false, messages:"Enter Photo for 'canvas2' field"});
+    }else{
+        canvas2 = req.files.canvas2[0];
+    }
+
+    let newImages = [];
+
+    canvas1 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas1.filename;
+    canvas2 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas2.filename;
+    
+    if(typeof images == 'undefined')
+    {
+        return res.json({status:false, messages:"Enter Photos for 'images' field"});
+    }
+    else{
+        images.forEach(img=>{
+            img = img.filename;
+            img = "https://prince-art-exporter.herokuapp.com/api/download/"+img;
+            newImages.push(img);
+        })
+    }
+
+    const db = getDb();     
+     
+        Quotation.findQuotationByQuotNo(quotationNo)
+            .then(quotation=>{
+                if(!quotation)
+                {
+                    return res.json({ message:'Quotation Does not exist',status:false});
+                }
+
+                const index = quotation.items.findIndex(i=>i.itemNo == itemNo);
+                console.log(index);
+                if(index == -1)
+                {
+                    return res.json({status:false,message:"Item does not Exists"});        
+                }
+                
+                const db = getDb();
+
+                // quotation.items.push({itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2});
+                quotation.items[index] = {itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2};
+
+                db.collection('quotations').updateOne({quotationNo:quotationNo},{$set:quotation})
+                    .then(resultData=>{
+                        
+                    res.json({ message:'Item Updated Successfully',status:true, updatedItem:{itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2},quotation:quotation,authData:authData});
+                
+                    })
+                    .catch(err=>console.log(err));   
+                })
+                .catch(err=>console.log(err));                                      
+   
         }
     });
             
