@@ -169,37 +169,37 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
     const itemNo = +req.body.itemNo;
     const quotationNo = +req.body.quotationNo;
     let images = req.files.images;
-    if(typeof req.files.canvas1 == 'undefined')
-    {
-        return res.json({status:false, messages:"Enter Photo for 'canvas1' field"});
-    }else{
-         canvas1 = req.files.canvas1[0];
-    }
+    // if(typeof req.files.canvas1 == 'undefined')
+    // {
+    //     return res.json({status:false, messages:"Enter Photo for 'canvas1' field"});
+    // }else{
+    //      canvas1 = req.files.canvas1[0];
+    // }
    
 
-    if(typeof req.files.canvas2 == 'undefined')
-    {
-        return res.json({status:false, messages:"Enter Photo for 'canvas2' field"});
-    }else{
-        canvas2 = req.files.canvas2[0];
-    }
+    // if(typeof req.files.canvas2 == 'undefined')
+    // {
+    //     return res.json({status:false, messages:"Enter Photo for 'canvas2' field"});
+    // }else{
+    //     canvas2 = req.files.canvas2[0];
+    // }
 
     let newImages = [];
 
-    canvas1 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas1.filename;
-    canvas2 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas2.filename;
+    // canvas1 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas1.filename;
+    // canvas2 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas2.filename;
     
-    if(typeof images == 'undefined')
-    {
-        return res.json({status:false, messages:"Enter Photos for 'images' field"});
-    }
-    else{
-        images.forEach(img=>{
-            img = img.filename;
-            img = "https://prince-art-exporter.herokuapp.com/api/download/"+img;
-            newImages.push(img);
-        })
-    }
+    // if(typeof images == 'undefined')
+    // {
+    //     return res.json({status:false, messages:"Enter Photos for 'images' field"});
+    // }
+    // else{
+    //     images.forEach(img=>{
+    //         img = img.filename;
+    //         img = "https://prince-art-exporter.herokuapp.com/api/download/"+img;
+    //         newImages.push(img);
+    //     })
+    // }
 
     const db = getDb();     
      
@@ -218,6 +218,35 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
                 }
                 
                 const db = getDb();
+
+                if(typeof req.files.canvas2 != 'undefined')
+                {
+                    canvas2 = req.files.canvas2[0];                  
+                    canvas2 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas2.filename;
+                }
+                else{
+                    canvas2 = quotation.items[index].canvas2;
+                }
+                if(typeof req.files.canvas1 != 'undefined')
+                {
+                    canvas1 = req.files.canvas1[0];
+                    canvas1 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas1.filename;
+                }
+                else{
+                    canvas1 = quotation.items[index].canvas1;
+                }
+
+                if(typeof images != 'undefined')
+                {
+                    images.forEach(img=>{
+                        img = img.filename;
+                        img = "https://prince-art-exporter.herokuapp.com/api/download/"+img;
+                        newImages.push(img);
+                    })
+                }
+                else{
+                    newImages = quotation.items[index].images;
+                }
 
                 // quotation.items.push({itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2});
                 quotation.items[index] = {itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2};
