@@ -44,7 +44,7 @@ class Product
     {
         const db = getDb();
                             
-        return db.collection('users').findOne({ ProductCode:code })
+        return db.collection('products').findOne({ ProductCode:code })
                                             .then(user=>{                                                
                                                 
                                                 return user;  
