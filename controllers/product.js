@@ -69,32 +69,54 @@ exports.createProduct = (req,res,next)=>{
 
 exports.getAllProducts = (req,res,next)=>{
 
-    Product.fetchAllProducts()
-    .then(quotData=>{
-      
-        res.json({status:true,products:quotData});
-
-    }).catch(err=>{
-        res.json({status:false,err:err});
-    })               
-
+    jwt.verify(req.token,'secretkey',(err,authData)=>{
+        if(err)
+        {
+            res.sendStatus(403);
+        }
+        else{         
+                
+            Product.fetchAllProducts()
+            .then(quotData=>{
+              
+                res.json({status:true,products:quotData});
+        
+            }).catch(err=>{
+                res.json({status:false,err:err});
+            })                   
+                   
+        }
+    });
+   
 }
 
 exports.getSingleProducts = (req,res,next)=>{
 
     const prodCode = req.params.prodCode;
 
-    Product.findProductByProductCode(prodCode)
-    .then(quotData=>{
-        if(!quotData)
+    jwt.verify(req.token,'secretkey',(err,authData)=>{
+        if(err)
         {
-            return res.json({status:false,message:"Product Does not exists"});
+            res.sendStatus(403);
         }
-      
-        res.json({status:true,product:quotData});
+        else{         
+                
+            Product.findProductByProductCode(prodCode)
+            .then(quotData=>{
+                if(!quotData)
+                {
+                    return res.json({status:false,message:"Product Does not exists"});
+                }
+            
+                res.json({status:true,product:quotData});
 
-    }).catch(err=>{
-        res.json({status:false,err:err});
-    })               
+            }).catch(err=>{
+                res.json({status:false,err:err});
+            })               
+                        
+                }
+            });
+
+  
 
 }
