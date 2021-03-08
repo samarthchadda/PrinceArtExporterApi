@@ -79,3 +79,22 @@ exports.getAllProducts = (req,res,next)=>{
     })               
 
 }
+
+exports.getSingleProducts = (req,res,next)=>{
+
+    const prodCode = req.params.prodCode;
+
+    Product.findProductByProductCode(prodCode)
+    .then(quotData=>{
+        if(!quotData)
+        {
+            return res.json({status:false,message:"Product Does not exists"});
+        }
+      
+        res.json({status:true,product:quotData});
+
+    }).catch(err=>{
+        res.json({status:false,err:err});
+    })               
+
+}

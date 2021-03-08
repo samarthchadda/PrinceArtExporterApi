@@ -10,5 +10,8 @@ router.post('/create-product',productController.createProduct);
 
 router.get('/get-all-products',productController.getAllProducts);
 
+router.get('/get-all-products/:prodCode',productController.getSingleProducts);
+
+
 module.exports = router;
 
