@@ -37,11 +37,11 @@ exports.createProduct = (req,res,next)=>{
     const TotalWeight = req.body.TotalWeight;
     const WoodRemark = req.body.WoodRemark;
      
-    // User.findUserByEmail(email)
-    //         .then(userDoc=>{
-    //             if(userDoc){                        
-    //                 return res.json({status:false, message:'User Already Exists(Enter unique email)',user:userDoc});
-    //             }
+    Product.findProductByProductCode(ProductCode)
+            .then(userDoc=>{
+                if(userDoc){                        
+                    return res.json({status:false, message:'Product Already Exists'});
+                }
         
                 const db = getDb();     
                                                         
@@ -59,11 +59,11 @@ exports.createProduct = (req,res,next)=>{
                     
                 })
                 .catch(err=>console.log(err));                                                                                                                          
-            // })
-            // .then(resultInfo=>{                   
+            })
+            .then(resultInfo=>{                   
                 
-            // })
-            // .catch(err=>console.log(err));      
+            })
+            .catch(err=>console.log(err));      
 }
 
 
