@@ -10,6 +10,7 @@ const app = express();
 
 const userRoutes = require('./routes/user');
 const quotationRoutes = require('./routes/quotation');
+const productRoutes = require('./routes/product');
 
 app.use('/uploads',express.static('uploads'));
 
@@ -36,6 +37,8 @@ app.get('/',(req,res)=>{
 
 app.use('/api',userRoutes);
 app.use('/api',quotationRoutes);
+app.use('/api',productRoutes);
+
 
 let port = process.env.PORT || 8080;
 //establishing DB connection
