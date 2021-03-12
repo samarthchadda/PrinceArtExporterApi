@@ -97,7 +97,7 @@ exports.editUserDetails = (req,res,next)=>{
                 .then(userDoc=>{
                     if(!userDoc)
                     {
-                        return res.json({ message:'User does not exist',status:false});
+                        return res.sendStatus(404).json({ message:'User does not exist',status:false});
                     }
                              
                     userDoc.password = hex;
@@ -113,7 +113,7 @@ exports.editUserDetails = (req,res,next)=>{
                 })   
             }
             else{
-                res.json({status:false,message:"Enter Logged In User Details"})
+                res.sendStatus(401).json({status:false,message:"Enter Logged In User Details"})
             }          
         }
     });
@@ -142,7 +142,7 @@ exports.forgotUserPassword = (req,res,next)=>{
                 .then(userDoc=>{
                     if(!userDoc)
                     {
-                        return res.json({ message:'User does not exist',status:false});
+                        return res.sendStatus(404).json({ message:'User does not exist',status:false});
                     }
                              
                     userDoc.password = hex;
