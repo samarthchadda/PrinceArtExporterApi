@@ -64,7 +64,7 @@ exports.createQuotation = (req,res,next)=>{
 
             }
             else{
-                res.json({status:false,message:"Enter Logged In User Details"})
+                res.sendStatus(401).json({status:false,message:"Enter Logged In User Details"})
             }          
         }
     });
@@ -87,7 +87,7 @@ exports.getUserQuotations = (req,res,next)=>{
                 .then(user=>{
                     if(!user)
                     {
-                        return res.json({status:false,message:"User does not exist"});
+                        return res.sendStatus(404).json({status:false,message:"User does not exist"});
                     }
                     Quotation.findQuotationsByEmail(email)
                     .then(quotData=>{
@@ -104,7 +104,7 @@ exports.getUserQuotations = (req,res,next)=>{
                
             }
             else{
-                res.json({status:false,message:"Enter Logged In User Details"})
+                res.sendStatus(401).json({status:false,message:"Enter Logged In User Details"})
             }          
         }
     });
@@ -126,7 +126,7 @@ exports.getSingleQuotationDetail = (req,res,next)=>{
             .then(quotData=>{
                 if(!quotData)
                 {
-                    return res.json({status:false,message:"Quotation does not exist"});   
+                    return res.sendStatus(404).json({status:false,message:"Quotation does not exist"});   
                 }
                 res.json({status:true,quotation:quotData,authData:authData});
         
@@ -161,7 +161,7 @@ exports.editSingleQuotation = (req,res,next)=>{
             .then(quotData=>{
                 if(!quotData)
                 {
-                    return res.json({status:false,message:"Quotation does not exist"});   
+                    return res.sendStatus(404).json({status:false,message:"Quotation does not exist"});   
                 }
                 quotData.buyerName = buyerName;
                 quotData.country = country;
@@ -203,7 +203,7 @@ exports.getQuotationItems = (req,res,next)=>{
             .then(quotData=>{
                 if(!quotData)
                 {
-                    return res.json({status:false,message:"Quotation does not exist"});   
+                    return res.sendStatus(404).json({status:false,message:"Quotation does not exist"});   
                 }
                 res.json({status:true,items:quotData.items,authData:authData});
         
@@ -230,13 +230,13 @@ exports.delSingleQuotationItem = (req,res,next)=>{
             .then(quotations=>{
                 if(!quotations)
                 {
-                    return res.json({status:false,message:"Quotation does not exists"});            
+                    return res.sendStatus(404).json({status:false,message:"Quotation does not exists"});            
                 }
                 const index = quotations.items.findIndex(i=>i.itemNo == itemNo);
                 console.log(index);
                 if(index == -1)
                 {
-                    return res.json({status:false,message:"Item does not Exists"});        
+                    return res.sendStatus(404).json({status:false,message:"Item does not Exists"});        
                 }
         
                 quotations.items.splice(index,1);
@@ -270,7 +270,7 @@ exports.delSingleQuotation = (req,res,next)=>{
             .then(quotations=>{
                 if(!quotations)
                 {
-                    return res.json({status:false,message:"Quotation does not exists"});            
+                    return res.sendStatus(404).json({status:false,message:"Quotation does not exists"});            
                 }
                
                 const db = getDb();
