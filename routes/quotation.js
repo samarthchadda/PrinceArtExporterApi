@@ -119,7 +119,7 @@ router.post('/create-item',verifyToken,upload.fields([{
                             .then(quotation=>{
                                 if(!quotation)
                                 {
-                                    return res.json({ message:'Quotation Does not exist',status:false});
+                                    return res.sendStatus(404).json({ message:'Quotation Does not exist',status:false});
                                 }
                                 console.log(newImages);
                             const db = getDb();
@@ -138,7 +138,7 @@ router.post('/create-item',verifyToken,upload.fields([{
                        
                     })
                     .catch(err=>{
-                        res.json({status:false,message:"Quotation Creation Failed ",error:err})
+                        res.sendStatus(500).json({status:false,message:"Quotation Creation Failed ",error:err})
                     })                             
         })          
         
@@ -207,14 +207,14 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
             .then(quotation=>{
                 if(!quotation)
                 {
-                    return res.json({ message:'Quotation Does not exist',status:false});
+                    return res.sendStatus(404).json({ message:'Quotation Does not exist',status:false});
                 }
 
                 const index = quotation.items.findIndex(i=>i.itemNo == itemNo);
                 console.log(index);
                 if(index == -1)
                 {
-                    return res.json({status:false,message:"Item does not Exists"});        
+                    return res.sendStatus(404).json({status:false,message:"Item does not Exists"});        
                 }
                 
                 const db = getDb();
