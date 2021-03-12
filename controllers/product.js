@@ -105,7 +105,7 @@ exports.getSingleProducts = (req,res,next)=>{
             .then(quotData=>{
                 if(!quotData)
                 {
-                    return res.json({status:false,message:"Product Does not exists"});
+                    return res.sendStatus(404).json({status:false,message:"Product Does not exists"});
                 }
             
                 res.json({status:true,product:quotData});
