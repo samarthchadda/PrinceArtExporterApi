@@ -54,7 +54,7 @@ exports.signInUser=(req,res,next)=>{
                 .then(user=>{
                     if(!user)
                     {
-                        return res.status(404).json({ message:'User does not exist',status:false});
+                        return res.sendStatus(404).json({ message:'User does not exist',status:false});
                     }
 
                     if(user.password == hex)
@@ -69,7 +69,7 @@ exports.signInUser=(req,res,next)=>{
                         });
                     }else{
                        
-                        res.json({ message:'Password is incorrect',status:false});
+                        res.sendStatus(401).json({ message:'Password is incorrect',status:false});
                     }
                 })
 }
