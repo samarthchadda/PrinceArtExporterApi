@@ -59,7 +59,8 @@ exports.signInUser=(req,res,next)=>{
 
                     if(user.password == hex)
                     {                        
-                        jwt.sign({user:user},'secretkey',{expiresIn:'7200s'},(err,token)=>{
+                        // jwt.sign({user:user},'secretkey',{expiresIn:'7200s'},(err,token)=>{
+                            jwt.sign({user:user},'secretkey',(err,token)=>{
                             res.json({
                                 status:true,                                 
                                 message:"Successfully Logged In",
