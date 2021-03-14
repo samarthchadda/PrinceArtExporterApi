@@ -70,6 +70,8 @@ router.post('/create-item',verifyToken,upload.fields([{
     let canvas2;
 
     const quotationNo = +req.body.quotationNo;
+    const productCode = req.body.productCode;
+    
     let images = req.files.images;
     if(typeof req.files.canvas1 == 'undefined')
     {
@@ -123,11 +125,11 @@ router.post('/create-item',verifyToken,upload.fields([{
                                 }
                                 console.log(newImages);
                             const db = getDb();
-                            quotation.items.push({itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2});
+                            quotation.items.push({itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2,productCode:productCode});
                             db.collection('quotations').updateOne({quotationNo:quotationNo},{$set:quotation})
                                 .then(resultData=>{
                                     
-                                res.json({ message:'Item Added Successfully',status:true, newItem:{itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2},quotation:quotation,authData:authData});
+                                res.json({ message:'Item Added Successfully',status:true, newItem:{itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2,productCode:productCode},quotation:quotation,authData:authData});
                             
                                 })
                                 .catch(err=>console.log(err));   
