@@ -9,6 +9,8 @@ const getDb = require('../util/database').getDB;
 var fs = require('fs');
 
 const Quotation = require('../models/quotation');
+const Product = require('../models/product');
+
 const quotationController = require('../controllers/quotation');
 
 var myTokenFile = require('../services/verifyTokenFile');
@@ -267,6 +269,47 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
     });
             
 });
+
+
+
+
+router.post('/add-product-image',verifyToken,upload.fields([{
+    name: 'image', maxCount: 1
+  }]),(req,res,next)=>{
+
+    const ProductCode = req.body.ProductCode;
+    let image = req.files.image;
+    console.log(image);
+    const db = getDb();     
+     
+        Product.findProductByProductCode(ProductCode)
+            .then(product=>{
+                if(!product)
+                {
+                    return res.sendStatus(404).json({ message:'Product Does not exist',status:false});
+                }
+                               
+                const db = getDb();
+
+                if(image!=null)
+                {
+                    image = image[0];
+                    product.imageUrl = "https://prince-art-exporter.herokuapp.com/api/download/"+image.filename
+
+                    db.collection('products').updateOne({ProductCode:ProductCode},{$set:product})
+                        .then(resultData=>{
+                            
+                        res.json({ message:'Image Added Successfully',status:true, updatedProduct:product});
+                    
+                        })
+                        .catch(err=>console.log(err));   
+                }
+         
+                })
+                .catch(err=>console.log(err));                                      
+   
+});
+
 
 
 module.exports = router;
