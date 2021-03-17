@@ -7,7 +7,7 @@ class Product
 {
     constructor(CBM,CostPerKg,FoldingHeight,FoldingLength,FoldingWidth,FullHeight,FullLength,
             FullWidth,IronRemark,IronWeight,LocationName,ProductCategory,ProductCode,ProductDesc,ProductFinish,
-            ProductName,ProuctSampleDate,Remark,SupplierRef,TotalCost,TotalWeight,WoodRemark)
+            ProductName,ProuctSampleDate,Remark,SupplierRef,TotalCost,TotalWeight,WoodRemark,imgUrl)
     {
         this.CBM = CBM;        
         this.CostPerKg = CostPerKg;
@@ -31,6 +31,7 @@ class Product
         this.TotalCost = TotalCost;  
         this.TotalWeight = TotalWeight;
         this.WoodRemark = WoodRemark; 
+        this.imageUrl = imgUrl;
     }
 
     save()

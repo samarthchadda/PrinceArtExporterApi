@@ -36,6 +36,7 @@ exports.createProduct = (req,res,next)=>{
     const TotalCost = req.body.TotalCost;
     const TotalWeight = req.body.TotalWeight;
     const WoodRemark = req.body.WoodRemark;
+    const imageUrl = req.body.imageUrl;
      
     Product.findProductByProductCode(ProductCode)
             .then(userDoc=>{
@@ -48,7 +49,7 @@ exports.createProduct = (req,res,next)=>{
                 const product = new Product(CBM,CostPerKg,FoldingHeight,FoldingLength,FoldingWidth,FullHeight,FullLength,
                     FullWidth,IronRemark,IronWeight,LocationName,ProductCategory,ProductCode,ProductDesc,
                     ProductFinish,ProductName,ProuctSampleDate,Remark,SupplierRef,TotalCost,TotalWeight,
-                    WoodRemark);
+                    WoodRemark,imageUrl);
 
                 //saving in database
             
