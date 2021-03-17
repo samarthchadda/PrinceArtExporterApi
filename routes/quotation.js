@@ -22,7 +22,8 @@ var store = multer.diskStorage({
         cb(null,'./newFileUploads');
     },
     filename:function(req,file,cb){
-        var newOrignalName = "samarth"+file.originalname.replace(/ /g, "");
+        var dt = new Date();
+        var newOrignalName = dt+file.originalname.replace(/ /g, "");
         cb(null,newOrignalName)
     }
 })
