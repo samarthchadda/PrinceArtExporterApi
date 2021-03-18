@@ -131,37 +131,23 @@ exports.forgotUserPassword = (req,res,next)=>{
     hash.update(password);
     var hex = hash.digest('hex');
 
-    // jwt.verify(req.token,'secretkey',(err,authData)=>{
-    //     if(err)
-    //     {
-    //         res.sendStatus(403);
-    //     }
-    //     else{
-    //         if(authData.user.email == email)
-    //         {
-                User.findUserByEmail(email)
-                .then(userDoc=>{
-                    if(!userDoc)
-                    {
-                        return res.sendStatus(404).json({ message:'User does not exist',status:false});
-                    }
-                             
-                    userDoc.password = hex;
-                
-                    const db = getDb();
-                    db.collection('users').updateOne({email:email},{$set:userDoc})
-                                .then(resultData=>{
-                                    
-                                    res.json({ message:'Password Changed Successfully',status:true,userDetails:userDoc});    
-                                })
-                                .catch(err=>console.log(err));
-                })   
-    //         }
-    //         else{
-    //             res.json({status:false,message:"Enter Logged In User Details"})
-    //         }          
-    //     }
-    // });
+        User.findUserByEmail(email)
+        .then(userDoc=>{
+            if(!userDoc)
+            {
+                return res.sendStatus(404).json({ message:'User does not exist',status:false});
+            }
+                        
+            userDoc.password = hex;
+        
+            const db = getDb();
+            db.collection('users').updateOne({email:email},{$set:userDoc})
+                        .then(resultData=>{
+                            
+                            res.json({ message:'Password Changed Successfully',status:true,userDetails:userDoc});    
+                        })
+                        .catch(err=>console.log(err));
+        })   
    
 }
 

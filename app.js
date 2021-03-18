@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
+require('dotenv').config({path: __dirname + '/.env'})
 var tokenFile = require('./services/verifyTokenFile');
 
 const mongoConnect = require('./util/database').mongoConnect;
