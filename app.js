@@ -41,7 +41,7 @@ app.use('/api',quotationRoutes);
 app.use('/api',productRoutes);
 
 
-let port = process.env.PORT || 8000;
+let port = process.env.PORT || 8443;
 //establishing DB connection
 mongoConnect(()=>{
      
