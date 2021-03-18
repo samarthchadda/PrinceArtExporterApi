@@ -93,8 +93,8 @@ router.post('/create-item',verifyToken,upload.fields([{
 
     let newImages = [];
 
-    canvas1 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas1.filename;
-    canvas2 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas2.filename;
+    canvas1 = "http://74.208.48.64:80/api/download/"+canvas1.filename;
+    canvas2 = "http://74.208.48.64:80/api/download/"+canvas2.filename;
     
     if(typeof images == 'undefined')
     {
@@ -103,7 +103,7 @@ router.post('/create-item',verifyToken,upload.fields([{
     else{
         images.forEach(img=>{
             img = img.filename;
-            img = "https://prince-art-exporter.herokuapp.com/api/download/"+img;
+            img = "http://74.208.48.64:80/api/download/"+img;
             newImages.push(img);
         })
     }
@@ -198,7 +198,7 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
                 if(typeof req.files.canvas2 != 'undefined')
                 {
                     canvas2 = req.files.canvas2[0];                  
-                    canvas2 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas2.filename;
+                    canvas2 = "http://74.208.48.64:80/api/download/"+canvas2.filename;
                 }
                 else{
                     canvas2 = quotation.items[index].canvas2;
@@ -206,7 +206,7 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
                 if(typeof req.files.canvas1 != 'undefined')
                 {
                     canvas1 = req.files.canvas1[0];
-                    canvas1 = "https://prince-art-exporter.herokuapp.com/api/download/"+canvas1.filename;
+                    canvas1 = "http://74.208.48.64:80/api/download/"+canvas1.filename;
                 }
                 else{
                     canvas1 = quotation.items[index].canvas1;
@@ -216,7 +216,7 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
                 {
                     images.forEach(img=>{
                         img = img.filename;
-                        img = "https://prince-art-exporter.herokuapp.com/api/download/"+img;
+                        img = "http://74.208.48.64:80/api/download/"+img;
                         newImages.push(img);
                     })
                 }
@@ -266,7 +266,7 @@ router.post('/add-product-image',verifyToken,upload.fields([{
                 if(image!=null)
                 {
                     image = image[0];
-                    product.imageUrl = "https://prince-art-exporter.herokuapp.com/api/download/"+image.filename
+                    product.imageUrl = "http://74.208.48.64:80/api/download/"+image.filename
 
                     db.collection('products').updateOne({ProductCode:ProductCode},{$set:product})
                         .then(resultData=>{
