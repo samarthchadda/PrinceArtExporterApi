@@ -219,7 +219,9 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
                     images.forEach(img=>{
                         img = img.filename;
                         img = "http://74.208.48.64:80/api/download/"+img;
-                        newImages.push(img);
+                          
+                        quotation.items[index]['images'].push(img);
+                        // console.log("Images array:", quotation.items[index]['images'])
                     })
                 }
                 else{
@@ -227,12 +229,12 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
                 }
 
                 // quotation.items.push({itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2});
-                quotation.items[index] = {itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2};
+                quotation.items[index] = {itemNo:itemNo,images:quotation.items[index]['images'],canvas1:canvas1,canvas2:canvas2};
 
                 db.collection('quotations').updateOne({quotationNo:quotationNo},{$set:quotation})
                     .then(resultData=>{
                         
-                    res.json({ message:'Item Updated Successfully',status:true, updatedItem:{itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2},quotation:quotation,authData:authData});
+                    res.json({ message:'Item Updated Successfully',status:true, updatedItem:{itemNo:itemNo,images:quotation.items[index]['images'],canvas1:canvas1,canvas2:canvas2},quotation:quotation,authData:authData});
                 
                     })
                     .catch(err=>console.log(err));   
