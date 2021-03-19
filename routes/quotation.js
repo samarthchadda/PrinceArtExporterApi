@@ -78,27 +78,29 @@ router.post('/create-item',verifyToken,upload.fields([{
     let images = req.files.images;
     if(typeof req.files.canvas1 == 'undefined')
     {
-        return res.json({status:false, messages:"Enter Photo for 'canvas1' field"});
+        // return res.json({status:false, messages:"Enter Photo for 'canvas1' field"});
+        canvas1 = null;
     }else{
          canvas1 = req.files.canvas1[0];
+         canvas1 = "http://74.208.48.64:80/api/download/"+canvas1.filename;
     }
    
 
     if(typeof req.files.canvas2 == 'undefined')
     {
-        return res.json({status:false, messages:"Enter Photo for 'canvas2' field"});
+        canvas2 = null;
+        // return res.json({status:false, messages:"Enter Photo for 'canvas2' field"});
     }else{
         canvas2 = req.files.canvas2[0];
+        canvas2 = "http://74.208.48.64:80/api/download/"+canvas2.filename;
     }
 
     let newImages = [];
 
-    canvas1 = "http://74.208.48.64:80/api/download/"+canvas1.filename;
-    canvas2 = "http://74.208.48.64:80/api/download/"+canvas2.filename;
-    
     if(typeof images == 'undefined')
     {
-        return res.json({status:false, messages:"Enter Photos for 'images' field"});
+        newImages = [];
+        // return res.json({status:false, messages:"Enter Photos for 'images' field"});
     }
     else{
         images.forEach(img=>{
