@@ -229,12 +229,12 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
                 }
 
                 // quotation.items.push({itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2});
-                quotation.items[index] = {itemNo:itemNo,images:quotation.items[index]['images'],canvas1:canvas1,canvas2:canvas2};
+                quotation.items[index] = {itemNo:itemNo,images:quotation.items[index]['images'],canvas1:canvas1,canvas2:canvas2,productCode:quotation.items[index]['productCode']};
 
                 db.collection('quotations').updateOne({quotationNo:quotationNo},{$set:quotation})
                     .then(resultData=>{
                         
-                    res.json({ message:'Item Updated Successfully',status:true, updatedItem:{itemNo:itemNo,images:quotation.items[index]['images'],canvas1:canvas1,canvas2:canvas2},quotation:quotation,authData:authData});
+                    res.json({ message:'Item Updated Successfully',status:true, updatedItem:{itemNo:itemNo,images:quotation.items[index]['images'],canvas1:canvas1,canvas2:canvas2,productCode:quotation.items[index]['productCode']},quotation:quotation,authData:authData});
                 
                     })
                     .catch(err=>console.log(err));   
