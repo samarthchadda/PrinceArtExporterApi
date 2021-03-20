@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 var https = require('https');
-var privateKey  = fs.readFileSync('./sslcert/_.princeartstore.com_private_key.key','ascii');
-var certificate = fs.readFileSync('./sslcert/princeartstore.com_ssl_certificate.cer','ascii');
+var privateKey  = fs.readFileSync('./sslcert/_.princeartstore.com_private_key.key');
+var certificate = fs.readFileSync('./sslcert/princeartstore.com_ssl_certificate.cer');
 
 var credentials = {key: privateKey, cert: certificate};
 
