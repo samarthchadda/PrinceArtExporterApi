@@ -48,7 +48,7 @@ app.use('/api',productRoutes);
 
 var httpsServer = https.createServer(credentials, app);
 
-let port = process.env.PORT || 8443;
+let port = process.env.PORT || 443;
 //establishing DB connection
 mongoConnect(()=>{
      
