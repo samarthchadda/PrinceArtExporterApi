@@ -17,6 +17,7 @@ exports.createQuotation = (req,res,next)=>{
     const containerSize = req.body.containerSize;    
     const userEmail = req.body.userEmail;  
     const items = [];  
+    const visitCode = req.body.visitCode;
 
     jwt.verify(req.token,'secretkey',(err,authData)=>{
         if(err)
@@ -39,7 +40,7 @@ exports.createQuotation = (req,res,next)=>{
             db.collection('quotCounter').insertOne({count:newVal})
                     .then(result=>{
                         
-                        const quotation = new Quotation(quotNum,buyerName,country,currency,size,price,containerSize,items,userEmail);
+                        const quotation = new Quotation(quotNum,buyerName,country,currency,size,price,containerSize,items,userEmail,visitCode);
                        
                         //saving in database                    
                         return quotation.save()

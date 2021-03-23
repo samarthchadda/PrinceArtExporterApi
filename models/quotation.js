@@ -5,7 +5,7 @@ const ObjectId = mongodb.ObjectId;
 
 class Quotation
 { 
-   constructor(qno,buyerName,country,currency,size,price,containerSize,items,email)
+   constructor(qno,buyerName,country,currency,size,price,containerSize,items,email,visitCode)
     {          
         this.quotationNo = qno;
         this.buyerName = buyerName;
@@ -16,6 +16,7 @@ class Quotation
         this.containerSize = containerSize;
         this.items = items;
         this.userEmail = email;
+        this.visitCode = visitCode;
         this.quotationDate = new Date();                     
     }
 
