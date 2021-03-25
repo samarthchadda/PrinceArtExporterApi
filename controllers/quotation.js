@@ -218,7 +218,7 @@ exports.getQuotationItems = (req,res,next)=>{
 }
 
 exports.delSingleQuotationItem = (req,res,next)=>{
-    const itemNo = +req.params.itemNo;
+    const itemNo = req.params.itemNo;
     const quotationNo = +req.params.quotationNo;
     jwt.verify(req.token,'secretkey',(err,authData)=>{
         if(err)

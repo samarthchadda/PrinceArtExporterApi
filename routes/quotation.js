@@ -66,9 +66,7 @@ router.post('/create-item',verifyToken,upload.fields([{
             res.sendStatus(403);
         }
         else{         
-                
-        
-    let itemNo;
+      
     let canvas1;
     let canvas2;
 
@@ -111,48 +109,59 @@ router.post('/create-item',verifyToken,upload.fields([{
     }
 
     const db = getDb();     
-        db.collection('itemCounter').find().toArray().then(data=>{
-            
-            newVal = data[data.length-1].count;
+    Quotation.findQuotationByQuotNo(quotationNo)
+    .then(quotation=>{
+        if(!quotation)
+        {
+            return res.sendStatus(404).json({ message:'Quotation Does not exist',status:false});
+        }
+        
+            console.log(quotation.items.length);
            
-            newVal = newVal + 1;
-           
-            itemNo = newVal;
+            let diffItemNo;
+            if(quotation.items.length == 0)
+            {
+                diffItemNo = 1;
+            }
+            else{
+                console.log("Length : ",quotation.items.length);
+                diffItemNo = quotation.items.length + 1;
+            }
+        
+                let zeros;
+                if(diffItemNo.toString().length == 1)
+                {
+                    zeros = "00";
+                }
+                if(diffItemNo.toString().length == 2)
+                {
+                    zeros = "0";
+                }
+                if(diffItemNo.toString().length > 2)
+                {
+                    zeros = "";
+                }
+                
+                let newItemNo = quotation.visitCode +zeros+ diffItemNo.toString(); 
+
+            const db = getDb();
+            quotation.items.push({itemNo:newItemNo,images:newImages,canvas1:canvas1,canvas2:canvas2,productCode:productCode});
+            db.collection('quotations').updateOne({quotationNo:quotationNo},{$set:quotation})
+                .then(resultData=>{
+                    
+                res.json({ message:'Item Added Successfully',status:true, newItem:{itemNo:newItemNo,images:newImages,canvas1:canvas1,canvas2:canvas2,productCode:productCode},quotation:quotation,authData:authData});
             
-            db.collection('itemCounter').insertOne({count:newVal})
-                    .then(result=>{
-                        
-                        Quotation.findQuotationByQuotNo(quotationNo)
-                            .then(quotation=>{
-                                if(!quotation)
-                                {
-                                    return res.sendStatus(404).json({ message:'Quotation Does not exist',status:false});
-                                }
-                                console.log(newImages);
-                            const db = getDb();
-                            quotation.items.push({itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2,productCode:productCode});
-                            db.collection('quotations').updateOne({quotationNo:quotationNo},{$set:quotation})
-                                .then(resultData=>{
-                                    
-                                res.json({ message:'Item Added Successfully',status:true, newItem:{itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2,productCode:productCode},quotation:quotation,authData:authData});
-                            
-                                })
-                                .catch(err=>console.log(err));   
-                            })
-                            .catch(err=>console.log(err));    
-                    })
-                    .then(resultData=>{
-                       
-                    })
-                    .catch(err=>{
-                        res.sendStatus(500).json({status:false,message:"Quotation Creation Failed ",error:err})
-                    })                             
-        })          
+                })
+                .catch(err=>console.log(err));   
+    
+    })
+    .catch(err=>console.log(err));    
         
         }
     });
             
 });
+
 
 router.post('/edit-quotation-item',verifyToken,upload.fields([{
     name: 'images', maxCount: 10
@@ -168,12 +177,11 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
             res.sendStatus(403);
         }
         else{                        
-     
-   
+        
     let canvas1;
     let canvas2;
 
-    const itemNo = +req.body.itemNo;
+    const itemNo = req.body.itemNo;
     const quotationNo = +req.body.quotationNo;
     let images = req.files.images;
  
@@ -219,16 +227,15 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
                     images.forEach(img=>{
                         img = img.filename;
                         img = "http://74.208.48.64:80/api/download/"+img;
-                          
+                        
                         quotation.items[index]['images'].push(img);
-                        // console.log("Images array:", quotation.items[index]['images'])
+                        // console.log("Images array:", quotation.items[index]['productCode'])
                     })
                 }
                 else{
                     newImages = quotation.items[index].images;
                 }
 
-                // quotation.items.push({itemNo:itemNo,images:newImages,canvas1:canvas1,canvas2:canvas2});
                 quotation.items[index] = {itemNo:itemNo,images:quotation.items[index]['images'],canvas1:canvas1,canvas2:canvas2,productCode:quotation.items[index]['productCode']};
 
                 db.collection('quotations').updateOne({quotationNo:quotationNo},{$set:quotation})
@@ -245,8 +252,6 @@ router.post('/edit-quotation-item',verifyToken,upload.fields([{
     });
             
 });
-
-
 
 
 router.post('/add-product-image',verifyToken,upload.fields([{
